@@ -5,7 +5,7 @@ This repository contains the source code of the BIM property server of Austria.
 The ASI - Propertyserver is used by [Austrian Standards International](https://www.austrian-standards.at/en/home/) and is part of the [ÖNORM A 6241-2](https://www.austrian-standards.at/infopedia-themencenter/infopedia-artikel/building-information-modeling-bim/#c7261).
 
 It has been (and will be further) developed by [DBIS - Databases and Information Systems](https://dbis-informatik.uibk.ac.at/) of the [University of Innsbruck](https://www.uibk.ac.at/), [Department of Computer Science](https://www.uibk.ac.at/informatik/).
-It has been (and is currently) founded by the [Tyrolean Regional Government](https://www.tirol.gv.at/) via three consequent projects:
+It has been (and is currently) funded by the [Tyrolean Regional Government](https://www.tirol.gv.at/) via three consequent projects:
 
 * freeBIM
 * freeBIM 2
