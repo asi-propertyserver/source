@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+		/WEB-INF/spring-security.xml
+		/WEB-INF/applicationContext.xml
+		</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+	
+	<listener>
+    	<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+    </listener>
+	
+	<filter>
+        <filter-name>filterChainProxy</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>filterChainProxy</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+
+<!-- Enables clean URLs with JSP views e.g. /welcome instead of /app/welcome 
+	<filter>
+		<filter-name>UrlRewriteFilter</filter-name>
+		<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>UrlRewriteFilter</filter-name>
+		<url-pattern>/freebim-webapp/*</url-pattern>
+	</filter-mapping>   
+-->
+
+	<servlet>
+		<servlet-name>spring</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>spring</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	
+<!-- 	
+	<servlet> 
+   		<servlet-name>FreebimWebservice</servlet-name> 
+   		<servlet-class>at.freebim.db.webservice.endpoints.FreebimWebserviceEndpoint</servlet-class> 
+	</servlet> 
+
+	<servlet-mapping> 
+   		<servlet-name>FreebimWebservice</servlet-name> 
+   		<url-pattern>/FreebimWebservice</url-pattern> 
+	</servlet-mapping> 
+ -->	
+	<session-config>
+        <session-timeout>60</session-timeout> <!-- TODO: change session timeout -->
+    </session-config>
+	
+	<servlet>
+    	<servlet-name>jaxws-servlet</servlet-name>
+    	<servlet-class>com.sun.xml.ws.transport.http.servlet.WSSpringServlet</servlet-class>
+	</servlet>
+
+  	<servlet-mapping>
+		<servlet-name>jaxws-servlet</servlet-name>
+		<url-pattern>/FreebimWebservice</url-pattern>
+	</servlet-mapping>
+	
+	
+</web-app>

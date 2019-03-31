@@ -1,0 +1,657 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>at.freebim.db</groupId>
+	<artifactId>freebim-webapp</artifactId>
+	<packaging>war</packaging>
+	<name>freebim-webapp</name>
+	<!-- url>http://db.freebim.at</url -->
+
+	<parent>
+		<groupId>at.freebim</groupId>
+		<artifactId>db</artifactId>
+		<version>1.12.12</version>
+		<relativePath>freebim-parent/pom.xml</relativePath>
+	</parent>
+
+	<properties>
+		<timestamp>${maven.build.timestamp}</timestamp>
+		<maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ssZ</maven.build.timestamp.format>
+		<target.site.dir>target/site/</target.site.dir>
+	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>db.freebim.at</id>
+			<name>freeBIM Web-Application Server</name>
+			<url>scp://138.232.66.100:/home/breuss/Documents/freeBIM/</url>
+		</repository>
+	</distributionManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+			    <groupId>org.codehaus.mojo</groupId>
+			    <artifactId>exec-maven-plugin</artifactId>
+			    <version>1.3.2</version>
+			    <executions>
+			        <execution>
+			            <phase>compile</phase>
+			            <goals>
+			                <goal>java</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			    <configuration>
+			        <arguments>
+			            <argument>${project.build.directory}/${project.build.finalName}</argument>
+			        </arguments>
+			        <mainClass>at.freebim.db.webapp.JsCreator</mainClass>
+			    </configuration>
+			</plugin>
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-javadoc-plugin</artifactId>
+		        <configuration>
+			        <sourcepath>
+			        	${basedir}/src/main/java/at/freebim/db/webservice
+			        </sourcepath>
+			        <doctitle>freeBIM WebService</doctitle>
+			        <windowtitle>freeBIM - WebService Documentation</windowtitle>
+			        <top><![CDATA[<img src="/resources/freebim_logo.gif" alt="freeBIM-Tirol" style="float:left;"> <a style="position: relative; top: 49px; left: 10px;" href="http://ws.freebim.at" target="_blank">WebService</a> ]]></top>
+			        <bottom><![CDATA[<div style="position: relative; top: 10px; left: 10px;">Version: ${project.version}, Copyright 2015, <a href="http://db.freebim.at" target="_blank">freeBIM-Tirol<a></div>]]></bottom>
+			        <outputDirectory>/</outputDirectory>
+			    </configuration>
+		      </plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											exec-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.3.2,)
+										</versionRange>
+										<goals>
+											<goal>java</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+<!-- <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.2</version>
+        <configuration>
+          <doclet>org.jboss.apiviz.APIviz</doclet>
+          <docletArtifact>
+            <groupId>org.jboss.apiviz</groupId>
+            <artifactId>apiviz</artifactId>
+            <version>1.3.2.GA</version>
+          </docletArtifact>
+          <useStandardDocletOptions>true</useStandardDocletOptions>
+          <charset>UTF-8</charset>
+          <encoding>UTF-8</encoding>
+          <docencoding>UTF-8</docencoding>
+          <breakiterator>true</breakiterator>
+          <version>true</version>
+          <author>true</author>
+          <keywords>true</keywords>
+          <additionalparam>
+            -sourceclasspath ${project.build.outputDirectory}
+          </additionalparam>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+ -->
+	<profiles>
+	
+			<profile>
+			<id>debug</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+
+			<build>
+				<!-- finalName>freebim-webapp</finalName -->
+				<!-- we have to deploy as tomcat ROOT web application to work with apache 
+					web server (won't use tomcat's port numbers) -->
+				<finalName>ROOT</finalName>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.5</version>
+						<configuration>
+							<webResources>
+					            <resource>
+					              <!-- this is relative to the pom.xml directory -->
+					              <directory>${basedir}/${target.site.dir}</directory>
+					              <includes>
+					                <include>**/*.*</include>
+					              </includes>
+					            </resource>
+					        </webResources>
+						</configuration>
+					</plugin>
+				
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.7</version>
+						<executions>
+						
+							<!-- write version and build time into our 'version.properties' file -->
+							<execution>
+								<id>antrun.versioninfo</id>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<phase>generate-sources</phase>
+								<configuration>
+									<!-- Idea from link: http://stackoverflow.com/questions/2469922/generate-a-version-java-file-in-maven -->
+									<target>
+										<property name="resources.dir"
+											value="${project.build.sourceDirectory}/../resources" />
+										<property name="version.filename" value="version.properties" />
+										<property name="buildtime" value="${maven.build.timestamp}" />
+										<echo
+											message="Writing project version string to ${resources.dir}/${version.filename} ..." />
+										<echo file="${resources.dir}/${version.filename}"
+											message="# generated content, don't edit!${line.separator}app.version=${project.version}${line.separator}app.buildtime=${timestamp}${line.separator}app.release=false${line.separator}" />
+									</target>
+								</configuration>
+							</execution>
+							
+							<!-- create minified JavaScript source files -->
+							<execution>
+								<id>antrun.minify</id>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<phase>prepare-package</phase>
+								<configuration>
+									<target>
+										<ant antfile="${basedir}/build.xml">
+											<target name="minify" />
+										</ant>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+				<pluginManagement>
+					<plugins>
+						<!--This plugin's configuration is used to store Eclipse m2e settings 
+							only. It has no influence on the Maven build itself. -->
+						<plugin>
+							<groupId>org.eclipse.m2e</groupId>
+							<artifactId>lifecycle-mapping</artifactId>
+							<version>1.0.0</version>
+							<configuration>
+								<lifecycleMappingMetadata>
+									<pluginExecutions>
+										<pluginExecution>
+											<pluginExecutionFilter>
+												<groupId>
+													org.apache.maven.plugins
+												</groupId>
+												<artifactId>
+													maven-antrun-plugin
+												</artifactId>
+												<versionRange>
+													[1.7,)
+												</versionRange>
+												<goals>
+													<goal>run</goal>
+												</goals>
+											</pluginExecutionFilter>
+											<action>
+												<ignore></ignore>
+											</action>
+										</pluginExecution>
+									</pluginExecutions>
+								</lifecycleMappingMetadata>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+		
+		<profile>
+			<id>release</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+
+			<build>
+				<!-- finalName>freebim-webapp</finalName -->
+				<!-- we have to deploy as tomcat ROOT web application to work with apache 
+					web server (won't use tomcat's port numbers) -->
+				<finalName>ROOT</finalName>
+				<plugins>
+				
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.7</version>
+						<executions>
+						
+							<!-- write version and build time into our 'version.properties' file -->
+							<execution>
+								<id>antrun.versioninfo</id>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<phase>generate-sources</phase>
+								<configuration>
+									<!-- Idea from link: http://stackoverflow.com/questions/2469922/generate-a-version-java-file-in-maven -->
+									<target>
+										<property name="resources.dir"
+											value="${project.build.sourceDirectory}/../resources" />
+										<property name="version.filename" value="version.properties" />
+										<property name="buildtime" value="${maven.build.timestamp}" />
+										<echo
+											message="Writing project version string to ${resources.dir}/${version.filename} ..." />
+										<echo file="${resources.dir}/${version.filename}"
+											message="# generated content, don't edit!${line.separator}app.version=${project.version}${line.separator}app.buildtime=${timestamp}${line.separator}app.release=true${line.separator}" />
+									</target>
+								</configuration>
+							</execution>
+							
+							<!-- create minified JavaScript source files -->
+							<execution>
+								<id>antrun.minify</id>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<phase>prepare-package</phase>
+								<configuration>
+									<target>
+										<ant antfile="${basedir}/build.xml">
+											<target name="minify" />
+										</ant>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+		
+					<!-- don't publish our JavaScript source files (only minified version will be published) -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.5</version>
+						<configuration>
+							<webResources>
+					            <resource>
+					              <!-- this is relative to the pom.xml directory -->
+					              <directory>${basedir}/${target.site.dir}</directory>
+					              <includes>
+					                <include>**/*.*</include>
+					              </includes>
+					            </resource>
+					        </webResources>
+							<warSourceExcludes>
+								resources/js/admin.js,
+								resources/js/bsdd.js,
+								resources/js/ctxmenu.js,
+								resources/js/delegate.js,
+								resources/js/domain.js,
+								resources/js/graph.js,
+								resources/js/imprint.js,
+								resources/js/main.js,
+								resources/js/merge.js,
+								resources/js/nodeFields.js,
+								resources/js/onLayout.js,
+								resources/js/paramlist.js,
+								resources/js/problems.js,
+								resources/js/pset.js,
+								resources/js/rel.js,
+								resources/js/reltype.js,
+								resources/js/search.js,
+								resources/js/state.js,
+								resources/js/statistic.js,
+								resources/js/tabs.js,
+								resources/js/tree.js,
+								resources/lang/de-DE.json,
+								resources/lang/en-US.json,
+								resources/lang/es-ES.json,
+								resources/lang/fr-FR.json,
+								resources/lib/IfcGuid.js,
+								resources/lib/i18n.js,
+								resources/lib/ifd.js,
+								resources/lib/jsCookie.js,
+								resources/lib/jsDownload.js,
+								resources/lib/jsForm.js,
+								resources/lib/jsCss.js,
+								resources/lib/json2.js,
+								resources/lib/jsTable.js,
+								resources/lib/objectKeys.js
+							</warSourceExcludes>
+						</configuration>
+					</plugin>
+
+				</plugins>
+				<pluginManagement>
+					<plugins>
+						<!--This plugin's configuration is used to store Eclipse m2e settings 
+							only. It has no influence on the Maven build itself. -->
+						<plugin>
+							<groupId>org.eclipse.m2e</groupId>
+							<artifactId>lifecycle-mapping</artifactId>
+							<version>1.0.0</version>
+							<configuration>
+								<lifecycleMappingMetadata>
+									<pluginExecutions>
+										<pluginExecution>
+											<pluginExecutionFilter>
+												<groupId>
+													org.apache.maven.plugins
+												</groupId>
+												<artifactId>
+													maven-antrun-plugin
+												</artifactId>
+												<versionRange>
+													[1.7,)
+												</versionRange>
+												<goals>
+													<goal>run</goal>
+												</goals>
+											</pluginExecutionFilter>
+											<action>
+												<ignore></ignore>
+											</action>
+										</pluginExecution>
+									</pluginExecutions>
+								</lifecycleMappingMetadata>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+<!-- 			<scope>provided</scope> -->
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+<!-- 			<scope>provided</scope>
+ -->		</dependency>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>el-api</artifactId>
+<!-- 			<scope>provided</scope>
+ -->		</dependency>
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>el-impl</artifactId>
+<!-- 			<scope>provided</scope>
+ -->		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<type>jar</type>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<type>jar</type>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<type>jar</type>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<type>jar</type>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<type>jar</type>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- spring security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-aop</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-jaxrs</artifactId>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- dependency> <groupId>javax.servlet</groupId> <artifactId>servlet-api</artifactId> 
+			<scope>provided</scope> </dependency -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- neo4j -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-neo4j</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hibernate.javax.persistence</groupId>
+					<artifactId>hibernate-jpa-2.0-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-kernel</artifactId>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>at.freebim.db</groupId>
+			<artifactId>freebim-data-neo4j</artifactId>
+			<version>${freebim.version}</version>
+		</dependency>
+
+		<!-- <dependency> <groupId>org.springframework.ws</groupId> <artifactId>spring-ws</artifactId> 
+			<version>1.5.2</version> </dependency> <dependency> <groupId>org.springframework.ws</groupId> 
+			<artifactId>spring-ws-core</artifactId> <version>2.2.0.RELEASE</version> 
+			</dependency> -->
+
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+			<version>2.2.8</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.maven.wagon</groupId>
+			<artifactId>wagon-ssh</artifactId>
+			<version>2.7</version>
+		</dependency>
+
+<!-- 		<dependency>
+			<groupId>at.freebim.db</groupId>
+			<artifactId>freebim-ON-Part1-importer</artifactId>
+			<version>${freebim.version}</version>
+		</dependency>
+ -->
+
+		<!-- <dependency>
+			<groupId>at.freebim.db</groupId>
+			<artifactId>freebim-freeClass</artifactId>
+			<version>${freebim.version}</version>
+		</dependency> -->
+
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.3.1</version>
+		</dependency>
+
+ 	</dependencies>
+
+</project>

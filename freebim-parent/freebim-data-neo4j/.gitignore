@@ -3,6 +3,7 @@
 
 # Generated files
 **/version.properties
+AsyncNgramCreatorImpl.nodes
 
 # Eclipse files
 .classpath

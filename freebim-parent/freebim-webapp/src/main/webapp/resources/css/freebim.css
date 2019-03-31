@@ -1,0 +1,950 @@
+@charset "utf-8";
+
+body {
+	font-family: Arial, sans-serif;
+	font-size: 10px;
+}
+
+td {
+	border-left: solid 1px lightgray;
+	vertical-align: top;
+}
+table {
+	border: solid 1px lightgray;
+}
+.tree-valueSet-content td,th {
+	background-color: lightgray;
+}
+#contributor-responsibility {
+	margin: 15px auto 15px auto;
+	padding: 0;
+	width: 300px;
+}
+.permission {
+	text-align: center;
+	color: green;
+}
+
+.freebim-login {
+	text-align: center;
+}
+
+.freebim-login input,
+.freebim-login button,
+.searchfield input,
+.searchbutton,
+.ui-widget button, 
+.freebim-button, 
+.tree-parameters,
+.bsdd-button,
+.delete-ifd,
+.graph-reset-btn,
+.std-button {
+	font-size: 1.0em;
+	border-radius: 0;
+	border: solid 1px lightgray;
+	background-color: white;
+}
+
+.freebim-login input:hover,
+.freebim-login button:hover,
+.searchfield input:hover,
+.searchbutton:hover,
+.ui-widget button:hover,
+.freebim-button:hover,
+.tree-parameters:hover,
+.bsdd-button:hover,
+.delete-ifd:hover,
+.graph-reset-btn:hover,
+.std-button:hover {
+	cursor: pointer;
+	border: solid 1px black;
+	background-color: lightgray;
+}
+.freebim-login input:disabled,
+.freebim-login button:disabled,
+.searchfield input:disabled,
+.searchbutton:disabled,
+.ui-widget button:disabled,
+.freebim-button:disabled,
+.tree-parameters:disabled,
+.bsdd-button:disabled,
+.graph-reset-btn:disabled,
+.std-button:disabled {
+	cursor: default;
+	background-color: transparent;
+	border: solid 1px lightgray;
+}
+.delete-ifd {
+	width: 16px;
+	text-align: center;
+	color: red;
+}
+.bsdd-button {
+	background-image: url("/resources/ifc-logo.png");
+	height: 15px;
+	width: 28px;
+	background-repeat: no-repeat;
+	background-size: 13px;
+	float: left;
+	background-position: center;
+}
+
+.freebim-login table {
+	margin: auto;
+}
+
+.small {
+	font-size: 0.8em;
+}
+.searchfield {
+	width: 300px;
+}
+.searchresult {
+	margin-top: 10px;
+}
+
+.searchresult table {
+	border: solid 1px lightgray;
+}
+
+.searchresult th {
+	padding: 4px;
+}
+
+.searchresult td {
+	border-bottom: solid 1px lightgray;
+	padding: 3px;
+}
+
+.searchresult {
+	position: relative;
+	overflow: auto;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	height: 85%;
+}
+
+.label {
+	width: 200px;
+	text-align: right;
+}
+
+.contributor-code {
+	border: solid 1px lightgray;
+	float: right;
+	margin: 6px 0 0 10px;
+	cursor: pointer;
+}
+
+.tree-node {
+	padding: 0;
+	margin: 0px -1px 6px 20px;
+	border: solid 1px lightgray;
+	clear: both;
+}
+
+.tree-headline {
+	margin: 3px;
+	/* padding: 3px;
+	font-weight: bold; */
+	float: left;
+	white-space: nowrap;
+}
+
+.tree-headline-title {
+	float: left;
+	margin-right: 10px;
+}
+
+.tree-content {
+	clear: both;
+}
+
+.tree-leaf {
+/* 	padding: 0;
+	border-radius: 20px; */
+}
+
+.tree-valueSets {
+	/* background-color: yellow; */
+	
+}
+
+.tree-parameters-content {
+	margin: 0px 10px 10px 60px;
+	clear: both;
+	border: solid 1px lightgrey;
+	float: left;
+	padding: 2px;
+}
+
+.tree-value-content {
+	/* background-color: cyan; */
+	margin: 0px -1px 0px 60px;
+	clear: both;
+	border: solid 1px lightgrey;
+	float: left;
+	padding: 5px;
+}
+
+.tree-equals, .tree-equal {
+	float: left;
+	color: gray;
+}
+
+td.abstract,
+div.abstract {
+	font-style: italic;
+}
+
+.tree-SimpleNamedNode {
+	/* background-color: rgb(186, 255, 186); */
+}
+
+.tree-Component {
+	/* background-color: rgb(255, 241, 216); */
+}
+
+.tree-Material {
+	/* background-color: rgb(216, 247, 255); */
+}
+
+.tree-FreeclassClass {
+	/* background-color: rgb(252, 216, 255); */
+}
+
+.tree-navigation {
+	width: 10px;
+	/* height: 12px; */
+	/* font-family: monospace; */
+	/* border: solid 1px gray; */
+	cursor: pointer;
+	float: left;
+	/* font-size: 16px; */
+	margin: 2px;
+}
+.tree-navigation:hover {
+	color: red;
+}
+.tree-parameters, .measure-toggle, .vl-toggle {
+	margin: 2px;
+	float: left;
+	cursor: pointer;
+	width: 16px;
+	height: 16px;
+	text-align: center;
+	vertical-align: middle;
+	border: solid 1px lightgray;
+}
+/* jsForm */
+.jsForm p {
+	margin: 2px;
+	clear: both;
+}
+
+.jsForm-label {
+	font-size: 0.8em;
+	text-align: right;
+	width: 200px;
+	float: left;
+	vertical-align: baseline;
+	margin: 4px 8px 0 0;
+}
+
+.jsForm-field {
+	width: 330px;
+	float: left;
+	border: solid 1px lightgray;
+	border-radius: 0px;
+	margin: 2px;
+}
+
+.jsForm-checkbox {
+	
+}
+
+.jsForm-buttons {
+	width: 400px;
+	text-align: center;
+	margin-top: 20px;
+}
+
+.floating-table {
+	width: 800px;
+	height: 250px;
+	/* font-size: 0.8em; */
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+	padding: 0;
+}
+
+/* ui-layout */
+.ui-layout-center {
+	overflow: auto;
+	position: relative;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	float: left;
+	width: 100%;
+	height: 100%;
+}
+
+.ui-layout-east {
+	overflow: auto;
+	position: relative;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	float: right;
+	width: 100%;
+	height: 100%;
+}
+
+.ui-widget input,.ui-widget select,.ui-widget textarea,.ui-widget button,.ui-dialog .ui-dialog-buttonpane button,.ui-dialog .ui-dialog-titlebar
+	{
+	font-size: 1.0em;
+}
+
+#headline {
+	float: left;
+	font-weight: bold;
+}
+
+.ui-layout-pane-north input,.ui-layout-pane-south input {
+	font-size: 1.0em;
+	border-radius: 0;
+	border: solid 1px lightgray;
+	background-color: white;
+	float: right;
+	margin-left: 10px;
+}
+
+#freebim-progress {
+	text-align: center;
+}
+
+.searchresult-breadcrump {
+	float: left;
+	cursor: pointer;
+	padding: 0px 3px 0px 3px;
+}
+
+.searchresult-breadcrump:hover {
+	background-color: yellow;
+}
+
+.searchresult-path {
+	clear: both;
+}
+
+#tabs {
+	margin: 10px;
+	border-radius: 0;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: hidden;
+}
+
+.ui-tabs-panel {
+	position: absolute;
+	margin: 10px;
+	border-radius: 0;
+	top: 33px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: inline-flex;
+}
+.ui-tabs .ui-tabs-nav li {
+	border-top-right-radius: 20px;
+	border-top-left-radius: 5px;
+}
+.freebim-rel-incoming, .freebim-rel-current, .freebim-rel-outgoing {
+  float: left;
+  border: outset 1px lightgray;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 5px;
+  max-height: 97%;
+  margin: 5px;
+  background-color: white;
+  width: 33%;
+}}
+.freebim-rel-incoming, .freebim-rel-outgoing {
+	width: 35%;
+}
+.freebim-rels {
+  /* position: relative; */
+  overflow: hidden;
+  height: 100%;
+  background-color: lightgray;
+  height: 100%;
+}
+.freebim-rel-current {
+/*text-align:center;
+	-webkit-box-align: center;
+	box-align: center;
+    -webkit-box-pack:center;*/
+    width: 25%;
+}
+.freebim-rel-incoming div,
+.freebim-rel-current div,
+.freebim-rel-outgoing div {
+	/* clear: both; */
+} 
+div.freebim-rel-current {
+	/*border: solid 2px lightgreen;*/
+/* 	max-width: 30%;
+ */
+ }
+div.freebim-rel-incoming {
+	/* float: right; */
+	/* padding: 2px; */
+}
+div.freebim-rel-outgoing {
+	/* float: left; */
+/* 	padding: 2px; */
+/* 	max-width: 35%; */
+}
+.freebim-rel-history {
+	position: relative;
+	width: 100%;
+	overflow-x: auto;
+	overflow-y: hidden;
+	white-space: nowrap;
+	padding: 0 0 4px 0;
+	/* max-height: 50px; */
+}
+.freebim-rel-history .freebim-item {
+	float: none;
+}
+.freebim-rel, .freebim-rel-data {
+  position: relative;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 90%;
+  padding: 0;
+}
+.freebim-rel-data {
+	background-color: lightgray;
+	overflow: auto;
+}
+.rel {
+	clear: both;
+/* 	white-space: nowrap; */
+}
+.rel-left {
+	float:right;
+/* 	margin: 5px; */
+}
+.rel-right {
+	float:left;
+/* 	margin: 5px; */
+}
+.rel-center {
+/* 	margin: 5px; */
+}
+#contributor-options {
+	margin: 15px auto 5px auto;
+	text-align: center;
+	clear: both;
+	float: none;
+	padding: 0;
+	display: inline-block;
+}
+#contributor-options p {
+	float: left;
+	clear: both;
+	margin: 1px;
+}
+.freebim-item { 
+	padding: 0px 6px;
+	margin: 0px;
+	border: outset 1px lightgray;
+	border-radius: 10px;
+	text-align: center;
+	display: table-cell;
+	height: 16px;
+	vertical-align: middle;
+	overflow: hidden;
+	/* max-width: 300px; */
+	/* min-width: 100px; */
+	/* float: left; */
+}
+.freebim-item.pset-param {
+	border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+}
+li.freebim-item {
+	clear: both;
+}
+ul, menu, dir {
+	-webkit-margin-before: 0px;
+	-webkit-margin-after: 0px;
+	-webkit-margin-start: 0px;
+	-webkit-margin-end: 0px;
+	-webkit-padding-start: 0px;
+}
+.freebim-item:hover {
+	border : outset 1px black;
+	cursor: pointer;
+}
+.freebim-relation {
+	padding : 0 2px;
+	margin : 0;
+	border : solid 1px rgb(214, 214, 214);
+	border-radius : 3px;
+	text-align: center;
+	/* display: table-cell; */
+	height: 18px;
+	vertical-align: middle;
+}
+td.freebim-item,
+.jsForm li {
+	clear: both;
+	display: block;
+	white-space: nowrap;
+	list-style: none;
+}
+.jsForm li.freebim-item {
+	width: 316px;
+}
+
+#freebim_tree .freebim-item {
+	float: left;
+}
+.freebim-item.BigBangNode, .freebim-item.BigBangNode.info-only:hover { background-color: black; color: yellow; }
+.freebim-item.Component, .freebim-item.Component.info-only:hover { background-color: rgba(255, 211, 211, 0.5); }
+.freebim-item.Company, .freebim-item.Company.info-only:hover { background-color: rgba(244, 211, 255, 0.5); }
+.freebim-item.Material, .freebim-item.Material.info-only:hover { background-color: rgba(255, 229, 211, 0.5); }
+.freebim-item.Document, .freebim-item.Document.info-only:hover { background-color: rgba(255, 246, 211, 0.5); }
+.freebim-item.Measure, .freebim-item.Measure.info-only:hover { background-color: rgba(246, 255, 211, 0.5); }
+.freebim-item.Contributor, .freebim-item.Contributor.info-only:hover { background-color: rgba(229, 255, 211, 0.5); }
+.freebim-item.Library, .freebim-item.Library.info-only:hover { background-color: rgba(211, 255, 211, 0.5); }
+.freebim-item.ValueList, .freebim-item.ValueList.info-only:hover { background-color: rgba(211, 255, 229, 0.5); }
+.freebim-item.ValueListEntry, .freebim-item.ValueListEntry.info-only:hover { background-color: rgba(211, 255, 246, 0.5); }
+.freebim-item.Phase, .freebim-item.Phase.info-only:hover { background-color: rgba(211, 246, 255, 0.5); }
+.freebim-item.DataType, .freebim-item.DataType.info-only:hover { background-color: rgba(211, 229, 255, 0.5); }
+.freebim-item.Discipline, .freebim-item.Discipline.info-only:hover { background-color: rgba(211, 211, 255, 0.5); }
+.freebim-item.Parameter, .freebim-item.Parameter.info-only:hover { background-color: rgba(229, 211, 255, 0.5); }
+.freebim-item.FreebimUser, .freebim-item.FreebimUser.info-only:hover { background-color: rgba(246, 211, 255, 0.5); }
+.freebim-item.Unit, .freebim-item.Unit.info-only:hover { background-color: rgba(255, 211, 246, 0.5); }
+
+/* .Next { background-color: rgba(255, 211, 229, 0.5); } */
+.freebim-item.Component:hover { background-color: rgba(255, 211, 211, 1.0); }
+.freebim-item.Company:hover { background-color: rgba(244, 211, 255, 1.0); }
+.freebim-item.Material:hover { background-color: rgba(255, 229, 211, 1.0); }
+.freebim-item.Document:hover { background-color: rgba(255, 246, 211, 1.0); }
+.freebim-item.Measure:hover { background-color: rgba(246, 255, 211, 1.0); }
+.freebim-item.Contributor:hover { background-color: rgba(229, 255, 211, 1.0); }
+.freebim-item.Library:hover { background-color: rgba(211, 255, 211, 1.0); }
+.freebim-item.ValueList:hover { background-color: rgba(211, 255, 229, 1.0); }
+.freebim-item.ValueListEntry:hover { background-color: rgba(211, 255, 246, 1.0); }
+.freebim-item.Phase:hover { background-color: rgba(211, 246, 255, 1.0); }
+.freebim-item.DataType:hover { background-color: rgba(211, 229, 255, 1.0); }
+.freebim-item.Discipline:hover { background-color: rgba(211, 211, 255, 1.0); }
+.freebim-item.Parameter:hover { background-color: rgba(229, 211, 255, 1.0); }
+.freebim-item.FreebimUser:hover { background-color: rgba(246, 211, 255, 1.0); }
+.freebim-item.Unit:hover { background-color: rgba(255, 211, 246, 1.0); }
+/* .freebim-item.Next:hover { background-color: rgba(255, 211, 229, 1.0); } */
+/* .Component::before {
+	content: "⚑ ";
+}
+.Material::before {
+	content: "⚐ ";
+} */
+
+.freebim-marked {
+	/* text-decoration : underline;  */
+}
+.freebim-marked::before {
+	content: "★ ";
+	float: left;
+	margin: 0px 2px;
+}
+/* .freebim-marked::after {
+	content: " ★";
+}
+ */
+ .GUID::after {
+	content: "⌥";
+	float: right;
+	margin: 0px 2px;
+}
+
+.jsForm-field ul {
+	list-style-type : none;
+	margin: 0;
+	padding : 0;
+}
+ul.ui-sortable li.freebim-item::before {
+	content: "↕ ";
+	float: left;
+  	margin: 0 6px 0 0px;
+}
+li.freebim-item.ui-draggable::before {
+	content: "« ";
+	float: left;
+  	margin: 0 6px 0 0px;
+}
+.ui-tabs .ui-tabs-panel {
+	padding: 0;
+}
+.freebim-trash, .freebim-button {
+	width : 32px;
+	height : 32px;
+	float : left;
+	margin : 2px;
+}
+.freebim-trash {
+	background-image : url("/resources/trash_empty_closed2.png");
+}
+.ui-tooltip {
+	max-width : 100%;
+}
+.freebim-item.show-deleted span,
+.freebim-relation.show-deleted span {
+	color: lightgray;
+	text-decoration: line-through;
+}
+sub .freebim-item.show-deleted span,
+sub .freebim-relation.show-deleted span {
+	color: lightgray;
+	text-decoration: line-through;
+}
+.freebim-item.show-deleted sub span,
+.freebim-relation.show-deleted sub span {
+	text-decoration: none;
+	color: inherit;
+}
+sub.freebim-item.show-deleted span {
+	color: lightgray;
+	text-decoration: line-through;
+}
+.freebim-item.show-unused,
+.freebim-relation.show-unused {
+	color: lightgray;
+}
+td .hide-deleted, td .freebim-item.hide-deleted, li.hide-deleted, li.freebim-item.hide-deleted, div.hide-deleted, .hide-deleted {
+	display: none;
+}
+td .hide-unused, td .freebim-item.hide-unused, li.hide-unused, li.freebim-item.hide-unused, div.hide-unused, .hide-unused {
+	display: none;
+}
+td .hide-abstract, td .freebim-item.hide-abstract, li.hide-abstract, li.freebim-item.hide-abstract, .hide-abstract {
+	display: none;
+}
+.freebim-item.info-only {
+	cursor: default;
+}
+.freebim-item.info-only:hover {
+	border : outset 1px lightgray;
+}
+.state-undefined { color: black; }
+.state-rejected { color: red; }
+.state-checked { color: green; }
+.state-released { color: orange; }
+.state-imported { color: magenta; }
+span.show-deleted,
+.ui-tooltip div.show-deleted, .show-deleted a {
+	color: red;
+	text-decoration: line-through;
+}
+span.show-unused,
+.ui-tooltip div.show-unused, .show-unused a {
+	color: lightgray;
+}
+.drop-hover {
+	border : solid 2px green;
+	background-color : rgba(221, 255, 222, 1);
+}
+sub.freebim-nodeId, sub.freebim-freebimId, sub.freebim-bsdd, sub.freebim-library, sub.freebim-pset {
+	font-size: 0.7em;
+	font-variant: normal;
+	font-style: normal;
+	text-decoration: none;
+}
+sub.freebim-nodeId {
+	color: magenta;
+}
+sub.freebim-freebimId {
+	color: rgb(206, 133, 0);
+}
+sub.freebim-bsdd {
+	color: blue;
+}
+sub.freebim-pset {
+	color: black;
+    background-color: white;
+}
+sub.freebim-library {
+	color: darkmagenta;
+}
+.app-info {
+	clear: both;
+	padding:	30px;
+}
+.app-info, .app-info a {
+	font-size: 10px;
+	color: lightgray;
+	text-decoration: none;
+}
+.equalSign {
+	float: left;
+	margin: 3px;
+}
+ul.ui-menu {
+	z-index: 9999;
+}
+li.searchresult-path {
+	list-style-type: none;
+	white-space: nowrap;
+	font-size: 0.75em;
+}
+.GUID input, .freebim-freebimId input, .freebim-nodeId input {
+	font-family: monospace;
+}
+span.ui-icon.ifc-logo {
+	background-image: url("/resources/ifc-logo.png");
+	background-size: 100%;
+	background-repeat: no-repeat;
+}
+.freebim-item.bsdd::after {
+	content: " ⌘";
+	float: right;
+	margin: 1px 2px 0 2px;
+}
+input[type='text'].freebim-value {
+	width: 200px;
+}
+select.freebim-value {
+	width: 220px;
+}
+.select-phase, .selected-phase {
+	 margin: 5px 5px 5px 0;
+}
+.selected-phase {
+	display: inline-block;
+}
+.selected-phase.info-only.freebim-item.Phase {
+  color: black;
+}
+.pl-measure {
+	clear: both;
+}
+.pl-div {
+	clear: both;
+	margin: 5px 0px 15px 25px;
+	border-left: solid 1px lightgray;
+	border-bottom: solid 1px lightgray;
+	padding: 0 6px 6px 6px;
+}
+.pl-component-toggle, .pl-part-toggle, .pl-material-toggle {
+	float: left;
+	border: solid 1px lightgray;
+	cursor: pointer;
+	width: 14px;
+	height: 14px;
+	text-align: center;
+	vertical-align: middle;
+	margin: 0px 5px 5px 0px;
+}
+.pl-component-toggle:hover, .pl-part-toggle:hover, .pl-material-toggle:hover {
+	background-color: lightgray;
+	border: solid 1px black;
+}
+.freebim-selected {
+	font-weight: bold;
+}
+.freebim-selected::before {
+	content: "✓ ";
+	float: left;
+	margin: 0px 2px;
+}
+.freebim-marked.freebim-selected::before {
+	content: "✓ ★ ";
+	float: left;
+	margin: 0px 2px;
+}
+
+#status {
+	text-align: right;
+	overflow: hidden;
+}
+.ui-menu .ui-menu-item {
+	white-space: nowrap;
+}
+.ui-menu kbd {
+    float: right;
+    font-size: 0.8em;
+    margin: 2px 0 0 20px;
+}
+.child .freebim-item.ValueListEntry {
+	clear: both;
+	margin-left: 30px;
+}
+.child {
+	margin-left: 20px;
+	clear: both;
+}
+.freebim-code {
+	float: left;
+	margin: 2px;
+}
+#contributor-responsibility input {
+	float: left;
+	clear: both;
+}
+#contributor-responsibility li {
+	list-style-type: none;
+}
+.filter-label, .filter-inverse, .filter-text, .filter-marked, .filter-library, .filter-bsdd, .filter-activity, .filter-material {
+	float: left;
+	line-height: 25px;
+	margin: 2px 10px 2px 0;
+}
+input.freebim-value {
+	/* width: 11px; */
+	margin: 0 2px 0 5px;
+}
+select.freebim-value {
+	margin: 0 2px 0 5px;
+}
+.invalid {
+	border: solid 1px red;
+	color: red;
+}
+div#bsdd {
+	clear: both;
+}
+input[type="radio"] {
+	width: 11px;
+}
+#freebim_problems_acc {
+	height: 100%;
+}
+#freebim-progress-msg li {
+	list-style-type: none;
+}
+#lang_select {
+	float: right;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+#freebim_tree div.jsTable-fthead {
+	position: relative;
+	top: 0px;
+}
+#freebim_tree div.jsTable-data {
+	position: relative;
+	top: -20px;
+}
+.freebim-path-rel {
+	margin: 0 2px 0 2px;
+}
+.freebim-item.path, .freebim-path-rel {
+	float: left;
+	height: 12px;
+}
+.problem-by-library {
+	clear: both;
+	padding: 5px 0 16px 0;
+}
+.problem-by-library .pair,
+#freebim_problems_multiple_parameter_assignment div.pair {
+	clear: both;
+	padding: 1px 0 1px 0;
+}
+.imprint-content {
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+}
+.vlcomp {
+	margin: 10px 0 0 16px;
+}
+.vlcomp li input {
+	float: left;
+}
+.vlcomp li {
+	clear: both;
+	list-style-type: none;
+}
+sub.freebim-item {
+  height: 9px;
+  font-size: 7px;
+  margin: 5px 0 0 0;
+  padding: 0px 2px 0 2px;
+/*  float: right;*/ 
+}
+.rel-right span, 
+.rel-right sub, 
+.rel-left span, 
+.rel-left sub,
+.jsForm li span,
+.freebim-item span,
+.freebim-item sub
+{
+	float: left;
+}
+sub {
+  margin: 5px 0 0 1px;
+}
+
+.freebim-item span.bsdd-fetched-count {
+	float: right;
+}
+div.ui-tooltip-content li {
+	list-style: none;
+	float: left;
+	margin: 1px;
+}
+pre sub {
+	display: none;
+}
+.app-info a {
+  color: black;
+  font-size: initial;
+}
+div.freebim-MessageDlg div.msg-content {
+	max-width: 800px;
+	max-height: 600px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+div.freebim-MessageDlg div.icon {
+	background-repeat: no-repeat;
+	width: 64px;
+    height: 64px;
+    background-size: contain;
+    float: left;
+    margin: 5px 20px 0px 0px;
+}
+div.freebim-MessageDlg div.icon.happy {
+	background-image: url("/resources/Face-smile.svg");
+}
+div.freebim-MessageDlg div.icon.info {
+	background-image: url("/resources/Information.svg");
+}
+div.freebim-MessageDlg div.icon.warning {
+	background-image: url("/resources/Warning_icon.svg");
+}
+div.freebim-MessageDlg p.message { font-size: larger; }
+div.freebim-MessageDlg p.message.happy { color: darkgreen; }
+div.freebim-MessageDlg p.message.info { color: darkblue; }
+div.freebim-MessageDlg p.message.warning { color: red; }
