@@ -47,7 +47,7 @@ $ git clone https://github.com/asi-propertyserver/source.git
 ```
 $ cd freebim-webapp/src/main/resources
 $ ls
-application.properties	freebim.properties	log4j.properties	version.properties
+application.properties	freebim.properties	log4j.properties
 ```
 
 In the `freebim.properties` -file you will find the **admin**, **neo4j** and **backup** configuration.  
