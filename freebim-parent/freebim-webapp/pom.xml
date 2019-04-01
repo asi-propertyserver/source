@@ -11,7 +11,7 @@
 		<groupId>at.freebim</groupId>
 		<artifactId>db</artifactId>
 		<version>1.12.12</version>
-		<relativePath>freebim-parent/pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<properties>
