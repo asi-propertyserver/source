@@ -36,6 +36,13 @@ apache
 
 ## Setting up the project
 
+Create a directory for the project, we'll use `<BASEDIR>` for this directory in this document.
+
+```
+$ mkdir <BASEDIR>
+$ cd <BASEDIR>
+```
+
 GIT-Clone the project:
 
 ```
@@ -45,7 +52,7 @@ $ git clone https://github.com/asi-propertyserver/source.git
 ### Adjust the properties
 
 ```
-$ cd freebim-webapp/src/main/resources
+$ cd source/freebim-parent/freebim-webapp/src/main/resources
 $ ls
 application.properties	freebim.properties	log4j.properties
 ```
@@ -62,7 +69,7 @@ Create a file `asi-propertyserver.log` in the `/var/log/` directory or adjust th
 `cd` into the `freebim-parent` project to build the application.
 
 ```
-$ cd freebim-parent/
+$ cd <BASEDIR>/source/freebim-parent/
 $ mvn clean -Prelease javadoc:javadoc install
 ```
 
