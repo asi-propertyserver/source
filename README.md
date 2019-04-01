@@ -69,7 +69,7 @@ Create a file `asi-propertyserver.log` in the `/var/log/` directory or adjust th
 `cd` into the `freebim-parent` project to build the application.
 
 ```
-$ cd <BASEDIR>/source/freebim-parent/
+$ cd <BASEDIR>/source/freebim-parent
 $ mvn clean -Prelease javadoc:javadoc install
 ```
 
