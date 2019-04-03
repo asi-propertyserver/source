@@ -76,7 +76,7 @@ $ mvn clean -Prelease javadoc:javadoc install
 Maven will automatically run all the Unit-Tests of the project. Execution of Unit-Tests could be disabled by passing an additional argument to Maven:
 
 ```
-$ mvn clean -Prelease javadoc:javadoc -Dmaven.test.skip=true
+$ mvn clean -Prelease javadoc:javadoc install -Dmaven.test.skip=true
 ```
 
 Maven will build the sub-projects and create the final `ROOT.war` file in the `target` directory of the `freebim-webapp` project.
