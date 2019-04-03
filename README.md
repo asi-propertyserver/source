@@ -32,6 +32,7 @@ java 8
 maven
 tomcat
 apache
+internet connection (for build process)
 ```
 
 ## Setting up the project
