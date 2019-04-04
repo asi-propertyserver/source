@@ -61,6 +61,12 @@ application.properties	freebim.properties	log4j.properties
 In the `freebim.properties` -file you will find the **admin**, **neo4j** and **backup** configuration.  
 You should **set a new password for the `admin` user** at least. 
 
+### Javascript minifier
+
+A C-program is used to minify the javascript files. Since it was compiled under Mac OS it may be possible that it does not work
+on your machine. Just check the output when building. It says something like, there is a format error in the **jsmin.exe**-file.
+When you encounter this problem just use **gcc** to compile **source/freebim-parent/freebim-webapp/jsmin.c** and replace the **jsmin.exe** file. To make sure everything works on your first run, you can do this also beforehand. 
+
 ### Logging
 
 Create a file `asi-propertyserver.log` in the `/var/log/` directory or adjust the logging configuration in the `log4j.properties` - file. 
