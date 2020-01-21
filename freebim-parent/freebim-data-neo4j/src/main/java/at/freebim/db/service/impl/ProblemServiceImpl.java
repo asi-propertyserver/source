@@ -1,16 +1,16 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
@@ -21,11 +21,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.neo4j.ogm.session.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.neo4j.conversion.Result;
-import org.springframework.data.neo4j.support.Neo4jTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,16 +36,15 @@ import at.freebim.db.service.DateService;
 import at.freebim.db.service.ProblemService;
 
 /**
- * The service that handles problems with nodes ({@link Measure}, {@link Parameter}, {@link Phase}).
- * This service implements {@link ProblemService}.
- * 
+ * The service that handles problems with nodes ({@link Measure},
+ * {@link Parameter}, {@link Phase}). This service implements
+ * {@link ProblemService}.
+ *
+ * @author rainer.breuss@uibk.ac.at
  * @see at.freebim.db.domain.Measure
  * @see at.freebim.db.domain.Parameter
  * @see at.freebim.db.domain.Phase
  * @see at.freebim.db.service.ProblemService
- * 
- * @author rainer.breuss@uibk.ac.at
- *
  */
 @Service
 public class ProblemServiceImpl implements ProblemService {
@@ -57,10 +55,12 @@ public class ProblemServiceImpl implements ProblemService {
 	private static final Logger logger = LoggerFactory.getLogger(ProblemServiceImpl.class);
 
 	/**
-	 * Mediator class for the graph related services of neo4j.
+	 * A {@link Session} serves as the main point of integration for the Neo4j OGM.
+	 * All the publicly-available capabilities of the framework are defined by this
+	 * interface
 	 */
 	@Autowired
-	private Neo4jTemplate template;
+	private Session template;
 
 	/**
 	 * The service that handles dates.
@@ -68,55 +68,61 @@ public class ProblemServiceImpl implements ProblemService {
 	@Autowired
 	private DateService dateService;
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.ProblemService#getMissingMeasure()
 	 */
 	@Override
 	@Transactional
 	public ArrayList<Long> getMissingMeasure() {
-		
+
 		final String query = "MATCH (n:Parameter) WHERE NOT (n)-[:HAS_MEASURE]->(:Measure) RETURN ID(n) AS id";
-		final Result<Map<String, Object>> result = this.template.query(query, null);
+		final Iterable<Map<String, Object>> result = this.template.query(query, new HashMap<>(), true);
 		final Iterator<Map<String, Object>> iter = result.iterator();
-		ArrayList<Long> res = new ArrayList<Long>();
+		ArrayList<Long> res = new ArrayList<>();
 		while (iter.hasNext()) {
 			final Map<String, Object> map = iter.next();
 			Long id = (Long) map.get("id");
-			res .add(id);
-		}			
-		
+			res.add(id);
+		}
+
 		logger.info("getMissingMeasure count = [{}]", res.size());
 		return res;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.ProblemService#getEmptyMeasure()
 	 */
 	@Override
 	@Transactional
 	public ArrayList<Long> getEmptyMeasure() {
-		
+
 		final String query = "MATCH (m:Measure) WHERE NOT (m)-[:HAS_VALUE]->(:ValueList) AND NOT (m)-[:OF_DATATYPE]->(:DataType) RETURN ID(m) AS id";
-		final Result<Map<String, Object>> result = this.template.query(query, null);
+		final Iterable<Map<String, Object>> result = this.template.query(query, new HashMap<>(), true);
 		final Iterator<Map<String, Object>> iter = result.iterator();
-		ArrayList<Long> res = new ArrayList<Long>();
+		ArrayList<Long> res = new ArrayList<>();
 		while (iter.hasNext()) {
 			final Map<String, Object> map = iter.next();
 			Long id = (Long) map.get("id");
-			res .add(id);
-		}			
-		
+			res.add(id);
+		}
+
 		logger.info("getEmptyMeasure count = [{}]", res.size());
 		return res;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.ProblemService#getComponentWithoutParameters()
 	 */
 	@Override
 	@Transactional
 	public ArrayList<Long> getComponentWithoutParameters() {
-		
+
 		final StringBuilder b = new StringBuilder();
 		b.append("MATCH path = shortestPath ((bbn:BigBangNode)-[:");
 		b.append(RelationTypeEnum.PARENT_OF);
@@ -125,21 +131,23 @@ public class ProblemServiceImpl implements ProblemService {
 		b.append("]->(:Parameter)) AND NOT (c)-[:");
 		b.append(RelationTypeEnum.PARENT_OF);
 		b.append("]->() RETURN ID(c) AS id");
-		
-		final Result<Map<String, Object>> result = this.template.query(b.toString(), null);
+
+		final Iterable<Map<String, Object>> result = this.template.query(b.toString(), new HashMap<>(), true);
 		final Iterator<Map<String, Object>> iter = result.iterator();
-		ArrayList<Long> res = new ArrayList<Long>();
+		ArrayList<Long> res = new ArrayList<>();
 		while (iter.hasNext()) {
 			final Map<String, Object> map = iter.next();
 			Long id = (Long) map.get("id");
-			res .add(id);
-		}			
-		
+			res.add(id);
+		}
+
 		logger.info("getComponentWithoutParameters count = [{}]", res.size());
 		return res;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.ProblemService#deletedPhase()
 	 */
 	@Override
@@ -148,43 +156,46 @@ public class ProblemServiceImpl implements ProblemService {
 
 		final StringBuilder b = new StringBuilder();
 		final Long now = this.dateService.getMillis();
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put( "now", now );
-		
+		Map<String, Object> params = new HashMap<>();
+		params.put("now", now);
+
 		b.append("MATCH (ph:Phase) ");
 		b.append(" WHERE ph.validFrom > {now} OR (ph.validTo IS NOT NULL AND ph.validTo < {now})");
 		b.append(" WITH ph AS ph MATCH (:Component)-[rel:HAS_PARAMETER]->(p:Parameter) WHERE ph.uuid = rel.phaseUuid");
 		b.append(" RETURN distinct ID(p) AS id");
-		
+
 		final String query = b.toString();
-		final Result<Map<String, Object>> result = this.template.query(query, params);
+		final Iterable<Map<String, Object>> result = this.template.query(query, params, true);
 		final Iterator<Map<String, Object>> iter = result.iterator();
-		ArrayList<Long> res = new ArrayList<Long>();
+		ArrayList<Long> res = new ArrayList<>();
 		while (iter.hasNext()) {
 			final Map<String, Object> map = iter.next();
 			Long id = (Long) map.get("id");
-			res .add(id);
-		}			
-		
+			res.add(id);
+		}
+
 		logger.info("deletedPhase count = [{}]", res.size());
 		return res;
 	}
-	
-	/* (non-Javadoc)
-	 * @see at.freebim.db.service.ProblemService#specializableParameters(java.lang.Long)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.service.ProblemService#specializableParameters(java.lang.Long)
 	 */
 	@Override
 	@Transactional
 	public ArrayList<IdPair> specializableParameters(Long libid) {
-		
+
 		logger.info("specializableParameters libid=[{}] ...", libid);
-		
-		ArrayList<IdPair> res = new ArrayList<IdPair>();
+
+		ArrayList<IdPair> res = new ArrayList<>();
 		final Long now = this.dateService.getMillis();
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 
 		StringBuilder b = new StringBuilder();
-		
+
 		b.append("START lib=node({libid}) MATCH (comp:Component)-[:REFERENCES]->(lib)");
 
 		b.append("WITH comp AS a MATCH (a)-[:PARENT_OF]->(b)-[:HAS_PARAMETER]->(p)");
@@ -204,20 +215,19 @@ public class ProblemServiceImpl implements ProblemService {
 		b.append(" WITH a AS a, b AS b, p AS p, d AS d, cnt AS cnt");
 		b.append(" WHERE d IS NULL OR NOT (a)-[:PARENT_OF]->(d)");
 		b.append(" RETURN DISTINCT ID(b) AS id1, b.name AS n1, ID(p) AS id2, p.name AS n2");
-		
-		params.put( "now", now );
-		params.put( "libid", libid );
 
+		params.put("now", now);
+		params.put("libid", libid);
 
 		try {
-			Result<Map<String, Object>> r = this.template.query(b.toString(), params);
+			Iterable<Map<String, Object>> r = this.template.query(b.toString(), params, true);
 			Iterator<Map<String, Object>> i = r.iterator();
 			while (i.hasNext()) {
 				final Map<String, Object> map = i.next();
 				Long id1 = (Long) map.get("id1");
-				String  n1 = (String) map.get("n1");
+				String n1 = (String) map.get("n1");
 				Long id2 = (Long) map.get("id2");
-				String  n2 = (String) map.get("n2");
+				String n2 = (String) map.get("n2");
 				IdPair pair = new IdPair();
 				pair.a = id1;
 				pair.an = n1;
@@ -233,20 +243,22 @@ public class ProblemServiceImpl implements ProblemService {
 		logger.info("specializableParameters libid=[{}] count = [{}]", libid, res.size());
 		return res;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.ProblemService#multipleParameterAssignment()
 	 */
 	@Override
 	@Transactional
 	public ArrayList<IdTriple> multipleParameterAssignment() {
-		
+
 		logger.info("multipleParameterAssignment  ...");
-		
-		ArrayList<IdTriple> res = new ArrayList<IdTriple>();
+
+		ArrayList<IdTriple> res = new ArrayList<>();
 		final Long now = this.dateService.getMillis();
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put( "now", now );
+		Map<String, Object> params = new HashMap<>();
+		params.put("now", now);
 
 		StringBuilder b = new StringBuilder();
 
@@ -260,9 +272,9 @@ public class ProblemServiceImpl implements ProblemService {
 		b.append("  ID(a) AS ida, a.name AS aname");
 		b.append(", ID(b) AS idb, b.name AS bname");
 		b.append(", ID(p) AS idp, p.name AS pname");
-		
+
 		try {
-			Result<Map<String, Object>> r = this.template.query(b.toString(), params);
+			Iterable<Map<String, Object>> r = this.template.query(b.toString(), params, true);
 			Iterator<Map<String, Object>> i = r.iterator();
 			while (i.hasNext()) {
 				final Map<String, Object> map = i.next();

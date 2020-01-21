@@ -31,7 +31,7 @@ public class SessionObject {
 	 * A thread-safe queue that holds {@link NodeInfo}.
 	 */
 	private ConcurrentLinkedQueue<NodeInfo> infos;
-	
+
 	/**
 	 * Add a element to the queue.
 	 * 
@@ -45,8 +45,8 @@ public class SessionObject {
 	}
 
 	/**
-	 * Poll all elements from the {@link ConcurrentLinkedQueue} and return them
-	 * as {@link ArrayList}.
+	 * Poll all elements from the {@link ConcurrentLinkedQueue} and return them as
+	 * {@link ArrayList}.
 	 * 
 	 * @return the infos as {@link ArrayList}
 	 */

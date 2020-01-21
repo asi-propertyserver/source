@@ -16,11 +16,13 @@
  *****************************************************************************/
 package at.freebim.db.webservice.dto.rel;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import at.freebim.db.webservice.DtoHelper;
 
 /**
- * DTO for a relation with a floating point 'quality' field.
- * The class extends {@link Rel}.
+ * DTO for a relation with a floating point 'quality' field. The class extends
+ * {@link Rel}.
  * 
  * @see at.freebim.db.webservice.dto.rel.Rel
  *
@@ -37,9 +39,10 @@ public class QualifiedRel extends Rel {
 	/**
 	 * Constructs a new instance.
 	 * 
-	 * @param uuid The freeBIM-ID of the related object.
-	 * @param q The 'quality' field.
-	 * @param info The optional <code>info</code> field of the original relation object.
+	 * @param uuid      The freeBIM-ID of the related object.
+	 * @param q         The 'quality' field.
+	 * @param info      The optional <code>info</code> field of the original
+	 *                  relation object.
 	 * @param dtoHelper The helper.
 	 */
 	public QualifiedRel(String uuid, double q, String info, DtoHelper dtoHelper) {
@@ -52,6 +55,7 @@ public class QualifiedRel extends Rel {
 	 * 
 	 * @return the q
 	 */
+	@XmlElement
 	public double getQ() {
 		return q;
 	}

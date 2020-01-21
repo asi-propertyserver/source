@@ -63,40 +63,45 @@ import at.freebim.db.webservice.dto.rel.ValueListRel;
  *
  */
 @Service("freebimWebserviceEndpoint")
-@WebService(name="FreebimWebservice", targetNamespace=FreebimWebserviceEndpoint.TNS)
+@WebService(name = "FreebimWebservice", targetNamespace = FreebimWebserviceEndpoint.TNS)
 public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
-	
+
 	/**
 	 * The logger.
 	 */
 	private static Logger logger = LoggerFactory.getLogger(FreebimWebserviceEndpoint.class);
 
 	/**
-	 * The target name space.
-	 * <code>http://ws.freebim.at/</code>
+	 * The target name space. <code>http://ws.freebim.at/</code>
 	 */
 	public static final String TNS = "http://ws.freebim.at/";
 
 	@Autowired
 	private FreebimWebservice freebimWebservice;
-	
+
 	/**
-	 * Get all valid {@link Unit} instances from database.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get all valid {@link Unit} instances from database. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getAllUnits xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 * </gs:getAllUnits>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @return All valid {@link Unit} objects.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getAllUnitsResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<Unit>
@@ -121,35 +126,41 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<name>Dezibel</name>
 	 * 		<nameEn>decibel</nameEn>
 	 * 	</Unit>
- 	 * ...
-	 * }</pre>
+	 * ...
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="Unit")
-	public List<Unit> getAllUnits(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password) {
+	@WebResult(name = "Unit")
+	public List<Unit> getAllUnits(@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password) {
 		logger.info("getUnits ...");
 		return this.freebimWebservice.getAllUnits(username, password);
 	}
 
 	/**
-	 * Get all valid {@link Phase} instances from database.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get all valid {@link Phase} instances from database. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getAllPhases xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 * </gs:getAllPhases>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @return All valid {@link Phase} objects.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getAllPhasesResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<Phase>
@@ -169,34 +180,40 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<nameEn>Strategic Definition</nameEn>
 	 * 	</Phase>
 	 * ...
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="Phase")
-	public List<Phase> getAllPhases(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password) {
+	@WebResult(name = "Phase")
+	public List<Phase> getAllPhases(@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password) {
 		logger.info("getPhases ...");
 		return this.freebimWebservice.getAllPhases(username, password);
 	}
 
 	/**
-	 * Get all valid {@link Component} instances from database.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get all valid {@link Component} instances from database. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getAllComponents xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 * </gs:getAllComponents>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @return All valid {@link Component} objects.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getAllComponentsResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<Component>
@@ -222,31 +239,37 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="Component")
+	@WebResult(name = "Component")
 	public List<Component> getAllComponents(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password) {
 		logger.info("getComponents ...");
 		return this.freebimWebservice.getAllComponents(username, password);
 	}
-	
+
 	/**
-	 * Get all valid {@link Parameter} instances from database.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get all valid {@link Parameter} instances from database. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getAllParameters xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 * </gs:getAllParameters>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @return All valid {@link Parameter} objects.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getAllParametersResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<Parameter>
@@ -279,34 +302,41 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<ptype>TYPE</ptype>
 	 * 	</Parameter>
 	 * ...
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="Parameter")
+	@WebResult(name = "Parameter")
 	public List<Parameter> getAllParameters(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password) {
 		logger.info("getAllParameters ...");
 		return this.freebimWebservice.getAllParameters(username, password);
 	}
-	
+
 	/**
-	 * Get all valid {@link Discipline} instances from database.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get all valid {@link Discipline} instances from database. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getAllDisciplines xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 * </gs:getAllDisciplines>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @return All valid {@link Discipline} objects.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getAllDisciplinesResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<Discipline>
@@ -329,31 +359,37 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="Discipline")
+	@WebResult(name = "Discipline")
 	public List<Discipline> getAllDisciplines(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password) {
 		logger.info("getDisciplines ...");
 		return this.freebimWebservice.getAllDisciplines(username, password);
 	}
-	
+
 	/**
-	 * Get all valid {@link DataType} instances from database.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get all valid {@link DataType} instances from database. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getAllDataTypes xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 * </gs:getAllDataTypes>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @return All valid {@link DataType} objects.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getAllDataTypesResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<DataType>
@@ -373,31 +409,37 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="DataType")
+	@WebResult(name = "DataType")
 	public List<DataType> getAllDataTypes(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password) {
 		logger.info("getDataTypes ...");
 		return this.freebimWebservice.getAllDataTypes(username, password);
 	}
 
 	/**
-	 * Get all valid {@link ParameterSet} instances from database.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get all valid {@link ParameterSet} instances from database. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getAllParameterSets xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 * </gs:getAllParameterSets>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @return All valid {@link ParameterSet} objects.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getAllParameterSetsResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<ParameterSet>
@@ -418,36 +460,43 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<type>PROPERTYSET</type>
 	 * 	</ParameterSet>
 	 * 	...
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="ParameterSet")
+	@WebResult(name = "ParameterSet")
 	public List<ParameterSet> getAllParameterSets(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password) {
 		logger.info("getAllParameterSets ...");
 		return this.freebimWebservice.getAllParameterSets(username, password);
 	}
 
 	/**
-	 * Get a specified {@link Component} from database.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get a specified {@link Component} from database. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getComponent xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 *     <gs:freebimId>69d359c3-bd1a-4484-9012-9f96f75e5a22</gs:freebimId>
 	 * </gs:getComponent>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @param freebimId Unique freeBIM id (guid) of Component to get.
 	 * @return The specified {@link Component}.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getComponentResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<Component>
@@ -460,22 +509,25 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<name>Gebäude-Element</name>
 	 * 	</Component>
 	 * </ns2:getComponentResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="Component")
-	public Component getComponent(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId) {
+	@WebResult(name = "Component")
+	public Component getComponent(@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId) {
 		logger.info("getComponent freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getComponent(username, password, freebimId);
 	}
-	
+
 	/**
-	 * Get a specified {@link Parameter} from database.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get a specified {@link Parameter} from database. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getParameter xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
@@ -483,18 +535,21 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *     <gs:freebimId>383f5bdd-8224-4bcc-b59f-0bd85767c781</gs:freebimId>
 	 *     <gs:fetch>true</gs:fetch>
 	 * </gs:getParameter>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @param freebimId Unique freeBIM id (guid) of Parameter to get.
-	 * @param fetch
-	 *            If set to <code>true</code>, related Nodes will be
-	 *            fetched too. If set to <code>false</code> only relations will be returned.
-	 * @return  The specified {@link Parameter}.<br>
-	 * <br>
-	 * Example response if <code>fetch</code> is set to <code>false</code>:
-	 * <pre>{@code
+	 * @param fetch     If set to <code>true</code>, related Nodes will be fetched
+	 *                  too. If set to <code>false</code> only relations will be
+	 *                  returned.
+	 * @return The specified {@link Parameter}.<br>
+	 *         <br>
+	 *         Example response if <code>fetch</code> is set to <code>false</code>:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getParameterResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<Parameter>
@@ -521,10 +576,14 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<ptype>TYPE</ptype>
 	 * 	</Parameter>
 	 * </ns2:getParameterResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
+	 * 
 	 * <br>
 	 * Example response if <code>fetch</code> is set to <code>true</code>:
-	 * <pre>{@code
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getParameterResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<Parameter>
@@ -569,23 +628,26 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<ptype>TYPE</ptype>
 	 * 	</Parameter>
 	 * </ns2:getParameterResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="Parameter")
-	public Parameter getParameter(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId,
-			@WebParam(name="fetch", mode=Mode.IN, targetNamespace=TNS) boolean fetch) {
+	@WebResult(name = "Parameter")
+	public Parameter getParameter(@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId,
+			@WebParam(name = "fetch", mode = Mode.IN, targetNamespace = TNS) boolean fetch) {
 		logger.info("getParameter freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getParameter(username, password, freebimId, fetch);
 	}
-	
+
 	/**
-	 * Get a specified <code>ValueList</code> from database.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get a specified <code>ValueList</code> from database. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getValueList xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
@@ -593,20 +655,21 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *     <gs:freebimId>8b7aec5b-3098-4b23-91d5-aa7746bce4f9</gs:freebimId>
 	 *     <gs:fetch>false</gs:fetch>
 	 * </gs:getValueList>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
-	 * @param freebimId
-	 *            Unique freeBIM id (guid) of ValueList to get.
-	 * @param fetch
-	 *            If set to <code>true</code>, related ValueListEntries will be
-	 *            fetched too, the entries have to be loaded with a separate
-	 *            call to {@link #getValuesOf} otherwise.
+	 * @param freebimId Unique freeBIM id (guid) of ValueList to get.
+	 * @param fetch     If set to <code>true</code>, related ValueListEntries will
+	 *                  be fetched too, the entries have to be loaded with a
+	 *                  separate call to {@link #getValuesOf} otherwise.
 	 * @return The specified ValueList.<br>
-	 * <br>
-	 * Example response if <code>fetch</code> is set to <code>false</code>:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response if <code>fetch</code> is set to <code>false</code>:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getValueListResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<ValueList>
@@ -627,10 +690,14 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		...
 	 * 	</ValueList>
 	 * </ns2:getValueListResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
+	 * 
 	 * <br>
 	 * Example response if <code>fetch</code> is set to <code>true</code>:
-	 * <pre>{@code
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getValueListResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<ValueList>
@@ -656,36 +723,42 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<name>Allgemein:Himmelsrichtung</name>
 	 * 	</ValueList>
 	 * </ns2:getValueListResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="ValueList")
-	public ValueList getValueList(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId,
-			@WebParam(name="fetch", mode=Mode.IN, targetNamespace=TNS) boolean fetch) {
+	@WebResult(name = "ValueList")
+	public ValueList getValueList(@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId,
+			@WebParam(name = "fetch", mode = Mode.IN, targetNamespace = TNS) boolean fetch) {
 		logger.info("getValueList freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getValueList(username, password, freebimId, fetch);
 	}
-	
+
 	/**
-	 * Get all {@link Library} instances from database.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get all {@link Library} instances from database. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getAllLibraries xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 * </gs:getAllLibraries>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @return All valid {@link Library} objects.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getAllLibrariesResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<Library>
@@ -705,13 +778,14 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<URL>http://www.freebim.at</URL>
 	 * 	</Library>
 	 * ...
-	 *	}</pre>
+	 *	}
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="Library")
+	@WebResult(name = "Library")
 	public List<Library> getAllLibraries(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password) {
 		logger.info("getAllLibraries ...");
 		List<Library> res = this.freebimWebservice.getAllLibraries(username, password);
 		for (Library lib : res) {
@@ -723,23 +797,31 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 
 	/**
 	 * Get related children of a specified {@link Component} or {@link Library}.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getChildsOf xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 *     <gs:freebimId>87cccb4c-53ae-4df9-8461-78fb01f22f0c</gs:freebimId>
 	 * </gs:getChildsOf>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
-	 * @param freebimId Unique freeBIM-ID (guid) of parent to get related children for.
+	 * @param freebimId Unique freeBIM-ID (guid) of parent to get related children
+	 *                  for.
 	 * @return freeBIM-ID and order of child {@link Component} instances.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getChildsOfResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<ChildRelation>
@@ -751,37 +833,45 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<order>1</order>
 	 * 	</ChildRelation>
 	 * </ns2:getChildsOfResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="ChildRelation")
+	@WebResult(name = "ChildRelation")
 	public List<OrderedRel> getChildsOf(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId) {
 		logger.info("getChildsOf freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getChildsOf(username, password, freebimId);
 	}
 
 	/**
-	 * Get related {@link Parameter}'s of a specified <code>Component</code>.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get related {@link Parameter}'s of a specified <code>Component</code>. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getParameterOf xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>69d359c3-bd1a-4484-9012-9f96f75e5a22</gs:freebimId>
 	 * </gs:getParameterOf>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
-	 * @param freebimId Unique freeBIM-ID (guid) of component to get related {@link Parameter} for.
+	 * @param freebimId Unique freeBIM-ID (guid) of component to get related
+	 *                  {@link Parameter} for.
 	 * @return freeBIM-ID, freeBIM-ID of Phase and order of parameters.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getParameterOfResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<ParameterRelation>
@@ -800,37 +890,46 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<phase>92621f37-8fbc-4979-a1f7-91c048ebb1c2</phase>
 	 * 	</ParameterRelation>
 	 * ...
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="ParameterRelation")
+	@WebResult(name = "ParameterRelation")
 	public List<ParameterRel> getParameterOf(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId) {
 		logger.info("getParameterOf freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getParameterOf(username, password, freebimId);
 	}
 
 	/**
 	 * Get related {@link Parameter}'s of a specified <code>ParameterSet</code>.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getParameterOfPSet xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>257d8eab-6d7d-4382-ae13-a86e76412c4f</gs:freebimId>
 	 * </gs:getParameterOfPSet>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
-	 * @param freebimId Unique freeBIM-ID (guid) of parameter-set to get related {@link Parameter} for.
+	 * @param freebimId Unique freeBIM-ID (guid) of parameter-set to get related
+	 *                  {@link Parameter} for.
 	 * @return freeBIM-ID and order of parameters.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getParameterOfPSetResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<ParameterRelation>
@@ -842,74 +941,90 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<order>0</order>
 	 * 	</ParameterRelation>
 	 * ...
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="ParameterRelation")
+	@WebResult(name = "ParameterRelation")
 	public List<OrderedRel> getParameterOfPSet(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId) {
 		logger.info("getParameterOfPSet freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getParameterOfPSet(username, password, freebimId);
 	}
 
 	/**
-	 * Get related <code>ParameterSet</code>'s of a specified <code>Component</code>.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get related <code>ParameterSet</code>'s of a specified
+	 * <code>Component</code>. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getParameterSetOf xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>d3de6f45-2c74-4e24-9bef-7ba828428714</gs:freebimId>
 	 * </gs:getParameterSetOf>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
-	 * @param freebimId Unique freeBIM-ID (guid) of component to get related <code>ParameterSet</code>'s for.
+	 * @param freebimId Unique freeBIM-ID (guid) of component to get related
+	 *                  <code>ParameterSet</code>'s for.
 	 * @return freeBIM-ID of parameter sets.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getParameterSetOfResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<ParameterSetRelation>
 	 * 		<freebimId>257d8eab-6d7d-4382-ae13-a86e76412c4f</freebimId>
 	 * 	</ParameterSetRelation>
 	 * </ns2:getParameterSetOfResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="ParameterSetRelation")
+	@WebResult(name = "ParameterSetRelation")
 	public List<Rel> getParameterSetOf(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId) {
 		logger.info("getParameterSetOf freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getParameterSetOf(username, password, freebimId);
 	}
 
 	/**
-	 * Get equal objects of a specified element.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get equal objects of a specified element. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getEqualsOf xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 *     <gs:freebimId>69d359c3-bd1a-4484-9012-9f96f75e5a22</gs:freebimId>
 	 * </gs:getEqualsOf>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @param freebimId Unique freeBIM-ID (guid) of object to get equal objects for.
 	 * @return List of freeBIM-ID and equality (from 0. to 1.) of equal objects.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getEqualsOfResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<EqualRelation>
@@ -917,111 +1032,130 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<q>1.0</q>
 	 * 	</EqualRelation>
 	 * </ns2:getEqualsOfResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="EqualRelation")
+	@WebResult(name = "EqualRelation")
 	public List<QualifiedRel> getEqualsOf(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId) {
 		logger.info("getEqualsOf freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getEqualsOf(username, password, freebimId);
 	}
 
 	/**
-	 * Get related parts of a specified <code>Component</code>.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get related parts of a specified <code>Component</code>. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getPartsOf xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>b567ab5b-3ecc-4633-b6ba-8f968dac73a8</gs:freebimId>
 	 * </gs:getPartsOf>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @param freebimId Unique freeBIM-ID (guid) of component to get parts for.
 	 * @return List of freeBIM-ID's of parts.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getPartsOfResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<PartsRelation>
 	 * 		<freebimId>d2d8c44c-df94-4d25-ab51-817f5d53db21</freebimId>
 	 * 	</PartsRelation>
 	 * </ns2:getPartsOfResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="PartsRelation")
-	public List<Rel> getPartsOf(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId) {
+	@WebResult(name = "PartsRelation")
+	public List<Rel> getPartsOf(@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId) {
 		logger.info("getPartsOf freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getPartsOf(username, password, freebimId);
 	}
 
 	/**
-	 * Get related material of a specified <code>Component</code>.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get related material of a specified <code>Component</code>. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getMaterialOf xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 *     <gs:freebimId>f29f7831-d89c-4e14-bff7-b2f0b9c3fa70</gs:freebimId>
 	 * </gs:getMaterialOf>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @param freebimId Unique freeBIM-ID (guid) of component to get materials for.
 	 * @return List of freeBIM-ID's of materials.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getMaterialOfResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<MaterialRelation>
 	 * 		<freebimId>148678c9-25ba-44c4-ac45-d122ccf2312b</freebimId>
 	 * 	</MaterialRelation>
 	 * </ns2:getMaterialOfResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="MaterialRelation")
-	public List<Rel> getMaterialOf(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId) {
+	@WebResult(name = "MaterialRelation")
+	public List<Rel> getMaterialOf(@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId) {
 		logger.info("getMaterialOf freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getMaterialOf(username, password, freebimId);
 	}
 
 	/**
-	 * Get <code>Measure</code>'s for a specified <code>Parameter</code>.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get <code>Measure</code>'s for a specified <code>Parameter</code>. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getMeasuresOf xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>383f5bdd-8224-4bcc-b59f-0bd85767c781</gs:freebimId>
 	 * </gs:getMeasuresOf>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @param freebimId Unique freeBIM-ID (guid) of parameter to get measures for.
 	 * @return List of freeBIM-ID's of measure and order.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getMeasuresOfResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<MeasureRelation>
@@ -1029,22 +1163,26 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<order>0</order>
 	 * 	</MeasureRelation>
 	 * </ns2:getMeasuresOfResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="MeasureRelation")
+	@WebResult(name = "MeasureRelation")
 	public List<OrderedRel> getMeasuresOf(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId) {
 		logger.info("getMeasuresOf freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getMeasuresOf(username, password, freebimId);
 	}
 
 	/**
-	 * Get a specified <code>Measure</code>.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get a specified <code>Measure</code>. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getMeasure xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
@@ -1052,16 +1190,20 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *     <gs:freebimId>a1dee01a-75db-481f-a0ac-0f766b90005b</gs:freebimId>
 	 *     <gs:fetch>false</gs:fetch>
 	 * </gs:getMeasure>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @param freebimId Unique freeBIM-ID (guid) of measure to get.
-	 * @param fetch If set to <code>true</code>, Unit, DataType and ValueList will be fetched too.
+	 * @param fetch     If set to <code>true</code>, Unit, DataType and ValueList
+	 *                  will be fetched too.
 	 * @return The specified Measure.<br>
-	 * <br>
-	 * Example response if <code>fetch</code> is set to <code>false</code>:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response if <code>fetch</code> is set to <code>false</code>:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getMeasureResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<Measure>
@@ -1076,10 +1218,14 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		</unitRelation>
 	 * 	</Measure>
 	 * </ns2:getMeasureResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
+	 * 
 	 * <br>
 	 * Example response if <code>fetch</code> is set to <code>true</code>:
-	 * <pre>{@code
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getMeasureResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<Measure>
@@ -1103,114 +1249,135 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		</unit>
 	 * 	</Measure>
 	 * </ns2:getMeasureResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="Measure")
-	public Measure getMeasure(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId,
-			@WebParam(name="fetch", mode=Mode.IN, targetNamespace=TNS) boolean fetch) {
+	@WebResult(name = "Measure")
+	public Measure getMeasure(@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId,
+			@WebParam(name = "fetch", mode = Mode.IN, targetNamespace = TNS) boolean fetch) {
 		logger.info("getMeasuresOf freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getMeasure(username, password, freebimId, fetch);
 	}
 
 	/**
-	 * Get relation to {@link Unit} of a specified {@link Measure}.
-	 * Returned <code>freeBIM-ID</code> can be passed to {@link #getByFreebimId(String, String, String)}
-	 * or use {@link #getAllUnits(String, String)} to fetch all {@link Unit} instances at once.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get relation to {@link Unit} of a specified {@link Measure}. Returned
+	 * <code>freeBIM-ID</code> can be passed to
+	 * {@link #getByFreebimId(String, String, String)} or use
+	 * {@link #getAllUnits(String, String)} to fetch all {@link Unit} instances at
+	 * once. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getUnitOf xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>a1dee01a-75db-481f-a0ac-0f766b90005b</gs:freebimId>
 	 * </gs:getUnitOf>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @param freebimId Unique freeBIM-ID (guid) of measure to get unit for.
 	 * @return freeBIM-ID of unit.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getUnitOfResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<UnitRelation>
 	 * 		<freebimId>99fa0315-496f-4c33-812c-5b6816c70f28</freebimId>
 	 * 	</UnitRelation>
 	 * </ns2:getUnitOfResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="UnitRelation")
-	public Rel getUnitOf(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId) {
+	@WebResult(name = "UnitRelation")
+	public Rel getUnitOf(@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId) {
 		logger.info("getUnitOf freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getUnitOf(username, password, freebimId);
 	}
 
 	/**
-	 * Get relation to {@link DataType} of a specified {@link Measure}.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get relation to {@link DataType} of a specified {@link Measure}. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getDataTypeOf xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 *     <gs:freebimId>a1dee01a-75db-481f-a0ac-0f766b90005b</gs:freebimId>
 	 * </gs:getDataTypeOf>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
-	 * @param freebimId Unique freeBIM-ID (guid) of measure to get DataType relation for.
+	 * @param freebimId Unique freeBIM-ID (guid) of measure to get DataType relation
+	 *                  for.
 	 * @return freeBIM-ID of DataType.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getDataTypeOfResponse xmlns:ns2="http://ws.freebim.at/">
 	 * <DataTypeRelation>
 	 *     <freebimId>d50b8c9d-ee0b-4dc9-9d4b-729dfeb1fdce</freebimId>
 	 * </DataTypeRelation>
 	 * </ns2:getDataTypeOfResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="DataTypeRelation")
-	public Rel getDataTypeOf(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId) {
+	@WebResult(name = "DataTypeRelation")
+	public Rel getDataTypeOf(@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId) {
 		logger.info("getDataTypeOf freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getDataTypeOf(username, password, freebimId);
 	}
 
 	/**
-	 * Get all {@link ValueList} relations of a specified {@link Measure}.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get all {@link ValueList} relations of a specified {@link Measure}. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getValueListsOf xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>90fb2e54-71b0-48b6-a5d2-d22f09575588</gs:freebimId>
 	 * </gs:getValueListsOf>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @param freebimId Unique freeBIM-ID (guid) of measure to get value list for.
 	 * @return All value list relations.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getValueListsOfResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<ValueListRelation>
@@ -1227,22 +1394,27 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 	</ValueListRelation>
 	 * 	...
 	 * </ns2:getValueListsOfResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="ValueListRelation")
+	@WebResult(name = "ValueListRelation")
 	public List<ValueListRel> getValueListsOf(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId) {
 		logger.info("getValueListOf freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getValueListsOf(username, password, freebimId);
 	}
-	
+
 	/**
-	 * Get {@link ValueList} of a specified {@link Measure} for a specified {@link Component}.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get {@link ValueList} of a specified {@link Measure} for a specified
+	 * {@link Component}. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getValueListOf xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
@@ -1251,19 +1423,22 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *     <gs:component>69d359c3-bd1a-4484-9012-9f96f75e5a22</gs:component>
 	 *     <gs:fetch>false</gs:fetch>
 	 * </gs:getValueListOf>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
-	 * @param measure Unique freeBIM-ID (guid) of measure to get value list for.
+	 * @param measure   Unique freeBIM-ID (guid) of measure to get value list for.
 	 * @param component Unique freeBIM-ID (guid) of component to get value list for.
-	 * @param fetch
-	 *            If set to <code>true</code>, related Nodes will be
-	 *            fetched too. If set to <code>false</code> only relations will be returned.
+	 * @param fetch     If set to <code>true</code>, related Nodes will be fetched
+	 *                  too. If set to <code>false</code> only relations will be
+	 *                  returned.
 	 * @return The value list.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getValueListOfResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<ValueList>
@@ -1284,39 +1459,45 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		...
 	 * 	</ValueList>
 	 * </ns2:getValueListOfResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="ValueList")
-	public ValueList getValueListOf(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String measure, 
-			@WebParam(name="component", mode=Mode.IN, targetNamespace=TNS) String component,
-			@WebParam(name="fetch", mode=Mode.IN, targetNamespace=TNS) boolean fetch) {
+	@WebResult(name = "ValueList")
+	public ValueList getValueListOf(@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String measure,
+			@WebParam(name = "component", mode = Mode.IN, targetNamespace = TNS) String component,
+			@WebParam(name = "fetch", mode = Mode.IN, targetNamespace = TNS) boolean fetch) {
 		logger.info("getValueListOf freebimId=[{}] ...", measure);
 		return this.freebimWebservice.getValueListOf(username, password, measure, component, fetch);
 	}
-	
+
 	/**
-	 * Get {@link ValueListEntry} instances of a specified {@link ValueList}.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get {@link ValueListEntry} instances of a specified {@link ValueList}. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getValuesOf xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>c9a81368-98b8-47c7-a6a4-169d8c87d343</gs:freebimId>
 	 * </gs:getValuesOf>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @param freebimId Unique freeBIM-ID (guid) of value list to get entries for.
 	 * @return List of freeBIM-ID and order of entries.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getValuesOfResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<ValueRelation>
@@ -1328,39 +1509,47 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<order>1</order>
 	 * 	</ValueRelation>
 	 * </ns2:getValuesOfResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="ValueRelation")
+	@WebResult(name = "ValueRelation")
 	public List<OrderedRel> getValuesOf(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId) {
 		logger.info("getValuesOf freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getValuesOf(username, password, freebimId);
 	}
 
-
 	/**
 	 * Get all refIdName's for a specified {@link Library} from database.<br>
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getRefIdNames xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 *     <gs:libraryName>freeBIM</gs:libraryName>
 	 * </gs:getRefIdNames>
-	 * }</pre>
+	 * }
+	 * </pre>
+	 * 
 	 * @see #getLibraryReferences(String, String, String, String)
 	 * 
 	 * @param username
 	 * @param password
 	 * @param libraryName
 	 * @return All refIdName's for the specified {@link Library}.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getRefIdNamesResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	   <refIdName>parameters.ID</refIdName>
@@ -1373,28 +1562,33 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 	   <refIdName>data_types.ID</refIdName>
 	 * 	   <refIdName>phases.ID</refIdName>
 	 * </ns2:getRefIdNamesResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="refIdName")
+	@WebResult(name = "refIdName")
 	public List<String> getRefIdNames(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password,
-			@WebParam(name="libraryName", mode=Mode.IN, targetNamespace=TNS) String libraryName
-			) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "libraryName", mode = Mode.IN, targetNamespace = TNS) String libraryName) {
 		logger.info("get refIdNames for Library {} ...", libraryName);
 		return this.freebimWebservice.getRefIdNames(username, password, libraryName);
 	}
 
 	/**
 	 * Get all references for a specified {@link Library} and refIdName.<br>
-	 * If a {@link Library} has been imported from an external database, 
-	 * a reference to the external entity is stored as a combination 
-	 * of <code>refIdName</code> and <code>refId</code>.<br>
-	 * I.e. the table name of the external database is stored in <code>refIdName</code> 
-	 * and the primary key of the entity is stored in <code>refId</code>.<br>
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * If a {@link Library} has been imported from an external database, a reference
+	 * to the external entity is stored as a combination of <code>refIdName</code>
+	 * and <code>refId</code>.<br>
+	 * I.e. the table name of the external database is stored in
+	 * <code>refIdName</code> and the primary key of the entity is stored in
+	 * <code>refId</code>.<br>
+	 * <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getLibraryReferences xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
@@ -1402,18 +1596,22 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *     <gs:libraryName>freeBIM</gs:libraryName>
 	 *     <gs:refIdName>parameters.ID</gs:refIdName>
 	 * </gs:getLibraryReferences>
-	 * }</pre>
+	 * }
+	 * </pre>
+	 * 
 	 * @see #getRefIdNames(String, String, String)
 	 * @see #getLibraryReference(String, String, String, String, String)
-	 *  
+	 * 
 	 * @param username
 	 * @param password
 	 * @param libraryName Name of {@link Library}.
-	 * @param refIdName I.e. a table name of an external database.
+	 * @param refIdName   I.e. a table name of an external database.
 	 * @return All references.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getLibraryReferencesResponse xmlns:ns2="http://ws.freebim.at/">
 	 * 	<LibraryReference>
@@ -1429,23 +1627,28 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<refId>1140</refId>
 	 * 	</LibraryReference>
 	 * ...
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="LibraryReference")
+	@WebResult(name = "LibraryReference")
 	public List<LibraryReference> getLibraryReferences(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="libraryName", mode=Mode.IN, targetNamespace=TNS) String libraryName, 
-			@WebParam(name="refIdName", mode=Mode.IN, targetNamespace=TNS) String refIdName) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "libraryName", mode = Mode.IN, targetNamespace = TNS) String libraryName,
+			@WebParam(name = "refIdName", mode = Mode.IN, targetNamespace = TNS) String refIdName) {
 		logger.info("getLibraryReferences libraryName=[{}], refIdName=[{}] ...", libraryName, refIdName);
 		return this.freebimWebservice.getLibraryReferences(username, password, libraryName, refIdName);
 	}
-	
+
 	/**
-	 * Get all nodes that are referencing a specified {@link Library} with a specified <code>refIdName</code> and a specified <code>refId</code>.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get all nodes that are referencing a specified {@link Library} with a
+	 * specified <code>refIdName</code> and a specified <code>refId</code>. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getLibraryReference xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
@@ -1454,21 +1657,26 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *     <gs:refIdName>parameters.ID</gs:refIdName>
 	 *     <gs:refId>17</gs:refId>
 	 * </gs:getLibraryReference>
-	 * }</pre>
+	 * }
+	 * </pre>
+	 * 
 	 * @see #getRefIdNames(String, String, String)
 	 * 
 	 * @param username
 	 * @param password
 	 * @param libraryName Name of {@link Library}.
-	 * @param refIdName I.e. a table name of an external database.
-	 * @param refId I.e. a primary key in an external database.
+	 * @param refIdName   I.e. a table name of an external database.
+	 * @param refId       I.e. a primary key in an external database.
 	 * @return The referencing objects.<br>
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 *         <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getLibraryReferenceResponse xmlns:ns2="http://ws.freebim.at/">
-	 * 	<Referenced xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns2:parameter">
+	 * 	<Referenced xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type=
+	"ns2:parameter">
 	 * 		<freebimId>98e63dc6-c9ad-4dd3-a2c7-db58e8a51dac</freebimId>
 	 * 		<code>P05</code>
 	 * 		<defaultString>0000</defaultString>
@@ -1484,42 +1692,49 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<ptype>TYPE</ptype>
 	 * 	</Referenced>
 	 * </ns2:getLibraryReferenceResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="Referenced")
+	@WebResult(name = "Referenced")
 	public List<Base<? extends UuidIdentifyable>> getLibraryReference(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="libraryName", mode=Mode.IN, targetNamespace=TNS) String libraryName, 
-			@WebParam(name="refIdName", mode=Mode.IN, targetNamespace=TNS) String refIdName,
-			@WebParam(name="refId", mode=Mode.IN, targetNamespace=TNS) String refId) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "libraryName", mode = Mode.IN, targetNamespace = TNS) String libraryName,
+			@WebParam(name = "refIdName", mode = Mode.IN, targetNamespace = TNS) String refIdName,
+			@WebParam(name = "refId", mode = Mode.IN, targetNamespace = TNS) String refId) {
 		logger.info("getLibraryReferences libraryName=[{}], refIdName=[{}] ...", libraryName, refIdName);
 		return this.freebimWebservice.getLibraryReference(username, password, libraryName, refIdName, refId);
 	}
-	
+
 	/**
-	 * Get an element specified by its freeBIM-ID.
-	 * <br><br>Example request:
-	 * <pre>{@code
+	 * Get an element specified by its freeBIM-ID. <br>
+	 * <br>
+	 * Example request:
+	 * 
+	 * <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <gs:getByFreebimId xmlns:gs="http://ws.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>7eab2a34-85fe-4f82-891f-b0e9a9c13019</gs:freebimId>
 	 * </gs:getByFreebimId>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param username
 	 * @param password
 	 * @param freebimId
-	 * @return The found element. Actual type depends on stored data class.
-	 * <br>
-	 * Example response:
-	 * <pre>{@code
+	 * @return The found element. Actual type depends on stored data class. <br>
+	 *         Example response:
+	 * 
+	 *         <pre>
+	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
 	 * <ns2:getByFreebimIdResponse xmlns:ns2="http://ws.freebim.at/">
-	 * 	<Node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns2:unit">
+	 * 	<Node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type=
+	"ns2:unit">
 	 * 		<freebimId>7eab2a34-85fe-4f82-891f-b0e9a9c13019</freebimId>
 	 * 		<bsddGuid>7 geladene bsDD-Guids</bsddGuid>
 	 * 		<code>m</code>
@@ -1537,14 +1752,15 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * 		<nameEn>metre</nameEn>
 	 * 	</Node>
 	 * </ns2:getByFreebimIdResponse>
-	 * }</pre>
+	 * }
+	 * </pre>
 	 */
 	@WebMethod
-	@WebResult(name="Node")
+	@WebResult(name = "Node")
 	public Base<? extends UuidIdentifyable> getByFreebimId(
-			@WebParam(name="username", mode=Mode.IN, targetNamespace=TNS) String username, 
-			@WebParam(name="password", mode=Mode.IN, targetNamespace=TNS) String password, 
-			@WebParam(name="freebimId", mode=Mode.IN, targetNamespace=TNS) String freebimId) {
+			@WebParam(name = "username", mode = Mode.IN, targetNamespace = TNS) String username,
+			@WebParam(name = "password", mode = Mode.IN, targetNamespace = TNS) String password,
+			@WebParam(name = "freebimId", mode = Mode.IN, targetNamespace = TNS) String freebimId) {
 		logger.info("getByFreebimId freebimId=[{}] ...", freebimId);
 		return this.freebimWebservice.getByFreebimId(username, password, freebimId);
 	}

@@ -17,15 +17,15 @@
 package at.freebim.db.webapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.Contributor;
 import at.freebim.db.service.ContributorService;
 
 /**
- * The controller that handles the node/entity {@link Contributor}.
- * It extends {@link BaseController}.
+ * The controller that handles the node/entity {@link Contributor}. It extends
+ * {@link BaseController}.
  * 
  * @see at.freebim.db.domain.Contributor
  * @see at.freebim.db.webapp.controller.BaseController
@@ -33,7 +33,7 @@ import at.freebim.db.service.ContributorService;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/contributor")
 public class ContributorController extends BaseController<Contributor> {
 
@@ -42,15 +42,17 @@ public class ContributorController extends BaseController<Contributor> {
 	 */
 	@Autowired
 	private ContributorService service;
-	
-    /**
-     * Creates a new instance. 
-     */
-    public ContributorController() {
+
+	/**
+	 * Creates a new instance.
+	 */
+	public ContributorController() {
 		super(Contributor.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override

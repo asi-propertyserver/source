@@ -1,16 +1,16 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
@@ -21,7 +21,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.neo4j.repository.GraphRepository;
+import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Service;
 
 import at.freebim.db.domain.Unit;
@@ -30,16 +30,13 @@ import at.freebim.db.repository.UnitRepository;
 import at.freebim.db.service.UnitService;
 
 /**
- * The service for the node/class {@link Unit}.
- * This service extends {@link ContributedBaseNodeServiceImpl} and
- * implements {@link UnitService}.
- * 
+ * The service for the node/class {@link Unit}. This service extends
+ * {@link ContributedBaseNodeServiceImpl} and implements {@link UnitService}.
+ *
+ * @author rainer.breuss@uibk.ac.at
  * @see at.freebim.db.domain.Unit
  * @see at.freebim.db.service.impl.ContributedBaseNodeServiceImpl
  * @see at.freebim.db.service.UnitService
- * 
- * @author rainer.breuss@uibk.ac.at
- * 
  */
 @Service
 public class UnitServiceImpl extends ContributedBaseNodeServiceImpl<Unit> implements UnitService {
@@ -48,17 +45,23 @@ public class UnitServiceImpl extends ContributedBaseNodeServiceImpl<Unit> implem
 	 * The logger.
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(UnitServiceImpl.class);
-	
-	/* (non-Javadoc)
-	 * @see at.freebim.db.service.impl.LifetimeBaseNodeServiceImpl#setRepository(org.springframework.data.neo4j.repository.GraphRepository)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.service.impl.LifetimeBaseNodeServiceImpl#setRepository(org.
+	 * springframework.data.neo4j.repository.GraphRepository)
 	 */
 	@Override
 	@Autowired
-	public void setRepository(GraphRepository<Unit> r) {
+	public void setRepository(Neo4jRepository<Unit, Long> r) {
 		this.repository = r;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.UnitService#standardize(java.lang.String)
 	 */
 	@Override
@@ -81,7 +84,7 @@ public class UnitServiceImpl extends ContributedBaseNodeServiceImpl<Unit> implem
 		name = name.replaceAll("[Dd][Mm]", "dm");
 		name = name.replaceAll("[M](\\d)", "m$1");
 		name = name.replaceAll("[Kk][Mm]", "km");
-		
+
 		name = name.replaceAll("[m][2]", "m²");
 		name = name.replaceAll("[m][3]", "m³");
 		name = name.replaceAll("[m][4]", "m⁴");
@@ -97,7 +100,7 @@ public class UnitServiceImpl extends ContributedBaseNodeServiceImpl<Unit> implem
 		name = name.replaceAll("[\\^][7]", "⁷");
 		name = name.replaceAll("[\\^][8]", "⁸");
 		name = name.replaceAll("[\\^][9]", "⁹");
-		
+
 		name = name.replaceAll("[\\^][\\-][1]", "⁻¹");
 		name = name.replaceAll("[\\^][\\-][2]", "⁻²");
 		name = name.replaceAll("[\\^][\\-][3]", "⁻³");
@@ -120,8 +123,12 @@ public class UnitServiceImpl extends ContributedBaseNodeServiceImpl<Unit> implem
 		return name;
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.service.impl.ContributedBaseNodeServiceImpl#filterBeforeInsert(at.freebim.db.domain.base.ContributedBaseNode)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.service.impl.ContributedBaseNodeServiceImpl#filterBeforeInsert(
+	 * at.freebim.db.domain.base.ContributedBaseNode)
 	 */
 	@Override
 	public Unit filterBeforeInsert(Unit node) {
@@ -134,9 +141,13 @@ public class UnitServiceImpl extends ContributedBaseNodeServiceImpl<Unit> implem
 		}
 		return super.filterBeforeInsert(node);
 	}
-	
-	/* (non-Javadoc)
-	 * @see at.freebim.db.service.impl.LifetimeBaseNodeServiceImpl#getRelevantQuery(java.lang.StringBuilder, java.lang.String)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.service.impl.LifetimeBaseNodeServiceImpl#getRelevantQuery(java.
+	 * lang.StringBuilder, java.lang.String)
 	 */
 	@Override
 	protected void getRelevantQuery(StringBuilder b, String returnStatement) {
@@ -145,8 +156,8 @@ public class UnitServiceImpl extends ContributedBaseNodeServiceImpl<Unit> implem
 		String where = " WHERE y.validFrom < {now} AND (y.validTo IS NULL OR y.validTo > {now})";
 
 		b.append("MATCH (y:BigBangNode)");
-		
-		b.append(with); 
+
+		b.append(with);
 		b.append(" (x)-[:");
 		b.append(RelationTypeEnum.PARENT_OF);
 		b.append("]->(y)");
@@ -157,7 +168,8 @@ public class UnitServiceImpl extends ContributedBaseNodeServiceImpl<Unit> implem
 		b.append(" (x)-[:");
 		b.append(RelationTypeEnum.PARENT_OF);
 		b.append("*]->(y)");
-		b.append(" WHERE ALL(y IN nodes(path) WHERE y.validFrom < {now} AND (y.validTo IS NULL OR y.validTo > {now}) )");
+		b.append(
+				" WHERE ALL(y IN nodes(path) WHERE y.validFrom < {now} AND (y.validTo IS NULL OR y.validTo > {now}) )");
 
 		b.append(with);
 		b.append(" (x)-[:");
@@ -179,13 +191,15 @@ public class UnitServiceImpl extends ContributedBaseNodeServiceImpl<Unit> implem
 
 		b.append(returnStatement);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.BsddObjectService#findByBsddGuid(java.lang.String)
 	 */
 	@Override
 	public List<Unit> findByBsddGuid(String bsddGuid) {
 		return ((UnitRepository) this.repository).findByBsddGuid(bsddGuid);
 	}
-	
+
 }

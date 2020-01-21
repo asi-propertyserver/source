@@ -16,15 +16,16 @@
  *****************************************************************************/
 package at.freebim.db.webservice.dto.rel;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import at.freebim.db.webservice.DtoHelper;
 import at.freebim.db.webservice.dto.Component;
 import at.freebim.db.webservice.dto.Parameter;
 import at.freebim.db.webservice.dto.Phase;
 
 /**
- * DTO for a {@link Component} to {@link Parameter} relation.
- * These relations carries the {@link Phase} information.
- * The class extends {@link OrderedRel}.
+ * DTO for a {@link Component} to {@link Parameter} relation. These relations
+ * carries the {@link Phase} information. The class extends {@link OrderedRel}.
  * 
  * @see at.freebim.db.webservice.dto.Component
  * @see at.freebim.db.webservice.dto.Parameter
@@ -44,10 +45,11 @@ public class ParameterRel extends OrderedRel {
 	/**
 	 * Constructs a new instance.
 	 * 
-	 * @param uuid The freeBIM-ID of the related object.
-	 * @param order The order field used to sort.
+	 * @param uuid      The freeBIM-ID of the related object.
+	 * @param order     The order field used to sort.
 	 * @param phaseUuid The freeBIM-ID of the {@link Phase}.
-	 * @param info The optional <code>info</code> field of the original relation object.
+	 * @param info      The optional <code>info</code> field of the original
+	 *                  relation object.
 	 * @param dtoHelper The helper.
 	 */
 	public ParameterRel(String uuid, int order, String phaseUuid, String info, DtoHelper dtoHelper) {
@@ -60,6 +62,7 @@ public class ParameterRel extends OrderedRel {
 	 * 
 	 * @return the phase
 	 */
+	@XmlElement
 	public String getPhase() {
 		return phase;
 	}

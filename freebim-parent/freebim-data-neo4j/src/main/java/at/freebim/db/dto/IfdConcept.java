@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package at.freebim.db.dto;
 
@@ -21,9 +21,9 @@ public class IfdConcept implements Serializable {
 	private String lexemeGuids;
 	private String illustrationGuids;
 	private String ownerGuid;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public IfdConcept() {
 	}

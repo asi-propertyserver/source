@@ -50,6 +50,14 @@ at.freebim.db.bsdd = {
 	},
 	
 	doAjax : function (type, url, data, success, msg, fail) {
+		at.freebim.db.request.doAjax(type, url, data, msg).then((result, textStatus, jqXHR) => {
+			success(result, textStatus, jqXHR);
+		}).catch((error) => {
+			if(fail) {
+				fail(error);
+			}
+		});
+		/*
 		var h =  { "Accept" : "application/json" }, key = "_" + Math.random();
 		key = key.replace(".", "");
 		jq(document).trigger("show_progress", [ { key : key, msg : msg } ]);
@@ -79,7 +87,7 @@ at.freebim.db.bsdd = {
             		fail(response);
             	}
             }
-        });
+        });*/
 	},
 
 	init : function () {
@@ -614,7 +622,7 @@ at.freebim.db.bsdd = {
 				ls += ((i > 0) ? "|" : "");
 				ls += l[i];
 			}
-			at.freebim.db.bsdd.doAjax ("POST", "IfdConcept/searchForDuplicates/filter/type/" + t, 
+			at.freebim.db.bsdd.doAjax ("POST", "IfdConcept/searchForDuplicates/filter/type/" + t,
 				{ 	
 					nameList : ss, 
 					languageFamilyList : ls, 
@@ -658,7 +666,7 @@ at.freebim.db.bsdd = {
 				ls += ((i > 0) ? "|" : "");
 				ls += l[i];
 			}
-			at.freebim.db.bsdd.doAjax ("POST", "IfdConcept/searchForDuplicates/filter/type/" + t, 
+			at.freebim.db.bsdd.doAjax ("POST", "IfdConcept/searchForDuplicates/filter/type/" + t,
 				{ 	
 					nameList : ss, 
 					languageFamilyList : ls, 
@@ -826,7 +834,6 @@ at.freebim.db.bsdd = {
 			lang = lib[nf.LANGUAGE];
 		}
 		
-		// TODO: c.owner = null; // IfdOrganization ?
 		c.guid = i18n.g("ND");
 		c.versionId = i18n.g("ND"); // "1"; // String
 		c.versionDate = i18n.g("ND"); // new Date().toISOString(); // String

@@ -17,16 +17,16 @@
 package at.freebim.db.webapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.ValueListEntry;
 import at.freebim.db.service.BaseNodeService;
 import at.freebim.db.service.ValueListEntryService;
 
 /**
- * The controller for the node/entity {@link ValueListEntry}.
- * It extends {@link BaseController}.
+ * The controller for the node/entity {@link ValueListEntry}. It extends
+ * {@link BaseController}.
  * 
  * @see at.freebim.db.domain.ValueListEntry
  * @see at.freebim.db.webapp.controller.BaseController
@@ -34,7 +34,7 @@ import at.freebim.db.service.ValueListEntryService;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/valuelistentry")
 public class ValuelistEntryController extends BaseController<ValueListEntry> {
 
@@ -43,15 +43,17 @@ public class ValuelistEntryController extends BaseController<ValueListEntry> {
 	 */
 	@Autowired
 	private ValueListEntryService valueListEntryService;
-	
-    /**
-     * Creates a new instance.
-     */
-    public ValuelistEntryController() {
+
+	/**
+	 * Creates a new instance.
+	 */
+	public ValuelistEntryController() {
 		super(ValueListEntry.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override

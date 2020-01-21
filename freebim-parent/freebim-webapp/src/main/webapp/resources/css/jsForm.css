@@ -20,15 +20,19 @@
 .jsForm-addButton {
 	color: green;
 }
+
 .jsForm-removeButton {
 	color: red;
 }
+
 .readOnly {
 	color: gray;
 }
+
 .jsForm-dlg .content {
 	float: left;
 }
+
 .jsForm p {
 	min-height: 14px;
 }

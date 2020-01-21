@@ -20,21 +20,22 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.BsddNode;
 import at.freebim.db.service.BaseNodeService;
 import at.freebim.db.service.BsddNodeService;
 import at.freebim.db.webapp.session.SessionTracker.SessionAction;
+import io.swagger.annotations.ApiOperation;
 
 /**
- * The controller that handles bsdd node/entity ({@link BsddNode}).
- * It extends {@link BaseController}.
+ * The controller that handles bsdd node/entity ({@link BsddNode}). It extends
+ * {@link BaseController}.
  * 
  * @see at.freebim.db.domain.BsddNode
  * @see at.freebim.db.webapp.controller.BaseController
@@ -42,7 +43,7 @@ import at.freebim.db.webapp.session.SessionTracker.SessionAction;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/bsdd")
 public class BsddController extends BaseController<BsddNode> {
 
@@ -51,15 +52,17 @@ public class BsddController extends BaseController<BsddNode> {
 	 */
 	@Autowired
 	private BsddNodeService bsddNodeService;
-	
-    /**
-     * Creates a new instance.
-     */
-    public BsddController() {
+
+	/**
+	 * Creates a new instance.
+	 */
+	public BsddController() {
 		super(BsddNode.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override
@@ -67,30 +70,30 @@ public class BsddController extends BaseController<BsddNode> {
 		return this.bsddNodeService;
 	}
 
-
-    /**
-     * Get a node/entity of the type {@link BsddNode} that has the provided guid.
-     * When an error occurs the error field in the response is set.
-     * The same is true when the access was denied.
-     * 
-     * @param guid the guid of the {@link BsddNode}
-     * @param model the model
-     * @return the {@link AjaxResponse} that includes the found {@link BsddNode} or error messages
-     */
-    @RequestMapping(value = "/getByGuid", method = RequestMethod.POST)
-    public @ResponseBody AjaxResponse getByGuid(@RequestParam(value="guid", required=true) String guid, 
-    		Model model) {
+	/**
+	 * Get a node/entity of the type {@link BsddNode} that has the provided guid.
+	 * When an error occurs the error field in the response is set. The same is true
+	 * when the access was denied.
+	 * 
+	 * @param guid  the guid of the {@link BsddNode}
+	 * @param model the model
+	 * @return the {@link AjaxResponse} that includes the found {@link BsddNode} or
+	 *         error messages
+	 */
+	@ApiOperation(value = "Get the node that has the provided GUID", notes = "Load the node from the database that has the provided GUID")
+	@GetMapping(value = "/getByGuid")
+	public @ResponseBody AjaxResponse getByGuid(@RequestParam(value = "guid", required = true) String guid) {
 		logger.info("Get a single entity for {}, guid={}", this.getClass().getSimpleName(), guid);
 
 		AjaxResponse response = null;
 		try {
-			// Delegate to bsddNodeService 
+			// Delegate to bsddNodeService
 			BsddNode entity = this.bsddNodeService.getByGuid(guid);
-			
+
 			logger.info("\tfound nodeId=[{}] for guid={}", ((entity == null) ? "null" : entity.getNodeId()), guid);
-			
+
 			response = new AjaxResponse(entity);
-			
+
 		} catch (AccessDeniedException e) {
 			logger.info(e.toString());
 			response = new AjaxResponse(null);
@@ -100,36 +103,35 @@ public class BsddController extends BaseController<BsddNode> {
 			response = new AjaxResponse(null);
 			response.setError(e.toString());
 		}
-		
+
 		savedNodesNotifications(response);
-		
+
 		return response;
 	}
-    
-    
-    /**
-     * Creates a BSDD relation to other nodes that are already marked as equal.
-     * When an error occurs the error field in the response is set.
-     * The same is true when the access was denied.
-     * 
-     * @param model the model
-     * @return the {@link AjaxResponse} that includes the ids of 
-     * the nodes to which the bsdd relation was spread or error messages
-     */
-    @RequestMapping(value = "/spreadToEqualNodes", method = RequestMethod.POST)
-    public @ResponseBody AjaxResponse spreadToEqualNodes(Model model) {
+
+	/**
+	 * Creates a BSDD relation to other nodes that are already marked as equal. When
+	 * an error occurs the error field in the response is set. The same is true when
+	 * the access was denied.
+	 * 
+	 * @return the {@link AjaxResponse} that includes the ids of the nodes to which
+	 *         the bsdd relation was spread or error messages
+	 */
+	@ApiOperation(value = "Creates BSDD relations to other nodes that are marked as equal", notes = "Spreads the BSDD relations to all other nodes that are engaged in an equal relation")
+	@PostMapping(value = "/spreadToEqualNodes")
+	public @ResponseBody AjaxResponse spreadToEqualNodes() {
 		logger.debug("spreadToEqualNodes ");
 
 		AjaxResponse response = null;
 		try {
-			// Delegate to bsddNodeService 
+			// Delegate to bsddNodeService
 			ArrayList<Long> nodeIds = this.bsddNodeService.spreadToEqualNodes();
 			for (Long nodeId : nodeIds) {
 				this.notifySessionSaved(nodeId, SessionAction.RELATION_MODIFIED);
 			}
-			
+
 			response = new AjaxResponse(nodeIds);
-			
+
 		} catch (AccessDeniedException e) {
 			response = new AjaxResponse(null);
 			response.setAccessDenied(true);
@@ -138,9 +140,9 @@ public class BsddController extends BaseController<BsddNode> {
 			response = new AjaxResponse(null);
 			response.setError(e.toString());
 		}
-		
+
 		savedNodesNotifications(response);
-		
+
 		return response;
 	}
 

@@ -1,42 +1,47 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.freebim</groupId>
 	<artifactId>db</artifactId>
-	<version>1.12.12</version>
+	<version>1.3</version>
 	<packaging>pom</packaging>
 	<name>freebim-parent</name>
 	<description>freebim-parent</description>
 
 	<properties>
-		<freebim.version>1.12.12</freebim.version>
+		<freebim.version>1.3</freebim.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>4.0.6.RELEASE</spring.version>
-        <spring-sec.version>3.2.4.RELEASE</spring-sec.version>
-        <spring-xml.version>2.4.2.RELEASE</spring-xml.version>
-		<slf4j.version>1.6.1</slf4j.version>
-		<spring-data-neo4j.version>3.1.1.RELEASE</spring-data-neo4j.version>
-		<aspectj.version>1.6.12</aspectj.version>
-		<neo4j.version>2.1.3</neo4j.version>
+		<spring-boot-version>2.1.4.RELEASE</spring-boot-version>
+		<!--<spring.version>4.0.6.RELEASE</spring.version> <spring-sec.version>3.2.4.RELEASE</spring-sec.version> 
+			<spring-xml.version>2.4.2.RELEASE</spring-xml.version> -->
+		<!--<spring-data-neo4j.version>3.1.1.RELEASE</spring-data-neo4j.version> 
+			<aspectj.version>1.6.12</aspectj.version> <neo4j.version>2.1.3</neo4j.version> -->
+		<java.version>1.8</java.version>
 	</properties>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.1.4.RELEASE</version>
+	</parent>
 
 	<modules>
 		<module>freebim-data-neo4j</module>
 		<module>freebim-webapp</module>
 	</modules>
-	
-	<!-- This repository is needed for the package neo4j-cypher-dsl version 2.0.1  -->
+
+	<!-- This repository is needed for the package neo4j-cypher-dsl version 
+		2.0.1 -->
 	<repositories>
+		<!--<repository> <id>m2.neo4j</id> <url>https://m2.neo4j.org/content/repositories/releases</url> 
+			</repository> -->
 		<repository>
-            <id>m2.neo4j</id>
-            <url>https://m2.neo4j.org/content/repositories/releases</url>
-        </repository> 
-        <repository>
-        	<id>spectroom.net</id>
-        	<url>https://www.spectroom.net/repository</url>
-        </repository>
+			<id>spectroom.net</id>
+			<url>https://www.spectroom.net/repository</url> 
+		</repository>
 	</repositories>
-	
+
 	<licenses>
 		<license>
 			<name>GNU Affero General Public License</name>
@@ -44,12 +49,12 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	
+
 	<organization>
 		<name>University of Innsbruck, DBIS Databases and Information Systems</name>
 		<url>https://dbis-informatik.uibk.ac.at</url>
 	</organization>
-	
+
 	<developers>
 		<developer>
 			<name>Rainer Breuss</name>
@@ -61,7 +66,7 @@
 			</roles>
 		</developer>
 	</developers>
-	
+
 	<contributors>
 		<contributor>
 			<name>Patrick Lanzinger</name>
@@ -76,11 +81,18 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<configuration>
+						<mainClass>at.freebim.db.Application</mainClass>
+					</configuration>
+				</plugin>
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<configuration>
-						<source>1.7</source>
-						<target>1.7</target>
+						<source>1.8</source>
+						<target>1.8</target>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -104,14 +116,8 @@
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>2.10.4</version>
 					<configuration>
-						<reportSets>
-							<reportSet>
-								<reports>
-									<report>javadoc-no-fork</report>
-									<report>test-javadoc-no-fork</report>
-								</reports>
-							</reportSet>
-						</reportSets>
+						<!-- <reportSets> <reportSet> <reports> <report>javadoc-no-fork</report> 
+							<report>test-javadoc-no-fork</report> </reports> </reportSet> </reportSets> -->
 						<charset>UTF-8</charset>
 						<docencoding>UTF-8</docencoding>
 						<docfilessubdirs>true</docfilessubdirs>
@@ -119,7 +125,7 @@
 							<link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
 						</links>
 						<show>public</show>
-						<source>1.7</source>
+						<source>1.8</source>
 						<sourcepath>
 							${basedir}/src/main/java/
 						</sourcepath>
@@ -143,342 +149,179 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.8.1</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>javax.validation</groupId>
-				<artifactId>validation-api</artifactId>
-				<version>1.1.0.Final</version>
-			</dependency>
-			<dependency>
-				<groupId>javax.el</groupId>
-				<artifactId>el-api</artifactId>
-				<version>2.2</version>
-			</dependency>
-			<dependency>
-				<groupId>org.glassfish.web</groupId>
-				<artifactId>el-impl</artifactId>
-				<version>2.2</version>
-			</dependency>
-			<dependency>
-				<groupId>mysql</groupId>
-				<artifactId>mysql-connector-java</artifactId>
-				<version>5.1.31</version>
-				<type>jar</type>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>ejb3-persistence</artifactId>
-				<version>1.0.2.GA</version>
-				<type>pom</type>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate.javax.persistence</groupId>
-				<artifactId>hibernate-jpa-2.0-api</artifactId>
-				<version>1.0.1.Final</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-core</artifactId>
-				<version>4.3.5.Final</version>
-				<type>jar</type>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-annotations</artifactId>
-				<version>3.5.6-Final</version>
-				<type>jar</type>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-validator</artifactId>
-				<version>5.1.1.Final</version>
-			</dependency>
 
 			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-jpamodelgen</artifactId>
-				<version>4.3.5.Final</version>
-				<type>jar</type>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-entitymanager</artifactId>
-				<version>4.3.5.Final</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-dbcp</groupId>
-				<artifactId>commons-dbcp</artifactId>
-				<version>1.2.2</version>
-				<type>jar</type>
-				<scope>compile</scope>
+				<!-- JSON Web Token Support -->
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt</artifactId>
+				<version>0.9.1</version>
 			</dependency>
 
-			<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+			<!-- <dependency> <groupId>javax.servlet</groupId> <artifactId>javax.servlet-api</artifactId> 
+				<version>3.1.0</version> </dependency> -->
 			<dependency>
-			    <groupId>commons-io</groupId>
-			    <artifactId>commons-io</artifactId>
-			    <version>2.5</version>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.6</version>
 			</dependency>
 
+			<!-- Swagger -->
 			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-orm</artifactId>
-				<version>${spring.version}</version>
-				<type>jar</type>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>2.9.2</version>
 				<scope>compile</scope>
 			</dependency>
+			
 			<dependency>
-				<groupId>org.springframework.ws</groupId>
-				<artifactId>spring-xml</artifactId>
-				<version>${spring-xml.version}</version>
+				<groupId>org.neo4j</groupId>
+				<artifactId>neo4j-bolt</artifactId>
+				<version>3.4.17</version>
 			</dependency>
-
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-web</artifactId>
-				<version>${spring.version}</version>
-				<type>jar</type>
-				<scope>compile</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-aspects</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-core</artifactId>
-				<version>${spring.version}</version>
-				<type>jar</type>
-				<scope>compile</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-context</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-tx</artifactId>
-				<version>${spring.version}</version>
-				<type>jar</type>
-				<scope>compile</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-
-			<dependency>
-				<groupId>org.springframework.ws</groupId>
-				<artifactId>spring-ws-core</artifactId>
-				<version>2.2.0.RELEASE</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>4.3.4</version>
-			</dependency>
-
-
-			<dependency>
-				<groupId>jstl</groupId>
-				<artifactId>jstl</artifactId>
-				<version>1.1.2</version>
-				<type>jar</type>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>taglibs</groupId>
-				<artifactId>standard</artifactId>
-				<version>1.1.2</version>
-				<type>jar</type>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-webmvc</artifactId>
-				<version>${spring.version}</version>
-				<type>jar</type>
-				<scope>compile</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-aop</artifactId>
-				<version>${spring.version}</version>
-				<type>jar</type>
-				<scope>compile</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-test</artifactId>
-				<version>${spring.version}</version>
-				<scope>test</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-
-			<!-- spring security -->
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-core</artifactId>
-				<version>${spring-sec.version}</version>
-				<type>jar</type>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-config</artifactId>
-				<version>${spring-sec.version}</version>
-				<type>jar</type>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-web</artifactId>
-				<version>${spring-sec.version}</version>
-				<type>jar</type>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-taglibs</artifactId>
-				<version>${spring-sec.version}</version>
-				<exclusions>
-					<exclusion>
-						<artifactId>spring-aop</artifactId>
-						<groupId>org.springframework</groupId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-
-			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-jaxrs</artifactId>
-				<version>1.9.13</version>
-				<type>jar</type>
-				<scope>compile</scope>
-			</dependency>
-
+			
 			<dependency>
 				<groupId>javax.servlet</groupId>
-				<artifactId>javax.servlet-api</artifactId>
-				<version>3.1.0</version>
+				<artifactId>jstl</artifactId>
+				<version>1.2</version>
+			</dependency>
+			
+
+			<!-- JAX-WS -->
+			<dependency>
+				<groupId>com.sun.xml.ws</groupId>
+				<artifactId>jaxws-rt</artifactId>
+				<version>2.3.1</version>
 			</dependency>
 
-			<!-- logging -->
+			<!-- Spring JAX-WS Integration -->
 			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${slf4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>jcl-over-slf4j</artifactId>
-				<version>${slf4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>${slf4j.version}</version>
-				<scope>runtime</scope>
-			</dependency>
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>1.2.16</version>
-				<scope>runtime</scope>
-			</dependency>
-
-			<!-- neo4j -->
-			<dependency>
-				<groupId>org.springframework.data</groupId>
-				<artifactId>spring-data-neo4j</artifactId>
-				<version>${spring-data-neo4j.version}</version>
+				<groupId>org.jvnet.jax-ws-commons.spring</groupId>
+				<artifactId>jaxws-spring</artifactId>
+				<version>1.9</version>
 				<exclusions>
 					<exclusion>
-						<groupId>org.hibernate.javax.persistence</groupId>
-						<artifactId>hibernate-jpa-2.0-api</artifactId>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-core</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-context</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
-			<dependency>
-				<groupId>org.neo4j</groupId>
-				<artifactId>neo4j-kernel</artifactId>
-				<version>${neo4j.version}</version>
-				<type>test-jar</type>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.neo4j</groupId>
-				<artifactId>neo4j</artifactId>
-				<version>${neo4j.version}</version>
-			</dependency>
+			
 
-			<dependency>
-				<groupId>com.google.code.gson</groupId>
-				<artifactId>gson</artifactId>
-				<version>2.2.4</version>
-			</dependency>
+			<!-- <dependency> <groupId>javax.validation</groupId> <artifactId>validation-api</artifactId> 
+				<version>2.0.1.Final</version> </dependency> <dependency> <groupId>org.hibernate</groupId> 
+				<artifactId>hibernate-validator</artifactId> <version>6.0.16.Final</version> 
+				</dependency> <dependency> <groupId>javax.el</groupId> <artifactId>javax.el-api</artifactId> 
+				<version>3.0.1-b06</version> </dependency> -->
 
-			<dependency>
-				<groupId>net.sourceforge.jtds</groupId>
-				<artifactId>jtds</artifactId>
-				<version>1.3.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jvnet.jaxb2.maven2</groupId>
-				<artifactId>maven-jaxb2-plugin</artifactId>
-				<version>0.9.0</version>
-			</dependency>
+			<!-- <dependency> <groupId>junit</groupId> <artifactId>junit</artifactId> 
+				<version>4.8.1</version> <scope>test</scope> </dependency> <dependency> <groupId>javax.validation</groupId> 
+				<artifactId>validation-api</artifactId> <version>1.1.0.Final</version> </dependency> 
+				<dependency> <groupId>javax.el</groupId> <artifactId>el-api</artifactId> 
+				<version>2.2</version> </dependency> <dependency> <groupId>org.glassfish.web</groupId> 
+				<artifactId>el-impl</artifactId> <version>2.2</version> </dependency> <dependency> 
+				<groupId>mysql</groupId> <artifactId>mysql-connector-java</artifactId> <version>5.1.31</version> 
+				<type>jar</type> <scope>compile</scope> </dependency> <dependency> <groupId>org.hibernate</groupId> 
+				<artifactId>ejb3-persistence</artifactId> <version>1.0.2.GA</version> <type>pom</type> 
+				<scope>compile</scope> </dependency> <dependency> <groupId>org.hibernate.javax.persistence</groupId> 
+				<artifactId>hibernate-jpa-2.0-api</artifactId> <version>1.0.1.Final</version> 
+				</dependency> <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-core</artifactId> 
+				<version>4.3.5.Final</version> <type>jar</type> <scope>compile</scope> </dependency> 
+				<dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-annotations</artifactId> 
+				<version>3.5.6-Final</version> <type>jar</type> <scope>compile</scope> </dependency> 
+				<dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-validator</artifactId> 
+				<version>5.1.1.Final</version> </dependency> <dependency> <groupId>org.hibernate</groupId> 
+				<artifactId>hibernate-jpamodelgen</artifactId> <version>4.3.5.Final</version> 
+				<type>jar</type> <scope>compile</scope> </dependency> <dependency> <groupId>org.hibernate</groupId> 
+				<artifactId>hibernate-entitymanager</artifactId> <version>4.3.5.Final</version> 
+				</dependency> <dependency> <groupId>commons-dbcp</groupId> <artifactId>commons-dbcp</artifactId> 
+				<version>1.2.2</version> <type>jar</type> <scope>compile</scope> </dependency> -->
+			<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+			<!-- <dependency> <groupId>commons-io</groupId> <artifactId>commons-io</artifactId> 
+				<version>2.5</version> </dependency> <dependency> <groupId>org.springframework</groupId> 
+				<artifactId>spring-orm</artifactId> <version>${spring.version}</version> 
+				<type>jar</type> <scope>compile</scope> </dependency> <dependency> <groupId>org.springframework.ws</groupId> 
+				<artifactId>spring-xml</artifactId> <version>${spring-xml.version}</version> 
+				</dependency> <dependency> <groupId>org.springframework</groupId> <artifactId>spring-web</artifactId> 
+				<version>${spring.version}</version> <type>jar</type> <scope>compile</scope> 
+				<exclusions> <exclusion> <groupId>commons-logging</groupId> <artifactId>commons-logging</artifactId> 
+				</exclusion> </exclusions> </dependency> <dependency> <groupId>org.springframework</groupId> 
+				<artifactId>spring-aspects</artifactId> <version>${spring.version}</version> 
+				</dependency> <dependency> <groupId>org.springframework</groupId> <artifactId>spring-core</artifactId> 
+				<version>${spring.version}</version> <type>jar</type> <scope>compile</scope> 
+				<exclusions> <exclusion> <groupId>commons-logging</groupId> <artifactId>commons-logging</artifactId> 
+				</exclusion> </exclusions> </dependency> <dependency> <groupId>org.springframework</groupId> 
+				<artifactId>spring-context</artifactId> <version>${spring.version}</version> 
+				</dependency> <dependency> <groupId>org.springframework</groupId> <artifactId>spring-tx</artifactId> 
+				<version>${spring.version}</version> <type>jar</type> <scope>compile</scope> 
+				<exclusions> <exclusion> <groupId>commons-logging</groupId> <artifactId>commons-logging</artifactId> 
+				</exclusion> </exclusions> </dependency> <dependency> <groupId>org.springframework.ws</groupId> 
+				<artifactId>spring-ws-core</artifactId> <version>2.2.0.RELEASE</version> 
+				</dependency> <dependency> <groupId>org.apache.httpcomponents</groupId> <artifactId>httpclient</artifactId> 
+				<version>4.3.4</version> </dependency> <dependency> <groupId>jstl</groupId> 
+				<artifactId>jstl</artifactId> <version>1.1.2</version> <type>jar</type> <scope>compile</scope> 
+				</dependency> <dependency> <groupId>taglibs</groupId> <artifactId>standard</artifactId> 
+				<version>1.1.2</version> <type>jar</type> <scope>compile</scope> </dependency> 
+				<dependency> <groupId>org.springframework</groupId> <artifactId>spring-webmvc</artifactId> 
+				<version>${spring.version}</version> <type>jar</type> <scope>compile</scope> 
+				<exclusions> <exclusion> <groupId>commons-logging</groupId> <artifactId>commons-logging</artifactId> 
+				</exclusion> </exclusions> </dependency> <dependency> <groupId>org.springframework</groupId> 
+				<artifactId>spring-aop</artifactId> <version>${spring.version}</version> 
+				<type>jar</type> <scope>compile</scope> <exclusions> <exclusion> <groupId>commons-logging</groupId> 
+				<artifactId>commons-logging</artifactId> </exclusion> </exclusions> </dependency> 
+				<dependency> <groupId>org.springframework</groupId> <artifactId>spring-test</artifactId> 
+				<version>${spring.version}</version> <scope>test</scope> <exclusions> <exclusion> 
+				<groupId>commons-logging</groupId> <artifactId>commons-logging</artifactId> 
+				</exclusion> </exclusions> </dependency> -->
+			<!-- spring security -->
+			<!-- <dependency> <groupId>org.springframework.security</groupId> <artifactId>spring-security-core</artifactId> 
+				<version>${spring-sec.version}</version> <type>jar</type> <scope>compile</scope> 
+				</dependency> <dependency> <groupId>org.springframework.security</groupId> 
+				<artifactId>spring-security-config</artifactId> <version>${spring-sec.version}</version> 
+				<type>jar</type> <scope>compile</scope> </dependency> <dependency> <groupId>org.springframework.security</groupId> 
+				<artifactId>spring-security-web</artifactId> <version>${spring-sec.version}</version> 
+				<type>jar</type> <scope>compile</scope> </dependency> <dependency> <groupId>org.springframework.security</groupId> 
+				<artifactId>spring-security-taglibs</artifactId> <version>${spring-sec.version}</version> 
+				<exclusions> <exclusion> <artifactId>spring-aop</artifactId> <groupId>org.springframework</groupId> 
+				</exclusion> </exclusions> </dependency> -->
 
+			<!-- neo4j -->
+			<!-- <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-neo4j</artifactId> 
+				<version>${spring-data-neo4j.version}</version> <exclusions> <exclusion> 
+				<groupId>org.hibernate.javax.persistence</groupId> <artifactId>hibernate-jpa-2.0-api</artifactId> 
+				</exclusion> </exclusions> </dependency> <dependency> <groupId>org.neo4j</groupId> 
+				<artifactId>neo4j-kernel</artifactId> <version>${neo4j.version}</version> 
+				<type>test-jar</type> <scope>test</scope> </dependency> <dependency> <groupId>org.neo4j</groupId> 
+				<artifactId>neo4j</artifactId> <version>${neo4j.version}</version> </dependency> 
+				<dependency> <groupId>com.google.code.gson</groupId> <artifactId>gson</artifactId> 
+				<version>2.2.4</version> </dependency> <dependency> <groupId>net.sourceforge.jtds</groupId> 
+				<artifactId>jtds</artifactId> <version>1.3.1</version> </dependency> <dependency> 
+				<groupId>org.jvnet.jaxb2.maven2</groupId> <artifactId>maven-jaxb2-plugin</artifactId> 
+				<version>0.9.0</version> </dependency>  -->
+				
 			<dependency>
-				<groupId>net.spectroom</groupId>
+				<groupId>net.spectroom</groupId> 
 				<artifactId>neo4j.backup</artifactId>
-				<version>0.2.2</version>
+				<version>0.3.1</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.webjars</groupId>
+				<artifactId>sockjs-client</artifactId>
+				<version>1.0.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.webjars</groupId>
+				<artifactId>stomp-websocket</artifactId>
+				<version>2.3.3</version>
+			</dependency>
+				
 		</dependencies>
 	</dependencyManagement>
 </project>

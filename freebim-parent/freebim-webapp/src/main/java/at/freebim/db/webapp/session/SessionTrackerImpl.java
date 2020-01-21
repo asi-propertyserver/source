@@ -36,8 +36,7 @@ import org.springframework.stereotype.Service;
 import at.freebim.db.service.DateService;
 
 /**
- * This class tracks all sessions.
- * It implements {@link SessionTracker}.
+ * This class tracks all sessions. It implements {@link SessionTracker}.
  * 
  * @see at.freebim.db.webapp.session.SessionTracker
  * 
@@ -45,7 +44,7 @@ import at.freebim.db.service.DateService;
  * 
  */
 @Service
-@Scope(value=ConfigurableBeanFactory.SCOPE_SINGLETON)
+@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class SessionTrackerImpl implements SessionTracker {
 
 	/**
@@ -72,7 +71,7 @@ public class SessionTrackerImpl implements SessionTracker {
 		this.sessions = new HashMap<String, SessionObject>();
 		logger.info("constructed.");
 	}
-	
+
 	/**
 	 * Make cleanup.
 	 */
@@ -84,7 +83,9 @@ public class SessionTrackerImpl implements SessionTracker {
 		logger.info("cleared.");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.session.SessionTracker#getLoggedInUsernames()
 	 */
 	public List<String> getLoggedInUsernames() {
@@ -100,9 +101,12 @@ public class SessionTrackerImpl implements SessionTracker {
 		}
 		return res;
 	}
-	
-	/* (non-Javadoc)
-	 * @see at.freebim.db.webapp.session.SessionTracker#getLastRequest(java.lang.String)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.webapp.session.SessionTracker#getLastRequest(java.lang.String)
 	 */
 	public Long getLastRequest(String sessionId) {
 		SessionInformation si = this.sessionRegistry.getSessionInformation(sessionId);
@@ -111,9 +115,13 @@ public class SessionTrackerImpl implements SessionTracker {
 		}
 		return null;
 	}
-	
-	/* (non-Javadoc)
-	 * @see at.freebim.db.webapp.session.SessionTracker#getSessionsForUsername(java.lang.String)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.webapp.session.SessionTracker#getSessionsForUsername(java.lang.
+	 * String)
 	 */
 	public List<String> getSessionsForUsername(String username) {
 		List<String> res = new ArrayList<String>();
@@ -172,20 +180,21 @@ public class SessionTrackerImpl implements SessionTracker {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see at.freebim.db.webapp.SessionListener#addInfo(at.freebim.db.webapp.SessionTrackerImpl.SessionInfo, java.lang.String)
+	 * @see at.freebim.db.webapp.SessionListener#addInfo(at.freebim.db.webapp.
+	 * SessionTrackerImpl.SessionInfo, java.lang.String)
 	 */
 	@Override
 	public void addInfo(NodeInfo info, String sessionIdInitiator) {
-		
+
 		final List<String> allSessionIds = getAllSessionIds();
 		logger.info(sessionIdInitiator + " sent a message: {}, total sessions: {}", info, allSessionIds.size());
 		for (String sessionId : allSessionIds) {
 
 			if (sessionId.equals(sessionIdInitiator))
 				continue;
-			
+
 			SessionObject so = this.getSessionObject(sessionId);
-			
+
 			if (so == null) {
 				so = new SessionObject();
 				synchronized (this.sessions) {
@@ -196,12 +205,12 @@ public class SessionTrackerImpl implements SessionTracker {
 			logger.info("    set to session: {}", sessionId);
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * at.freebim.db.webapp.session.SessionTracker#getSessionObject(java.lang.String)
+	 * @see at.freebim.db.webapp.session.SessionTracker#getSessionObject(java.lang.
+	 * String)
 	 */
 	@Override
 	public SessionObject getSessionObject(String sessionId) {

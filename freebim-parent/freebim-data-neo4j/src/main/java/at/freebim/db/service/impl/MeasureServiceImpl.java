@@ -1,16 +1,16 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
@@ -21,7 +21,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.neo4j.repository.GraphRepository;
+import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Service;
 
 import at.freebim.db.domain.DataType;
@@ -41,16 +41,13 @@ import at.freebim.db.service.MeasureService;
 import at.freebim.db.service.RelationService;
 
 /**
- * The service for the node/class {@link Measure}.
- * This service extends {@link ContributedBaseNodeServiceImpl} and
- * implements {@link MeasureService}.
- * 
+ * The service for the node/class {@link Measure}. This service extends
+ * {@link ContributedBaseNodeServiceImpl} and implements {@link MeasureService}.
+ *
+ * @author rainer.breuss@uibk.ac.at
  * @see at.freebim.db.domain.Measure
  * @see at.freebim.db.service.impl.ContributedBaseNodeServiceImpl
  * @see at.freebim.db.service.MeasureService
- * 
- * @author rainer.breuss@uibk.ac.at
- *
  */
 @Service
 public class MeasureServiceImpl extends ContributedBaseNodeServiceImpl<Measure> implements MeasureService {
@@ -65,34 +62,42 @@ public class MeasureServiceImpl extends ContributedBaseNodeServiceImpl<Measure> 
 	 */
 	@Autowired
 	private RelationService relationService;
-	
+
 	/**
 	 * The service that handles equality.
 	 */
 	@Autowired
 	private EqualityService equalityService;
-	
+
 	/**
 	 * The service that handles dates.
 	 */
 	@Autowired
 	private DateService dateService;
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.service.impl.LifetimeBaseNodeServiceImpl#setRepository(org.springframework.data.neo4j.repository.GraphRepository)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.service.impl.LifetimeBaseNodeServiceImpl#setRepository(org.
+	 * springframework.data.neo4j.repository.GraphRepository)
 	 */
 	@Override
 	@Autowired
-	public void setRepository(GraphRepository<Measure> r) {
+	public void setRepository(Neo4jRepository<Measure, Long> r) {
 		this.repository = r;
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.service.MeasureService#getMeasureFor(at.freebim.db.domain.DataType, at.freebim.db.domain.Unit, at.freebim.db.domain.ValueList, java.lang.String, java.util.List, at.freebim.db.domain.Library)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see at.freebim.db.service.MeasureService#getMeasureFor(at.freebim.db.domain.
+	 * DataType, at.freebim.db.domain.Unit, at.freebim.db.domain.ValueList,
+	 * java.lang.String, java.util.List, at.freebim.db.domain.Library)
 	 */
 	@Override
-	public Measure getMeasureFor(DataType dataType, Unit unit,
-			ValueList valueList, String prefix, List<Measure> existingMeasures, Library library) {
+	public Measure getMeasureFor(DataType dataType, Unit unit, ValueList valueList, String prefix,
+			List<Measure> existingMeasures, Library library) {
 		Measure m = null;
 		for (final Measure existingMeasure : existingMeasures) {
 			if (!this.equalityService.relatedEquals(existingMeasure.getDataType(), dataType))
@@ -116,7 +121,7 @@ public class MeasureServiceImpl extends ContributedBaseNodeServiceImpl<Measure> 
 				b.append(prefix);
 				b.append(" ");
 			}
-			if (dataType != null) 
+			if (dataType != null)
 				b.append(dataType.getName());
 			b.append(" ");
 			if (unit != null) {
@@ -137,7 +142,7 @@ public class MeasureServiceImpl extends ContributedBaseNodeServiceImpl<Measure> 
 				throw new RuntimeException("saved Measure is null: " + name);
 			}
 			logger.info("new Measure: {} saved, nodeId={}", m.getName(), m.getNodeId());
-			
+
 			if (dataType != null) {
 				OfDataType dtRel = new OfDataType();
 				dtRel.setN1(m);
@@ -173,9 +178,12 @@ public class MeasureServiceImpl extends ContributedBaseNodeServiceImpl<Measure> 
 		return m;
 	}
 
-
-	/* (non-Javadoc)
-	 * @see at.freebim.db.service.impl.LifetimeBaseNodeServiceImpl#getRelevantQuery(java.lang.StringBuilder, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.service.impl.LifetimeBaseNodeServiceImpl#getRelevantQuery(java.
+	 * lang.StringBuilder, java.lang.String)
 	 */
 	protected void getRelevantQuery(StringBuilder b, String returnStatement) {
 
@@ -183,8 +191,8 @@ public class MeasureServiceImpl extends ContributedBaseNodeServiceImpl<Measure> 
 		String where = " WHERE y.validFrom < {now} AND (y.validTo IS NULL OR y.validTo > {now})";
 
 		b.append("MATCH (y:BigBangNode)");
-		
-		b.append(with); 
+
+		b.append(with);
 		b.append(" (x)-[:");
 		b.append(RelationTypeEnum.PARENT_OF);
 		b.append("]->(y)");
@@ -195,7 +203,8 @@ public class MeasureServiceImpl extends ContributedBaseNodeServiceImpl<Measure> 
 		b.append(" (x)-[:");
 		b.append(RelationTypeEnum.PARENT_OF);
 		b.append("*]->(y)");
-		b.append(" WHERE ALL(y IN nodes(path) WHERE y.validFrom < {now} AND (y.validTo IS NULL OR y.validTo > {now}) )");
+		b.append(
+				" WHERE ALL(y IN nodes(path) WHERE y.validFrom < {now} AND (y.validTo IS NULL OR y.validTo > {now}) )");
 
 		b.append(with);
 		b.append(" (x)-[:");
@@ -211,8 +220,10 @@ public class MeasureServiceImpl extends ContributedBaseNodeServiceImpl<Measure> 
 
 		b.append(returnStatement);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.BsddObjectService#findByBsddGuid(java.lang.String)
 	 */
 	@Override
@@ -220,12 +231,14 @@ public class MeasureServiceImpl extends ContributedBaseNodeServiceImpl<Measure> 
 		return ((MeasureRepository) this.repository).findByBsddGuid(bsddGuid);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.MeasureService#getByName(java.lang.String)
 	 */
 	@Override
 	public List<Measure> getByName(String name) {
 		return ((MeasureRepository) this.repository).findByName(name);
 	}
-	
+
 }

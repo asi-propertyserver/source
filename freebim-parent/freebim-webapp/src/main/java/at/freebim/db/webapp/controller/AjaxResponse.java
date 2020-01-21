@@ -28,42 +28,38 @@ import at.freebim.db.webapp.session.NodeInfo;
  *
  */
 public class AjaxResponse {
-	
+
 	/**
 	 * The error.
 	 */
 	private String error;
-	
+
 	/**
 	 * Is set to true when you need to log in to be able to call the method.
 	 */
 	private boolean needsLogin;
-	
-	
+
 	/**
 	 * Is set to true when the access is denied.
 	 */
 	private boolean accessDenied;
-	
-	
+
 	/**
-	 * The serialized result. 
-	 * For example when you request a list of nodes the result 
-	 * will be saved into this variable.
+	 * The serialized result. For example when you request a list of nodes the
+	 * result will be saved into this variable.
 	 */
 	private Serializable result;
-	
-	
+
 	/**
 	 * A list of nodes that have been modified in some way.
 	 */
 	private ArrayList<NodeInfo> savedNodes;
-	
+
 	/**
 	 * Is set to <code>true</code> if a bsdd-guid changed.
 	 */
 	private boolean bsddGuidChanged;
-	
+
 	/**
 	 * Create a new instance with the result.
 	 * 
@@ -73,7 +69,7 @@ public class AjaxResponse {
 		this.result = result;
 		bsddGuidChanged = false;
 	}
-	
+
 	/**
 	 * Get the error.
 	 * 
@@ -82,6 +78,7 @@ public class AjaxResponse {
 	public String getError() {
 		return error;
 	}
+
 	/**
 	 * Set an error.
 	 * 
@@ -90,22 +87,26 @@ public class AjaxResponse {
 	public void setError(String error) {
 		this.error = error;
 	}
+
 	/**
 	 * Checks if you need to login.
 	 * 
-	 * @return returns <code>true</code> if you need to log in <code>false</code> otherwise.
+	 * @return returns <code>true</code> if you need to log in <code>false</code>
+	 *         otherwise.
 	 */
 	public boolean isNeedsLogin() {
 		return needsLogin;
 	}
+
 	/**
 	 * Sets if you need to log in.
 	 * 
-	 * @param needsLogin 
+	 * @param needsLogin
 	 */
 	public void setNeedsLogin(boolean needsLogin) {
 		this.needsLogin = needsLogin;
 	}
+
 	/**
 	 * Checks if the access is denied.
 	 * 
@@ -114,6 +115,7 @@ public class AjaxResponse {
 	public boolean isAccessDenied() {
 		return accessDenied;
 	}
+
 	/**
 	 * Sets if the access was denied.
 	 * 
@@ -122,6 +124,7 @@ public class AjaxResponse {
 	public void setAccessDenied(boolean accessDenied) {
 		this.accessDenied = accessDenied;
 	}
+
 	/**
 	 * Get the serialized result.
 	 * 
@@ -130,7 +133,7 @@ public class AjaxResponse {
 	public Serializable getResult() {
 		return result;
 	}
-	
+
 	/**
 	 * Set the serialized result.
 	 * 

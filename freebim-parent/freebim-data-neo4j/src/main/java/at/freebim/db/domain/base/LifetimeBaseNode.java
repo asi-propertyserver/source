@@ -1,33 +1,32 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
 package at.freebim.db.domain.base;
 
-import org.springframework.data.neo4j.annotation.Fetch;
-import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.NodeEntity;
 
 /**
- * This abstract class/node is the base for all nodes that have a lifetime.
- * It defines a start and an end-point in which this node is valid.
- * Additionally id extends {@link BaseNode} and implements {@link Named}.
- * 
+ * This abstract class/node is the base for all nodes that have a lifetime. It
+ * defines a start and an end-point in which this node is valid. Additionally id
+ * extends {@link BaseNode} and implements {@link Named}.
+ *
+ * @author rainer.breuss@uibk.ac.at
+ * @see org.neo4j.ogm.annotation.NodeEntity
  * @see at.freebim.db.domain.base.BaseNode
  * @see at.freebim.db.domain.base.Named
- * 
- * @author rainer.breuss@uibk.ac.at
  */
 @NodeEntity
 @SuppressWarnings("serial")
@@ -37,9 +36,9 @@ public abstract class LifetimeBaseNode extends BaseNode implements Named {
 	 * The starting time stamp.
 	 */
 	protected Long validFrom;
-	
+
 	/**
-	 * The end time stamp. 
+	 * The end time stamp.
 	 */
 	protected Long validTo;
 
@@ -54,18 +53,17 @@ public abstract class LifetimeBaseNode extends BaseNode implements Named {
 
 	/**
 	 * Gets the point at which this node/class is valid.
-	 * 
+	 *
 	 * @return valid from
 	 */
-	@Fetch
 	public Long getValidFrom() {
 		return validFrom;
 	}
 
 	/**
 	 * Sets the point at which this node/class is valid.
-	 * 
-	 * @param	validFrom	The validFrom point
+	 *
+	 * @param validFrom The validFrom point
 	 */
 	public void setValidFrom(Long validFrom) {
 		this.validFrom = validFrom;
@@ -73,37 +71,39 @@ public abstract class LifetimeBaseNode extends BaseNode implements Named {
 
 	/**
 	 * Gets the point to which this node/class is valid.
-	 * 
+	 *
 	 * @return valid to
 	 */
-	@Fetch
 	public Long getValidTo() {
 		return validTo;
 	}
 
 	/**
 	 * Sets the point to which this node/class is valid.
-	 * 
-	 * @param	validTo	The validTo point
+	 *
+	 * @param validTo The validTo point
 	 */
 	public void setValidTo(Long validTo) {
 		this.validTo = validTo;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((validFrom == null) ? 0 : validFrom.hashCode());
+		result = prime * result + ((validFrom == null) ? 0 : validFrom.hashCode());
 		result = prime * result + ((validTo == null) ? 0 : validTo.hashCode());
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -114,7 +114,7 @@ public abstract class LifetimeBaseNode extends BaseNode implements Named {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		
+
 		LifetimeBaseNode other = (LifetimeBaseNode) obj;
 		if (validFrom == null) {
 			if (other.validFrom != null)
@@ -129,7 +129,9 @@ public abstract class LifetimeBaseNode extends BaseNode implements Named {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.domain.base.BaseNode#equalsData(java.lang.Object)
 	 */
 	@Override
@@ -139,7 +141,6 @@ public abstract class LifetimeBaseNode extends BaseNode implements Named {
 		if (!super.equalsData(obj) || getClass() != obj.getClass())
 			return false;
 
-		
 		LifetimeBaseNode other = (LifetimeBaseNode) obj;
 
 		if (validTo == null && other.validTo != null) {

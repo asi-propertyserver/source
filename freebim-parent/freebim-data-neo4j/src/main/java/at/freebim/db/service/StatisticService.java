@@ -1,16 +1,16 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
@@ -20,30 +20,38 @@ import java.util.ArrayList;
 
 /**
  * The service for statistics.
- * 
- * @author rainer.breuss@uibk.ac.at
  *
+ * @author rainer.breuss@uibk.ac.at
  */
 public interface StatisticService {
-	
-	public class StatPoint {
-		
+
+	/**
+	 * Get the statistic in a certain time interval. How much
+	 * contributions/modifications have been made.
+	 *
+	 * @param fromTs the start of the time interval
+	 * @param toTs   the end of the time interval
+	 * @return the statistics {@link StatPoint}
+	 */
+	ArrayList<StatPoint> get(Long fromTs, Long toTs);
+
+	class StatPoint {
+
 		/**
 		 * time stamp
 		 */
-		public String t; 
-		
+		public String t;
+
 		/**
 		 * modified
 		 */
-		public Number m; 
-		
+		public Number m;
+
 		/**
 		 * sum
 		 */
-		public Number s; 
-		
-		
+		public Number s;
+
 		/**
 		 * Create a new instance.
 		 */
@@ -52,16 +60,5 @@ public interface StatisticService {
 			this.s = 0L;
 		}
 	}
-
-	/**
-	 * Get the statistic in a certain time interval.
-	 * How much contributions/modifications have been made.
-	 * 
-	 * @param fromTs the start of the time interval
-	 * @param toTs the end of the time interval
-	 * 
-	 * @return the statistics {@link StatPoint}
-	 */
-	public ArrayList<StatPoint> get(Long fromTs, Long toTs);
 
 }

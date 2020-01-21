@@ -1,16 +1,16 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
@@ -27,27 +27,22 @@ import at.freebim.db.domain.base.rel.BaseRel;
 import at.freebim.db.service.EqualityService;
 
 /**
- * The service for equality.
- * It extends {@link EqualityService}.
- * 
- * @see at.freebim.db.service.EqualityService
- * 
+ * The service for equality. It extends {@link EqualityService}.
+ *
  * @author rainer.breuss@uibk.ac.at
- * 
+ * @see at.freebim.db.service.EqualityService
  */
 @Service
 public class EqualityServiceImpl implements EqualityService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * at.freebim.db.service.EqualityService#relatedEquals(java.lang.Iterable,
+	 *
+	 * @see at.freebim.db.service.EqualityService#relatedEquals(java.lang.Iterable,
 	 * at.freebim.db.domain.base.NodeIdentifyable)
 	 */
 	@Override
-	public <T extends NodeIdentifyable, R extends BaseRel<?, T>> boolean relatedEquals(
-			Iterable<R> iterable, T obj) {
+	public <T extends NodeIdentifyable, R extends BaseRel<?, T>> boolean relatedEquals(Iterable<R> iterable, T obj) {
 		if (iterable != null) {
 			final Iterator<R> iter = iterable.iterator();
 			if (iter != null && iter.hasNext()) {
@@ -70,12 +65,15 @@ public class EqualityServiceImpl implements EqualityService {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.service.EqualityService#relatedEquals(java.lang.Iterable, java.util.List)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see at.freebim.db.service.EqualityService#relatedEquals(java.lang.Iterable,
+	 * java.util.List)
 	 */
 	@Override
-	public <T extends NodeIdentifyable, R extends BaseRel<?, T>> boolean relatedEquals(
-			final Iterable<R> iterable, final List<T> list) {
+	public <T extends NodeIdentifyable, R extends BaseRel<?, T>> boolean relatedEquals(final Iterable<R> iterable,
+			final List<T> list) {
 
 		if (iterable == null) {
 			if (list != null)
@@ -84,7 +82,7 @@ public class EqualityServiceImpl implements EqualityService {
 			if (list == null)
 				return false;
 			else {
-				final ArrayList<Long> rels = new ArrayList<Long>();
+				final ArrayList<Long> rels = new ArrayList<>();
 				for (T item : list) {
 					final Long relatedNodeId = item.getNodeId();
 					rels.add(relatedNodeId);

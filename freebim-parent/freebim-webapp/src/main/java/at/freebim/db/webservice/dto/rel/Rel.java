@@ -16,8 +16,9 @@
  *****************************************************************************/
 package at.freebim.db.webservice.dto.rel;
 
-import at.freebim.db.webservice.DtoHelper;
+import javax.xml.bind.annotation.XmlElement;
 
+import at.freebim.db.webservice.DtoHelper;
 
 /**
  * DTO for a simple relation.
@@ -31,14 +32,12 @@ public class Rel {
 	 * The freeBIM-ID
 	 */
 	private String freebimId;
-	
-	
+
 	/**
 	 * The information.
 	 */
 	private String info;
-	
-	
+
 	/**
 	 * The helper class.
 	 */
@@ -46,9 +45,10 @@ public class Rel {
 
 	/**
 	 * Constructs a new relation instance.
-	 *  
-	 * @param uuid The freeBIM-ID of the related object.
-	 * @param info The optional <code>info</code> field of the original relation object.
+	 * 
+	 * @param uuid      The freeBIM-ID of the related object.
+	 * @param info      The optional <code>info</code> field of the original
+	 *                  relation object.
 	 * @param dtoHelper The helper.
 	 */
 	public Rel(String uuid, String info, DtoHelper dtoHelper) {
@@ -62,6 +62,7 @@ public class Rel {
 	 * 
 	 * @return the freebimId
 	 */
+	@XmlElement
 	public String getFreebimId() {
 		return this.dtoHelper.getString(freebimId);
 	}
@@ -80,6 +81,7 @@ public class Rel {
 	 * 
 	 * @return the info
 	 */
+	@XmlElement
 	public String getInfo() {
 		return this.dtoHelper.getString(info);
 	}
@@ -92,5 +94,5 @@ public class Rel {
 	public void setInfo(String info) {
 		this.info = info;
 	}
-	
+
 }

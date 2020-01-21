@@ -23,12 +23,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.Library;
 import at.freebim.db.domain.rel.References;
@@ -36,8 +37,8 @@ import at.freebim.db.service.BaseNodeService;
 import at.freebim.db.service.LibraryService;
 
 /**
- * The controller for the node/entity {@link Library}.
- * It extends {@link BaseController}.
+ * The controller for the node/entity {@link Library}. It extends
+ * {@link BaseController}.
  * 
  * @see at.freebim.db.domain.Library
  * @see at.freebim.db.webapp.controller.BaseController
@@ -45,7 +46,7 @@ import at.freebim.db.service.LibraryService;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/libraries")
 public class LibraryController extends BaseController<Library> {
 
@@ -59,7 +60,7 @@ public class LibraryController extends BaseController<Library> {
 	 */
 	@Autowired
 	private LibraryService libraryService;
-	
+
 	/**
 	 * Creates a new instance.
 	 */
@@ -67,33 +68,34 @@ public class LibraryController extends BaseController<Library> {
 		super(Library.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override
 	protected BaseNodeService<Library> getService() {
 		return this.libraryService;
 	}
-	
-    /**
-     * Delete every element from a {@link Library} and every relation to it. The {@link Library} 
-     * is specified by the provided id.
-     * 
-     * @param libId the id of the library. This parameter is required
-     * @param model the model
-     * @return the {@link AjaxResponse} that includes the library that has been cleared or a error message
-     */
-    @RequestMapping(value = "/clear", method = RequestMethod.POST)
-    public @ResponseBody AjaxResponse clearLibrary(@RequestParam(value="libId", required=true) Long libId, 
-    		Model model) {
+
+	/**
+	 * Delete every element from a {@link Library} and every relation to it. The
+	 * {@link Library} is specified by the provided id.
+	 * 
+	 * @param libId the id of the library. This parameter is required
+	 * @return the {@link AjaxResponse} that includes the library that has been
+	 *         cleared or a error message
+	 */
+	@PostMapping(value = "/clear")
+	public @ResponseBody AjaxResponse clearLibrary(@RequestParam(value = "libId", required = true) Long libId) {
 		logger.debug("clearLibrary nodeId={}", libId);
-		
+
 		AjaxResponse response = null;
 		try {
-			// Delegate to service 
+			// Delegate to service
 			Library lib = this.libraryService.clear(libId);
 			response = new AjaxResponse(lib);
-			
+
 		} catch (AuthenticationCredentialsNotFoundException e) {
 			response = new AjaxResponse(null);
 			response.setAccessDenied(true);
@@ -105,32 +107,30 @@ public class LibraryController extends BaseController<Library> {
 			response = new AjaxResponse(null);
 			response.setError(e.toString());
 		}
-		
+
 		savedNodesNotifications(response);
 
 		return response;
 	}
 
-    
-    /**
-     * Update the {@link Library} that has the provided id.
-     * When an error occurs the message will be added to the response.
-     * 
-     * @param libId the id of the {@link Library} that will be updated
-     * @param model the model
-     * @return the {@link AjaxResponse} that includes the updated {@link Library} or the error messages
-     */
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public @ResponseBody AjaxResponse updateLibrary(@RequestParam(value="libId", required=true) Long libId, 
-    		Model model) {
+	/**
+	 * Update the {@link Library} that has the provided id. When an error occurs the
+	 * message will be added to the response.
+	 * 
+	 * @param libId the id of the {@link Library} that will be updated
+	 * @return the {@link AjaxResponse} that includes the updated {@link Library} or
+	 *         the error messages
+	 */
+	@PutMapping(value = "/update")
+	public @ResponseBody AjaxResponse updateLibrary(@RequestParam(value = "libId", required = true) Long libId) {
 		logger.debug("updateLibrary nodeId={}", libId);
-		
+
 		AjaxResponse response = null;
 		try {
-			// Delegate to service 
+			// Delegate to service
 			Library lib = this.libraryService.update(libId);
 			response = new AjaxResponse(lib);
-			
+
 		} catch (AuthenticationCredentialsNotFoundException e) {
 			response = new AjaxResponse(null);
 			response.setAccessDenied(true);
@@ -142,37 +142,33 @@ public class LibraryController extends BaseController<Library> {
 			response = new AjaxResponse(null);
 			response.setError(e.toString());
 		}
-		
+
 		savedNodesNotifications(response);
 
 		return response;
 	}
 
-
-    
-    /**
-     * Get the a list of all names of the {@link References} 
-     * that are connected to a {@link Library}
-     * with the provided id. When an error occurs 
-     * the message will be added to the response.
-     * 
-     * @param libId the id of the {@link Library}
-     * @param model the model
-     * @return the {@link AjaxResponse} that includes the list of 
-     * {@link References} names or the error messages
-     */
-    @RequestMapping(value = "/refIdNames", method = RequestMethod.POST)
-    public @ResponseBody AjaxResponse refIdNames(@RequestParam(value="libId", required=true) Long libId, 
-    		Model model) {
+	/**
+	 * Get the a list of all names of the {@link References} that are connected to a
+	 * {@link Library} with the provided id. When an error occurs the message will
+	 * be added to the response.
+	 * 
+	 * @param libId the id of the {@link Library}
+	 * @param model the model
+	 * @return the {@link AjaxResponse} that includes the list of {@link References}
+	 *         names or the error messages
+	 */
+	@GetMapping(value = "/refIdNames")
+	public @ResponseBody AjaxResponse refIdNames(@RequestParam(value = "libId", required = true) Long libId) {
 		logger.debug("get all refIdNames for library nodeId={}", libId);
-		
+
 		AjaxResponse response = null;
 		try {
-			// Delegate to service 
+			// Delegate to service
 			ArrayList<String> refIdNames = (ArrayList<String>) this.libraryService.getRefIdNames(libId);
 			logger.debug("got {} refIdNames.", ((refIdNames == null) ? "null" : refIdNames.size()));
 			response = new AjaxResponse(refIdNames);
-			
+
 		} catch (AuthenticationCredentialsNotFoundException e) {
 			response = new AjaxResponse(null);
 			response.setAccessDenied(true);
@@ -184,7 +180,7 @@ public class LibraryController extends BaseController<Library> {
 			response = new AjaxResponse(null);
 			response.setError(e.toString());
 		}
-		
+
 		savedNodesNotifications(response);
 
 		return response;

@@ -1,42 +1,40 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
 package at.freebim.db.domain.base.rel;
 
-import org.springframework.data.neo4j.annotation.RelationshipEntity;
+import org.neo4j.ogm.annotation.RelationshipEntity;
 
 import at.freebim.db.domain.base.NodeIdentifyable;
 
 /**
- * Abstract base class for relations that could b
- * e qualified by a floating point value in the range 
- * from <code>0.</code> (bad) to <code>1.</code> (good).
- * It extends {@link BaseRel}.
- * 
- * @see at.freebim.db.domain.base.rel.BaseRel
- * @see at.freebim.db.domain.base.NodeIdentifyable
- * 
+ * Abstract base class for relations that could b e qualified by a floating
+ * point value in the range from <code>0.</code> (bad) to <code>1.</code>
+ * (good). It extends {@link BaseRel}.
  *
  * @param <FROM> Type that represents the start node of the relation.
- * @param <TO> Type that represents the end node of the relation.
- * 
+ * @param <TO>   Type that represents the end node of the relation.
  * @author rainer.breuss@uibk.ac.at
+ * @see org.neo4j.ogm.annotation.RelationshipEntity
+ * @see at.freebim.db.domain.base.rel.BaseRel
+ * @see at.freebim.db.domain.base.NodeIdentifyable
  */
 @RelationshipEntity
-public abstract class QualifiedBaseRel<FROM extends NodeIdentifyable, TO extends NodeIdentifyable> extends BaseRel<FROM, TO> {
+public abstract class QualifiedBaseRel<FROM extends NodeIdentifyable, TO extends NodeIdentifyable>
+		extends BaseRel<FROM, TO> {
 
 	private static final long serialVersionUID = 7721954778926106394L;
 
@@ -44,10 +42,10 @@ public abstract class QualifiedBaseRel<FROM extends NodeIdentifyable, TO extends
 	 * The quality.
 	 */
 	private double q;
-	
+
 	/**
 	 * Initialize the relation with a type.
-	 * 
+	 *
 	 * @param type The type of the relation.
 	 */
 	public QualifiedBaseRel(String type) {
@@ -56,7 +54,7 @@ public abstract class QualifiedBaseRel<FROM extends NodeIdentifyable, TO extends
 
 	/**
 	 * Get the quality.
-	 * 
+	 *
 	 * @return the q
 	 */
 	public double getQ() {
@@ -65,14 +63,16 @@ public abstract class QualifiedBaseRel<FROM extends NodeIdentifyable, TO extends
 
 	/**
 	 * Set the quality.
-	 * 
+	 *
 	 * @param q the q to set
 	 */
 	public void setQ(double q) {
 		this.q = q;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -85,7 +85,9 @@ public abstract class QualifiedBaseRel<FROM extends NodeIdentifyable, TO extends
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -102,7 +104,5 @@ public abstract class QualifiedBaseRel<FROM extends NodeIdentifyable, TO extends
 			return false;
 		return true;
 	}
-
-
 
 }

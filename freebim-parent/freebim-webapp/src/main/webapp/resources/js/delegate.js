@@ -432,13 +432,15 @@ jq(document).on("_delete", function (event, data) {
 				}]);
 
 			} else {
-				document.location.href = "/logout";
+				at.freebim.db.request.logout();
 				return;
 			}
 		},
 		function (error) {
 			clazz.loading = false;
-		}
+		},
+		null,
+		"DELETE"
 	);
 });
 
@@ -453,7 +455,7 @@ jq(document).on("_load", function (event, data) {
 		}
 		clazz.loading = true;
 		
-		db.post("/" + clazz.path + "/list", 
+		db.post("/" + clazz.path + "/list",
 			{clean : false}, 
 			i18n.gA("LOADING", clazz.i18n),
 			function (response) {
@@ -477,7 +479,7 @@ jq(document).on("_load", function (event, data) {
 			},
 			function (error) {
 				clazz.loading = false;
-			}
+			}, null, "GET"
 		);
 	}, 1);
 });
@@ -588,7 +590,7 @@ jq(document).on("_save", function (e, data) {
 	entity[nf.NODEID] = ((entity[nf.NODEID] == "") ? null : entity[nf.NODEID]);
 	
 	db.post("/" + clazz.path + "/save",
-		{ json : JSON.stringify(entity) },
+		entity,
 		i18n.gA1("SAVING", clazz.i18n, clazz.getNameOf(entity)),
 		function(response) {
 			jq(document).trigger("hide_progress", [ { key : cn + "_save" } ]);
@@ -620,7 +622,9 @@ jq(document).on("_save", function (e, data) {
 			jq(document).trigger("filter", [{}]);
 
 		},
-		null // fail
+		null, // fail
+		null,
+		"POST"
 	);
 });
 
@@ -761,6 +765,7 @@ jq(document).on("i18n_translate", function (event, data) {
 });
 
 jq(document).ready(function () {
+	
 	var db = at.freebim.db, d = db.domain, nf = d.NodeFields, i18n = net.spectroom.js.i18n;
 
 	jq("#show-deleted").change(function() {
@@ -1006,53 +1011,3 @@ jq(document).ready(function () {
 		jq(document).trigger("do-bsdd-logout", [{}]);
 	});
 });
-
-/**
- * Show a classification string on mouse over ...
- * TODO: remove this code and implement Classification for HierarchicalBaseNode in general
- * probably using existing 'code' field.
- */
-/*jq(document).delegate(".tree-headline-text:not(.hastooltip)", "mouseover", function (event, data) {
-	var db = at.freebim.db, d = db.domain, nf = d.NodeFields, rf = d.RelationFields;
-	if (!db.contributor) {
-		return;
-	}
-	 jq(this).addClass('hastooltip').tooltip({
-			open: function(event, ui) {
-				// remove all other tooltips!
-			    jq(ui.tooltip).siblings(".ui-tooltip").remove();
-			},
-			content: function(callback) {
-				var x = jq(this), nodeId = x.closest(".tree-node").attr("nodeid"), node = d.get(nodeId),
-				classify = function (e) {
-					if (e) {
-						if (e[nf.PARENTS] && e[nf.PARENTS].length > 0) {
-							var pId = e[nf.PARENTS][0][rf.FROM_NODE], p = d.get(pId), i, n = p[nf.CHILDS].length;
-							// sort childs by ordering field
-							p[nf.CHILDS].sort(function (a, b) {
-								var res = (a[rf.ORDERING] - b[rf.ORDERING]);
-								if (res == 0) {
-									if (a[nf.NAME] > b[nf.NAME]) {
-										return 1;
-									} else if (a[nf.NAME] < b[nf.NAME]) {
-										return -1;
-									} 
-								}
-								return res;
-							});
-							for (i=0; i<n; i++) {
-								if (p[nf.CHILDS][i][rf.TO_NODE] == e[nf.NODEID]) {
-									break;
-								}
-							}
-							return classify(p) + "." + (i+1) * 10;
-						}
-					} 
-					return "freeBIM";
-				};
-				callback("" + classify(node));
-			}
-	 }).mouseover();
-     return false;
-});*/
-

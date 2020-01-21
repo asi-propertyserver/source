@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package at.freebim.db.dto;
 
@@ -16,9 +16,9 @@ public class IfdName implements Serializable {
 	private String languageGuid;
 	private String name;
 	private String nameType;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public IfdName() {
 	}

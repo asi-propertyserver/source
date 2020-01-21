@@ -21,12 +21,12 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.BigBangNode;
 import at.freebim.db.service.BaseNodeService;
@@ -36,8 +36,8 @@ import at.freebim.db.service.StatisticService;
 import at.freebim.db.service.StatisticService.StatPoint;
 
 /**
- * This controller is used to return the statistics.
- * It extends {@link BaseController}.
+ * This controller is used to return the statistics. It extends
+ * {@link BaseController}.
  * 
  * @see at.freebim.db.domain.BigBangNode
  * @see at.freebim.db.webapp.controller.BaseController
@@ -45,7 +45,7 @@ import at.freebim.db.service.StatisticService.StatPoint;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/statistic")
 public class StatisticController extends BaseController<BigBangNode> {
 
@@ -53,42 +53,41 @@ public class StatisticController extends BaseController<BigBangNode> {
 	 * The logger.
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(StatisticController.class);
-	
 
 	/**
 	 * The service that handles the root node/entity {@link BigBangNode}.
 	 */
 	@Autowired
 	private BigBangNodeService bigBangNodeService;
-	
+
 	/**
 	 * The service which provides as the statistical data.
 	 */
 	@Autowired
 	private StatisticService statisticService;
-	
-	
+
 	/**
 	 * The service that handles the date.
 	 */
 	@Autowired
 	private DateService dateService;
-	
-    /**
-     * Creates a new instance.
-     */
-    public StatisticController() {
+
+	/**
+	 * Creates a new instance.
+	 */
+	public StatisticController() {
 		super(BigBangNode.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override
 	protected BaseNodeService<BigBangNode> getService() {
 		return this.bigBangNodeService;
 	}
-	
 
 	/**
 	 * Show the statistic web-page.
@@ -96,7 +95,7 @@ public class StatisticController extends BaseController<BigBangNode> {
 	 * @param model the model
 	 * @return the name of the JSP page
 	 */
-	@RequestMapping(value = "", method = RequestMethod.GET)
+	@GetMapping(value = "")
 	public String getRoot(Model model) {
 		logger.debug("Received request to show statistic page");
 
@@ -106,28 +105,26 @@ public class StatisticController extends BaseController<BigBangNode> {
 	}
 
 	/**
-	 * Get the number of modifications over a specified time period.
-	 * The period is defined by to time stamps that are passed as parameter.
+	 * Get the number of modifications over a specified time period. The period is
+	 * defined by to time stamps that are passed as parameter.
 	 * 
 	 * @param fromTs the starting time stamp
-	 * @param toTs the end time stamp
-	 * @param model the model
+	 * @param toTs   the end time stamp
+	 * 
 	 * @return the {@link AjaxResponse} that includes the statistics
 	 */
-	@RequestMapping(value = "/added/{fromTs}/{toTs}", method = RequestMethod.GET)
-	public @ResponseBody  AjaxResponse getAdded(@PathVariable Long fromTs, @PathVariable Long toTs, Model model) {
+	@GetMapping(value = "/added/{fromTs}/{toTs}")
+	public @ResponseBody AjaxResponse getAdded(@PathVariable Long fromTs, @PathVariable Long toTs) {
 		logger.debug("Received request to statistic 'added', from=[{}], to=[{}]", fromTs, toTs);
 
-		super.setUserInfo(model);
-		
 		if (toTs == 0L) {
 			toTs = this.dateService.getMillis();
 		}
-		
+
 		AjaxResponse response = null;
-		
+
 		ArrayList<StatPoint> points = this.statisticService.get(fromTs, toTs);
-		
+
 		response = new AjaxResponse(points);
 		return response;
 	}

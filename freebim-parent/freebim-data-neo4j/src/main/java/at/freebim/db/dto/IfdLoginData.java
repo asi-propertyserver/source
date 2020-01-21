@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package at.freebim.db.dto;
 
@@ -15,9 +15,9 @@ public class IfdLoginData implements Serializable {
 
 	private String email;
 	private String password;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public IfdLoginData() {
 	}

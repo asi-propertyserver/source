@@ -18,20 +18,22 @@ package at.freebim.db.webapp.controller;
 
 import java.io.Serializable;
 
+import javax.validation.Valid;
+
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import at.freebim.db.domain.base.UuidIdentifyable;
 import at.freebim.db.service.UuidIdentifyableService;
+import at.freebim.db.webapp.models.request.BaseUuidGetModel;
+import io.swagger.annotations.ApiOperation;
 
 /**
- * The abstract base class for all controllers that handle a 
- * node/entity that extends {@link UuidIdentifyable}. 
- * The class itself extends {@link BaseController}.
+ * The abstract base class for all controllers that handle a node/entity that
+ * extends {@link UuidIdentifyable}. The class itself extends
+ * {@link BaseController}.
  * 
  * @see at.freebim.db.webapp.controller.BaseController
  * @see at.freebim.db.domain.base.UuidIdentifyable
@@ -41,36 +43,35 @@ import at.freebim.db.service.UuidIdentifyableService;
  */
 public abstract class BaseUuidController<T extends UuidIdentifyable> extends BaseController<T> {
 
-    /**
-     * Creates a new instance.
-     * 
-     * @param clazz the representation of a class
-     */
-    protected BaseUuidController(Class<T> clazz) {
+	/**
+	 * Creates a new instance.
+	 * 
+	 * @param clazz the representation of a class
+	 */
+	protected BaseUuidController(Class<T> clazz) {
 		super(clazz);
 	}
 
-
-    /**
-     * Load a node/entity of the type <b>T</b> that has the provided uuid.
-     * If an error occurs the error field of the response will be set.
-     * The same is true when the access was denied.
-     * 
-     * @param u the uuid of the node/entity
-     * @param model the model
-     * @return the {@link AjaxResponse} that includes the found node/entity
-     */
-    @RequestMapping(value = "/getbyuuid", method = RequestMethod.POST)
-    public @ResponseBody AjaxResponse get(@RequestParam(value="u", required=true) String u, 
-    		Model model) {
-		logger.debug("Get a single entity, uuid={}", u);
+	/**
+	 * Load a node/entity of the type <b>T</b> that has the provided uuid. If an
+	 * error occurs the error field of the response will be set. The same is true
+	 * when the access was denied.
+	 * 
+	 * @param u     the uuid of the node/entity
+	 * @param model the model
+	 * @return the {@link AjaxResponse} that includes the found node/entity
+	 */
+	@ApiOperation(value = "Get the node that has the provided UUID", notes = "Load the node from the databse that has the provided UUID")
+	@GetMapping(value = "/getbyuuid")
+	public @ResponseBody AjaxResponse get(@Valid @RequestBody(required = true) BaseUuidGetModel json) {
+		logger.debug("Get a single entity, uuid={}", json.getU());
 
 		AjaxResponse response = null;
 		try {
-			// Delegate to service 
+			// Delegate to service
 			UuidIdentifyableService<T> service = (UuidIdentifyableService<T>) this.getService();
-			UuidIdentifyable entity = service.getByUuid(u);
-			
+			UuidIdentifyable entity = service.getByUuid(json.getU());
+
 			response = new AjaxResponse((Serializable) entity);
 		} catch (AccessDeniedException e) {
 			response = new AjaxResponse(null);
@@ -80,7 +81,7 @@ public abstract class BaseUuidController<T extends UuidIdentifyable> extends Bas
 			response = new AjaxResponse(null);
 			response.setError(e.toString());
 		}
-		
+
 		return response;
 	}
 

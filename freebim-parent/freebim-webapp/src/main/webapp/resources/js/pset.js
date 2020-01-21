@@ -78,7 +78,7 @@ at.freebim.db.bsdd.pset = {
 										
 										ps.checkPropertiesOfPset(pset, child, libId);
 										
-									});
+									}, null, null, "GET");
 								}
 								break;
 							}
@@ -152,7 +152,7 @@ at.freebim.db.bsdd.pset = {
 								at.freebim.db.bsdd.pset.save(pset);
 							}}]);
 						}
-					});
+					}, null, null, "GET");
 					break;
 				}
 			});

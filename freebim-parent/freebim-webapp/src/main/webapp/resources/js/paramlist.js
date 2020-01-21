@@ -465,7 +465,6 @@ at.freebim.db.domain.parameterlist = {
 		var db = at.freebim.db, d = db.domain, nf = d.NodeFields, pl = d.parameterlist, c = d.Component.className;
 		if (e && db.time.validNode(e)) {
 			if (e[nf.CLASS_NAME] != c) {
-				// TODO: addParams if entity is not a Component.
 				// this is the case if we process an EQUALS relation to a Parameter ...
 				return;
 			}

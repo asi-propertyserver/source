@@ -1,16 +1,16 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
@@ -22,13 +22,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Relationship;
 import org.neo4j.kernel.DeadlockDetectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,13 +53,10 @@ import at.freebim.db.service.RelationService;
 import at.freebim.db.service.ValueListService;
 
 /**
- * The app-version service.
- * This class implements {@link AppVersionService}.
- * 
- * @see at.freebim.db.service.AppVersionService
- * 
- * @author rainer.breuss@uibk.ac.at
+ * The app-version service. This class implements {@link AppVersionService}.
  *
+ * @author rainer.breuss@uibk.ac.at
+ * @see at.freebim.db.service.AppVersionService
  */
 @Service
 public class AppVersionServiceImpl implements AppVersionService {
@@ -77,19 +71,19 @@ public class AppVersionServiceImpl implements AppVersionService {
 	 */
 	@Autowired
 	private RelationService relationService;
-	
+
 	/**
 	 * The service that handles the {@link ValueList}.
 	 */
 	@Autowired
 	private ValueListService valueListService;
-	
+
 	/**
 	 * The service that handles {@link Component}s.
 	 */
 	@Autowired
 	private ComponentService componentService;
-	
+
 	/**
 	 * The service that handles {@link Parameter}s.
 	 */
@@ -102,39 +96,37 @@ public class AppVersionServiceImpl implements AppVersionService {
 	@Autowired
 	private MeasureService measureService;
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.AppVersionService#createParentOfRelations()
 	 */
 	@Override
 	@Transactional
 	public Long createParentOfRelations() {
-		
+
 		Long res = 0L;
 		String q = "MATCH (a)-[co:CHILD_OF]->(b) RETURN a, co, b";
-		
-		Result<Map<String, Object>> result = this.relationService.getTemplate().query(q, null);
+
+		Iterable<Map<String, Object>> result = this.relationService.getTemplate().query(q, new HashMap<>(), true);
 		Iterator<Map<String, Object>> iter = result.iterator();
-		
+
 		while (iter.hasNext()) {
 			Map<String, Object> map = iter.next();
 			try {
-				Node a = (Node) map.get("a");
-				HierarchicalBaseNode bna = (HierarchicalBaseNode) this.relationService.createTreeNode(a);
-				Relationship r = (Relationship) map.get("co");
-				ChildOf co = (ChildOf) this.relationService.createTreeRel(r);
-				Node b = (Node) map.get("b");
-				HierarchicalBaseNode bnb = (HierarchicalBaseNode) this.relationService.createTreeNode(b);
-				
+				HierarchicalBaseNode a = (HierarchicalBaseNode) map.get("a");
+				ChildOf r = (ChildOf) map.get("co");
+				HierarchicalBaseNode b = (HierarchicalBaseNode) map.get("b");
+
 				ParentOf po = new ParentOf();
-				po.setInfo(co.getInfo());
-				po.setOrdering(co.getOrdering());
-				po.setN1(bnb);
-				po.setN2(bna);
-				
+				po.setInfo(r.getInfo());
+				po.setOrdering(r.getOrdering());
+				po.setN1(b);
+				po.setN2(a);
+
 				this.relationService.save(po);
-				this.relationService.delete(co);
-				
+				this.relationService.delete(r);
+
 				res++;
 
 			} catch (Exception e) {
@@ -143,36 +135,41 @@ public class AppVersionServiceImpl implements AppVersionService {
 		}
 		return res;
 	}
-	
-	/* (non-Javadoc)
-	 * @see at.freebim.db.service.AppVersionService#createValueListOfComponentRelations()
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.service.AppVersionService#createValueListOfComponentRelations()
 	 */
 	public Long createValueListOfComponentRelations() {
-		
+
 		logger.info("createValueListOfComponentRelations ...");
-		
+
 		Long res = 0L;
-		
-		HashMap<String, Long> parameterIdMap = new HashMap<String, Long>();
-		HashMap<Long, Long> parameterMeasureMap = new HashMap<Long, Long>();
-		HashMap<Long, ValueList> valueListMap = new HashMap<Long, ValueList>();
-		HashMap<Long, Component> componentMap = new HashMap<Long, Component>();
-		HashMap<Long, Parameter> parameterMap = new HashMap<Long, Parameter>();
-		HashMap<Long, Measure> measureMap = new HashMap<Long, Measure>();
-		List<Long> paramsToKeep = new ArrayList<Long>();
-		List<Long> paramsToDelete = new ArrayList<Long>();
-		List<Long> measuresToKeep = new ArrayList<Long>();
-		List<Long> measuresToDelete = new ArrayList<Long>();
-		List<Long> relationsHandled = new ArrayList<Long>();
-		List<Long> relationsToDelete = new ArrayList<Long>();
-		
+
+		HashMap<String, Long> parameterIdMap = new HashMap<>();
+		HashMap<Long, Long> parameterMeasureMap = new HashMap<>();
+		HashMap<Long, ValueList> valueListMap = new HashMap<>();
+		HashMap<Long, Component> componentMap = new HashMap<>();
+		HashMap<Long, Parameter> parameterMap = new HashMap<>();
+		HashMap<Long, Measure> measureMap = new HashMap<>();
+		List<Long> paramsToKeep = new ArrayList<>();
+		List<Long> paramsToDelete = new ArrayList<>();
+		List<Long> measuresToKeep = new ArrayList<>();
+		List<Long> measuresToDelete = new ArrayList<>();
+		List<Long> relationsHandled = new ArrayList<>();
+		List<Long> relationsToDelete = new ArrayList<>();
+
 		StringBuilder b = new StringBuilder();
-		
+
 		b.append("MATCH path = (bbn:BigBangNode)-[:PARENT_OF*]->(c)");
-		b.append(" WHERE ALL (y in nodes(path) WHERE y.validFrom<timestamp() AND (y.validTo IS NULL OR y.validTo > timestamp()))");
+		b.append(
+				" WHERE ALL (y in nodes(path) WHERE y.validFrom<timestamp() AND (y.validTo IS NULL OR y.validTo > timestamp()))");
 		b.append(" WITH c AS c");
 		b.append(" MATCH path = (c)-[:HAS_PARAMETER]->(p)");
-		b.append(" WHERE ALL (y in nodes(path) WHERE y.validFrom<timestamp() AND (y.validTo IS NULL OR y.validTo > timestamp()))");
+		b.append(
+				" WHERE ALL (y in nodes(path) WHERE y.validFrom<timestamp() AND (y.validTo IS NULL OR y.validTo > timestamp()))");
 		b.append(" with p.name AS pname, count(*) AS cnt");
 		b.append(" MATCH (y:Parameter)");
 		b.append(" WHERE cnt > 1");
@@ -180,7 +177,8 @@ public class AppVersionServiceImpl implements AppVersionService {
 		b.append(" AND y.validFrom<timestamp() AND (y.validTo IS NULL OR y.validTo > timestamp())");
 		b.append(" WITH cnt AS cnt, y AS p");
 		b.append(" MATCH path = (c)-[hp:HAS_PARAMETER]->(p)-[:HAS_MEASURE]->(m)-[hv:HAS_VALUE]->(vl)");
-		b.append(" where ALL (y in nodes(path) WHERE y.validFrom<timestamp() AND (y.validTo IS NULL OR y.validTo > timestamp()))");
+		b.append(
+				" where ALL (y in nodes(path) WHERE y.validFrom<timestamp() AND (y.validTo IS NULL OR y.validTo > timestamp()))");
 		b.append(" OPTIONAL MATCH (p)-[eq:EQUALS]-(x)");
 		b.append(" return ID(c) AS cid");
 		b.append(" , ID(p) AS pid");
@@ -193,10 +191,10 @@ public class AppVersionServiceImpl implements AppVersionService {
 		b.append(" , eq AS eq");
 
 		String query = b.toString();
-		
-		Result<Map<String, Object>> result = this.relationService.getTemplate().query(query, null);
+
+		Iterable<Map<String, Object>> result = this.relationService.getTemplate().query(query, new HashMap<>(), true);
 		Iterator<Map<String, Object>> iter = result.iterator();
-		
+
 		while (iter.hasNext()) {
 
 			Map<String, Object> map = iter.next();
@@ -204,8 +202,8 @@ public class AppVersionServiceImpl implements AppVersionService {
 				String pname = (String) map.get("pname");
 				pname = pname.trim();
 				Long pid = parameterIdMap.get(pname);
-				Parameter p = null;
-				
+				Parameter p;
+
 				Long vlid = (Long) map.get("vlid");
 				ValueList vl = valueListMap.get(vlid);
 				if (vl == null) {
@@ -227,7 +225,7 @@ public class AppVersionServiceImpl implements AppVersionService {
 					p = this.parameterService.getByNodeId(pid);
 					parameterMap.put(pid, p);
 					paramsToKeep.add(pid);
-					
+
 					Long mid = (Long) map.get("mid");
 					Measure m = this.measureService.getByNodeId(mid);
 					// rename that Measure, it was name of ValueList
@@ -237,11 +235,11 @@ public class AppVersionServiceImpl implements AppVersionService {
 					logger.info("\tMeasure [{}] saved.", m.getName());
 					measureMap.put(pid, m);
 					measuresToKeep.add(mid);
-					
-					Relationship r = (Relationship) map.get("hv");
+
+					HasValue r = (HasValue) map.get("hv");
 					if (r != null) {
-						HasValue hv = (HasValue) this.relationService.createTreeRel(r);
-						this.relationService.delete(hv);
+						// HasValue hv = (HasValue) this.relationService.createTreeRel(r);
+						this.relationService.delete(r);
 					}
 					HasValue hv = new HasValue();
 					hv.setN1(m);
@@ -249,7 +247,7 @@ public class AppVersionServiceImpl implements AppVersionService {
 					hv.setComponentUuid(c.getUuid());
 					hv = (HasValue) this.relationService.save(hv);
 					logger.info("\tHasValue relation id=[{}] saved.", hv.getId());
-					
+
 				} else {
 					// we have a parameter with the same name already
 					// so we could delete this one and use the one we got first
@@ -259,7 +257,7 @@ public class AppVersionServiceImpl implements AppVersionService {
 					if (!paramsToKeep.contains(pid) && !paramsToDelete.contains(pid)) {
 						paramsToDelete.add(pid);
 					}
-	
+
 					// create new (:Component)-[:HAS_PARAMETER]->(:Parameter) relation
 					// but check for existing first ...
 					HasParameter hp = null;
@@ -285,24 +283,20 @@ public class AppVersionServiceImpl implements AppVersionService {
 						hp.setPhaseUuid(phase);
 						hp = (HasParameter) this.relationService.save(hp);
 						logger.info("\tHasParameter relation id=[{}] saved.", hp.getId());
-						
+
 						c = this.componentService.getByNodeId(c.getNodeId());
 						componentMap.put(cid, c);
 					}
-					
-					// there might be EQUALS relations from deleted Parameter to other nodes 
-					Relationship eq = (Relationship) map.get("eq");
+
+					// there might be EQUALS relations from deleted Parameter to other nodes
+					Equals eq = (Equals) map.get("eq");
 					if (eq != null && !relationsHandled.contains(eq.getId())) {
-						Equals rel = null;
-						try {
-							rel = (Equals) this.relationService.createTreeRel(eq);
-						} catch (Exception e) {
-							logger.error("Can't get Equals relation: ", e);
-						}
+						Equals rel = eq;
+
 						if (rel != null) {
 							relationsHandled.add(rel.getId());
-							Long otherId = ((rel.getN1().getNodeId().equals(pid)) ? rel.getN2().getNodeId() : rel.getN1().getNodeId());
-							BaseNode other = this.relationService.getNodeById(otherId);
+							BaseNode other = ((rel.getN1().getNodeId().equals(pid)) ? rel.getN2() : rel.getN1());
+
 							if (other != null) {
 								Equals e = new Equals();
 								if (rel.getN1().getNodeId().equals(pid)) {
@@ -312,7 +306,7 @@ public class AppVersionServiceImpl implements AppVersionService {
 									e.setN1(other);
 									e.setN2(p);
 								}
-								e.setQ(rel.getQ()); 
+								e.setQ(rel.getQ());
 								e = (Equals) this.relationService.save(e);
 								logger.info("\tEquals relation id=[{}] saved.", e.getId());
 
@@ -321,10 +315,9 @@ public class AppVersionServiceImpl implements AppVersionService {
 									relationsToDelete.add(rel.getId());
 								}
 							}
-							
+
 						}
 					}
-
 
 					// we could delete the Measure too ...
 					Long mid = (Long) map.get("mid");
@@ -334,7 +327,7 @@ public class AppVersionServiceImpl implements AppVersionService {
 
 					// create new (:Measure)-[:HAS_VALUE]->(:ValueList) relation
 					Measure m = measureMap.get(p.getNodeId());
-					
+
 					Iterable<HasValue> iterable = m.getValue();
 					Iterator<HasValue> hviter = iterable.iterator();
 					boolean hasHv = false;
@@ -354,19 +347,19 @@ public class AppVersionServiceImpl implements AppVersionService {
 						hv.setComponentUuid(c.getUuid());
 						hv = (HasValue) this.relationService.save(hv);
 						logger.info("\tHasValue relation id=[{}] saved.", hv.getId());
-						
+
 						m = this.measureService.getByNodeId(m.getNodeId());
 						measureMap.put(p.getNodeId(), m);
 					}
-					
+
 					res++;
 				}
-				
+
 			} catch (Exception e) {
 				logger.error("Error in createValueListOfComponentRelations: ", e);
 			}
 		}
-		
+
 		// actually delete unused Parameters and Measures:
 		for (Long pid : paramsToDelete) {
 			int counter = 100;
@@ -381,6 +374,8 @@ public class AppVersionServiceImpl implements AppVersionService {
 					} catch (InterruptedException e1) {
 						counter = 0;
 					}
+				} catch (Exception ex) {
+					logger.error("Error when trying to delete node=[{}]", pid);
 				}
 			}
 			logger.info("\tParameter nodeId=[{}] deleted.", pid);
@@ -398,6 +393,8 @@ public class AppVersionServiceImpl implements AppVersionService {
 					} catch (InterruptedException e1) {
 						counter = 0;
 					}
+				} catch (Exception ex) {
+					logger.error("Error when trying to delete node=[{}]", pid);
 				}
 			}
 			logger.info("\tMeasure nodeId=[{}] deleted.", pid);
@@ -415,54 +412,58 @@ public class AppVersionServiceImpl implements AppVersionService {
 					} catch (InterruptedException e1) {
 						counter = 0;
 					}
+				} catch (Exception ex) {
+					logger.error("Error when trying to delete node=[{}]", pid);
 				}
 			}
 			logger.info("\tEquals relation Id=[{}] deleted.", pid);
 		}
-		
+
 		logger.info("\t[{}] Parameters deleted.", paramsToDelete.size());
 		logger.info("\t[{}] Measures deleted.", measuresToDelete.size());
 		logger.info("\t[{}] Equals relations deleted.", relationsToDelete.size());
-		
+
 		logger.info("createValueListOfComponentRelations finished.");
 
 		return res;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.AppVersionService#dropDuplicateEqualRelations()
 	 */
 	@Override
 	@Transactional
 	public Long dropDuplicateEqualRelations() {
-		
+
 		logger.info("dropDuplicateEqualRelations ...");
-		
-		List<Long> toDelete = new ArrayList<Long>();
+
+		List<Long> toDelete = new ArrayList<>();
 		StringBuilder b = new StringBuilder();
-		
+
 		b.append("MATCH (a)-[r1:EQUALS]->(b)-[r2:EQUALS]->(a)");
 		b.append(" WHERE r1.q = r2.q");
 		b.append(" return ID(r2) AS id");
-		
-		Result<Map<String, Object>> result = this.relationService.getTemplate().query(b.toString(), null);
+
+		Iterable<Map<String, Object>> result = this.relationService.getTemplate().query(b.toString(), new HashMap<>(), true);
 		Iterator<Map<String, Object>> iter = result.iterator();
-		
+
 		while (iter.hasNext()) {
 			Map<String, Object> map = iter.next();
-			
+
 			try {
-				
+
 				Long id = (Long) map.get("id");
 				if (!toDelete.contains(id)) {
 					toDelete.add(id);
-				}				
+				}
 
 			} catch (Exception e) {
 				logger.error("Error in dropDuplicateEqualRelations: ", e);
 			}
 		}
-		
+
 		for (Long id : toDelete) {
 			int counter = 100;
 			while (counter-- > 0) {
@@ -478,15 +479,19 @@ public class AppVersionServiceImpl implements AppVersionService {
 					} catch (InterruptedException e1) {
 						counter = 0;
 					}
+				} catch (Exception ex) {
+					logger.error("Error when trying to delete node=[{}]", id);
 				}
 			}
 		}
-		
+
 		logger.info("dropDuplicateEqualRelations finished, count=[{}].", toDelete.size());
 		return (long) toDelete.size();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.AppVersionService#dropMultipleEqualRelations()
 	 */
 	@Override
@@ -494,11 +499,11 @@ public class AppVersionServiceImpl implements AppVersionService {
 	public Long dropMultipleEqualRelations() {
 
 		logger.info("dropMultipleEqualRelations ...");
-		
-		List<String> existing = new ArrayList<String>();
-		List<Long> toDelete = new ArrayList<Long>();
+
+		List<String> existing = new ArrayList<>();
+		List<Long> toDelete = new ArrayList<>();
 		StringBuilder b = new StringBuilder();
-		
+
 		b.append("MATCH (a)-[r:EQUALS]->(b)");
 		b.append(" WITH a AS a, count(*) AS cnt");
 		b.append(" WHERE cnt > 1");
@@ -507,23 +512,23 @@ public class AppVersionServiceImpl implements AppVersionService {
 		b.append(" WHERE cnt > 1");
 		b.append(" MATCH (a)-[r:EQUALS]->(b)");
 		b.append(" RETURN ID(a) AS ida, ID(b) AS idb, ID(r) AS idr");
-		
-		Result<Map<String, Object>> result = this.relationService.getTemplate().query(b.toString(), null);
+
+		Iterable<Map<String, Object>> result = this.relationService.getTemplate().query(b.toString(), new HashMap<>(), true);
 		Iterator<Map<String, Object>> iter = result.iterator();
-		
+
 		while (iter.hasNext()) {
 			Map<String, Object> map = iter.next();
-			
+
 			try {
-				
+
 				Long ida = (Long) map.get("ida");
 				Long idb = (Long) map.get("idb");
-				String key = String.valueOf(ida) + "-->" + String.valueOf(idb);
+				String key = ida + "-->" + idb;
 				if (existing.contains(key)) {
 					Long idr = (Long) map.get("idr");
 					if (!toDelete.contains(idr)) {
 						toDelete.add(idr);
-					}				
+					}
 				} else {
 					existing.add(key);
 				}
@@ -532,12 +537,12 @@ public class AppVersionServiceImpl implements AppVersionService {
 				logger.error("Error in dropMultipleEqualRelations: ", e);
 			}
 		}
-		
-		
+
 		for (Long id : toDelete) {
 			int counter = 100;
 			while (counter-- > 0) {
 				try {
+					
 					BaseRel<?, ?> rel = this.relationService.getByNodeId(id);
 					this.relationService.delete(rel);
 					logger.info("multiple Equal Relation id=[{}] deleted.", id);
@@ -549,15 +554,19 @@ public class AppVersionServiceImpl implements AppVersionService {
 					} catch (InterruptedException e1) {
 						counter = 0;
 					}
+				} catch (Exception ex) {
+					logger.error("Error when trying to delete node=[{}]", id);
 				}
 			}
 		}
-		
+
 		logger.info("dropMultipleEqualRelations finished, count=[{}]", toDelete.size());
 		return (long) toDelete.size();
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.AppVersionService#dropEqualSelfRelations()
 	 */
 	@Override
@@ -565,33 +574,32 @@ public class AppVersionServiceImpl implements AppVersionService {
 	public Long dropEqualSelfRelations() {
 
 		logger.info("dropEqualSelfRelations ...");
-		
-		List<Long> toDelete = new ArrayList<Long>();
+
+		List<Long> toDelete = new ArrayList<>();
 		StringBuilder b = new StringBuilder();
-		
+
 		b.append("MATCH (a)-[r:EQUALS]->(b)");
 		b.append(" WHERE a=b");
 		b.append(" RETURN ID(r) AS idr");
-		
-		Result<Map<String, Object>> result = this.relationService.getTemplate().query(b.toString(), null);
+
+		Iterable<Map<String, Object>> result = this.relationService.getTemplate().query(b.toString(), new HashMap<>(), true);
 		Iterator<Map<String, Object>> iter = result.iterator();
-		
+
 		while (iter.hasNext()) {
 			Map<String, Object> map = iter.next();
-			
+
 			try {
-				
+
 				Long idr = (Long) map.get("idr");
 				if (!toDelete.contains(idr)) {
 					toDelete.add(idr);
-				}				
+				}
 
 			} catch (Exception e) {
 				logger.error("Error in dropEqualSelfRelations: ", e);
 			}
 		}
-		
-		
+
 		for (Long id : toDelete) {
 			int counter = 100;
 			while (counter-- > 0) {
@@ -607,54 +615,61 @@ public class AppVersionServiceImpl implements AppVersionService {
 					} catch (InterruptedException e1) {
 						counter = 0;
 					}
+				} catch (Exception ex) {
+					logger.error("Error when trying to delete node=[{}]", id);
 				}
 			}
 		}
-		
+
 		logger.info("dropEqualSelfRelations finished, count=[{}]", toDelete.size());
 		return (long) toDelete.size();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.AppVersionService#performDbCleanup()
 	 */
 	@Override
 	@Transactional
 	public void performDbCleanup() {
 		logger.info("performDbCleanup ...");
-		
+
 		StringBuilder b = new StringBuilder();
-		
+
 		b.append("MATCH (co:Component)-[r:HAS_PARAMETER]->(x)");
 		b.append(" WHERE NOT (x:Parameter)");
 		b.append(" DELETE r");
-		
-		this.relationService.getTemplate().query(b.toString(), null);
+
+		this.relationService.getTemplate().query(b.toString(), new HashMap<>());
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.service.AppVersionService#correctComponentLibraryReferences()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.service.AppVersionService#correctComponentLibraryReferences()
 	 */
 	@Override
-	public void correctComponentLibraryReferences() { 
+	public void correctComponentLibraryReferences() {
 		correctLibraryReferences(LibraryService.LIBRARY_NAME_FREEBIM);
 		correctLibraryReferences(LibraryService.LIBRARY_NAME_IFC2x3);
 		correctLibraryReferences(LibraryService.LIBRARY_NAME_IFC4);
 		correctLibraryReferences(LibraryService.LIBRARY_NAME_FREECLASS);
 		correctPsetReferences();
 	}
-	
+
 	/**
-	 * Correct the {@link ParameterSet} {@link References}.
-	 * This is done be deleting the old one and creating a new one.
+	 * Correct the {@link ParameterSet} {@link References}. This is done be deleting
+	 * the old one and creating a new one.
 	 */
 	private void correctPsetReferences() {
 		logger.info("correctPsetReferences ...");
-		
-		Map<String, Object> params = new HashMap<String, Object>();
+
+		Map<String, Object> params = new HashMap<>();
 		params.put("libName", LibraryService.LIBRARY_NAME_IFC4);
 		StringBuilder b = new StringBuilder();
-		
+
 		// correct reference relations for ParameterSet instances
 		// they all should reference IFC-Library
 		b.append("MATCH (lib:Library)");
@@ -677,31 +692,30 @@ public class AppVersionServiceImpl implements AppVersionService {
 		b.append(" DELETE oldRef");
 		b.append(" RETURN count(newRef) AS cnt");
 
-
-		Result<Map<String, Object>> result = this.relationService.getTemplate().query(b.toString(), params);
+		Iterable<Map<String, Object>> result = this.relationService.getTemplate().query(b.toString(), params);
 		Iterator<Map<String, Object>> iter = result.iterator();
-		
+
 		while (iter.hasNext()) {
 			Map<String, Object> map = iter.next();
-			Number cnt = (Number)map.get("cnt");
+			Number cnt = (Number) map.get("cnt");
 			logger.info("corrected [{}] reference relations for ParameterSets.", cnt.longValue());
 		}
 	}
 
 	/**
 	 * Correct the {@link References} of {@link Component}s to {@link Library}s.
-	 * This is done be either creating one if there is none at all or by correcting it
-	 * if they point to the wrong {@link Library}.
-	 * 
+	 * This is done be either creating one if there is none at all or by correcting
+	 * it if they point to the wrong {@link Library}.
+	 *
 	 * @param libName the id of the {@link Library} that will be corrected
 	 */
 	private void correctLibraryReferences(String libName) {
 		logger.info("correctLibraryReferences [{}] ...", libName);
-		
-		Map<String, Object> params = new HashMap<String, Object>();
+
+		Map<String, Object> params = new HashMap<>();
 		params.put("libName", libName);
 		StringBuilder b = new StringBuilder();
-		
+
 		// create reference relations if there is non at all
 		b.append("MATCH (lib:Library)");
 		b.append(" WHERE lib.name={libName}");
@@ -714,17 +728,17 @@ public class AppVersionServiceImpl implements AppVersionService {
 		b.append(" } ]->(lib)");
 		b.append(" RETURN count(newRef) AS cnt");
 
-		Result<Map<String, Object>> result = this.relationService.getTemplate().query(b.toString(), params);
+		Iterable<Map<String, Object>> result = this.relationService.getTemplate().query(b.toString(), params);
 		Iterator<Map<String, Object>> iter = result.iterator();
-		
+
 		while (iter.hasNext()) {
 			Map<String, Object> map = iter.next();
-			Number cnt = (Number)map.get("cnt");
+			Number cnt = (Number) map.get("cnt");
 			logger.info("created [{}] reference relations for Library [{}].", cnt.longValue(), libName);
 		}
 
 		b.setLength(0);
-		
+
 		// correct reference relations if they point to the wrong Library
 		b.append("MATCH (lib:Library)");
 		b.append(" WHERE lib.name={libName}");
@@ -748,13 +762,12 @@ public class AppVersionServiceImpl implements AppVersionService {
 
 		result = this.relationService.getTemplate().query(b.toString(), params);
 		iter = result.iterator();
-		
+
 		while (iter.hasNext()) {
 			Map<String, Object> map = iter.next();
-			Number cnt = (Number)map.get("cnt");
+			Number cnt = (Number) map.get("cnt");
 			logger.info("corrected [{}] reference relations for Library [{}].", cnt.longValue(), libName);
 		}
 	}
-	
 
 }

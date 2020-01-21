@@ -1,14 +1,15 @@
-</div> <!-- .ui-layout-center -->
+</div>
+<!-- .ui-layout-center -->
 <div class="ui-layout-south">
-<sec:authorize access="hasRole('ROLE_USERMANAGER')"> 
-	<input id="btn_users" type="button" value="Benutzer" >
-	<input id="btn_libraries" type="button" value="Bibliotheken" >
-</sec:authorize>
-	<input class="btn_contributors" type="button" value="Bearbeiter" >
-	<input id="btn_units" type="button" value="Einheiten" >
-	<input id="btn_phases" type="button" value="Phasen" >
-	<input id="btn_tree" type="button" value="Struktur" >
-	<input id="btn_search" type="button" value="Suche" >
+	<sec:authorize access="hasRole('ROLE_USERMANAGER')">
+		<input id="btn_users" type="button" value="Benutzer">
+		<input id="btn_libraries" type="button" value="Bibliotheken">
+	</sec:authorize>
+	<input class="btn_contributors" type="button" value="Bearbeiter">
+	<input id="btn_units" type="button" value="Einheiten"> <input
+		id="btn_phases" type="button" value="Phasen"> <input
+		id="btn_tree" type="button" value="Struktur"> <input
+		id="btn_search" type="button" value="Suche">
 	<script type="text/javascript">
 		jq(document).ready(function(){
 <sec:authorize access="hasRole('ROLE_USERMANAGER')"> 
@@ -32,7 +33,8 @@
 			});	
 		});
 	</script>
-</div> <!-- .ui-layout-south -->
+</div>
+<!-- .ui-layout-south -->
 <div id="freebim-progress">
 	<img alt="progress" src="/resources/ajax-progress.gif">
 	<p>in Bearbeitung ...</p>

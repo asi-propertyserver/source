@@ -16,11 +16,13 @@
  *****************************************************************************/
 package at.freebim.db.webservice.dto;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import at.freebim.db.webservice.DtoHelper;
 
 /**
- * DTO of a {@link at.freebim.db.domain.Discipline}.
- * The class extends {@link Base}.
+ * DTO of a {@link at.freebim.db.domain.Discipline}. The class extends
+ * {@link Base}.
  * 
  * @see at.freebim.db.domain.Discipline
  * @see at.freebim.db.webservice.dto.Base
@@ -32,7 +34,8 @@ public class Discipline extends Base<at.freebim.db.domain.Discipline> {
 
 	/**
 	 * Creates a new instance.
-	 * @param node The original node.
+	 * 
+	 * @param node      The original node.
 	 * @param dtoHelper The helper.
 	 */
 	public Discipline(at.freebim.db.domain.Discipline node, DtoHelper dtoHelper) {
@@ -41,14 +44,17 @@ public class Discipline extends Base<at.freebim.db.domain.Discipline> {
 
 	/**
 	 * Get the code.
+	 * 
 	 * @return The code.
 	 */
+	@XmlElement
 	public String getCode() {
 		return this.dtoHelper.getString(this.node.getCode());
 	}
 
 	/**
 	 * Set the code.
+	 * 
 	 * @param code The code to set.
 	 */
 	public void setCode(String code) {
@@ -57,14 +63,17 @@ public class Discipline extends Base<at.freebim.db.domain.Discipline> {
 
 	/**
 	 * Get the local name.
+	 * 
 	 * @return The name.
 	 */
+	@XmlElement
 	public String getName() {
 		return this.dtoHelper.getString(this.node.getName());
 	}
 
-	/** 
+	/**
 	 * Set the local name.
+	 * 
 	 * @param name The local name to set.
 	 */
 	public void setName(String name) {
@@ -73,14 +82,17 @@ public class Discipline extends Base<at.freebim.db.domain.Discipline> {
 
 	/**
 	 * Get the name in international English.
+	 * 
 	 * @return the name in international English.
 	 */
+	@XmlElement
 	public String getNameEn() {
 		return this.dtoHelper.getString(this.node.getNameEn());
 	}
 
 	/**
 	 * Set the name in international English.
+	 * 
 	 * @param nameEn The name to set (in international English).
 	 */
 	public void setNameEn(String nameEn) {
@@ -89,30 +101,36 @@ public class Discipline extends Base<at.freebim.db.domain.Discipline> {
 
 	/**
 	 * Get the local description.
+	 * 
 	 * @return The local description.
 	 */
+	@XmlElement
 	public String getDesc() {
 		return this.dtoHelper.getString(this.node.getDesc());
 	}
-	
+
 	/**
 	 * Set the local description.
+	 * 
 	 * @param desc The local description to set.
 	 */
 	public void setDesc(String desc) {
 		this.node.setDesc(desc);
 	}
-	
+
 	/**
 	 * Get the description in international English.
+	 * 
 	 * @return The description in international English.
 	 */
+	@XmlElement
 	public String getDescEn() {
 		return this.dtoHelper.getString(this.node.getDescEn());
 	}
-	
+
 	/**
 	 * Set the description in international English.
+	 * 
 	 * @param descEn The description to set (in international English).
 	 */
 	public void setDescEn(String descEn) {
@@ -121,18 +139,21 @@ public class Discipline extends Base<at.freebim.db.domain.Discipline> {
 
 	/**
 	 * Get the bsDD-Guid.
+	 * 
 	 * @return The bsDD-Guid.
 	 */
+	@XmlElement
 	public String getBsddGuid() {
 		return this.dtoHelper.getString(this.node.getBsddGuid());
 	}
 
 	/**
 	 * Set the bsDD-Guid.
+	 * 
 	 * @param guid The bsDD-Guid to set.
 	 */
 	public void setBsddGuid(String guid) {
 		this.node.setBsddGuid(guid);
 	}
-	
+
 }

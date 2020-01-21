@@ -1,21 +1,21 @@
-/******************************************************************************
+/**
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ * <p>
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
- *****************************************************************************/
+ */
 /**
- * 
+ *
  */
 package at.freebim.db.domain;
 
@@ -27,11 +27,13 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.neo4j.template.Neo4jOperations;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import at.freebim.db.configuration.Neo4jTestConfiguration;
+import at.freebim.db.service.AbstractBaseTest;
 import at.freebim.db.service.NgramService;
 import at.freebim.db.service.UnitService;
 
@@ -40,26 +42,24 @@ import at.freebim.db.service.UnitService;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"/test-config.xml"})
+@ContextConfiguration(classes = Neo4jTestConfiguration.class)
 @Transactional
-public class NgramTest {
+public class NgramTest extends AbstractBaseTest {
 
 	@Autowired
-    protected NgramService ngramService;
+	protected NgramService ngramService;
 	@Autowired
-    protected UnitService unitService;
-	
-	@Autowired
-    protected Neo4jOperations template;
-	
+	protected UnitService unitService;
+
 	@Test
+	@WithMockUser(username = "admin2", roles = { "EDIT", "ADMIN" })
 	public void testRegex() {
 		this.ngramService.setActive(true);
 		int i;
 		String s1 = "123,456";
 		List<String> strings = this.ngramService.create(s1);
 		assertNotNull(strings);
-		
+
 		assertEquals(9, strings.size());
 		i = 0;
 		assertEquals("  1", strings.get(i++));
@@ -71,7 +71,7 @@ public class NgramTest {
 		assertEquals("456", strings.get(i++));
 		assertEquals("56 ", strings.get(i++));
 		assertEquals("6  ", strings.get(i++));
-		
+
 		s1 = "123.456";
 		strings = this.ngramService.create(s1);
 		assertNotNull(strings);
@@ -86,7 +86,7 @@ public class NgramTest {
 		assertEquals("456", strings.get(i++));
 		assertEquals("56 ", strings.get(i++));
 		assertEquals("6  ", strings.get(i++));
-		
+
 		s1 = "Test.";
 		strings = this.ngramService.create(s1);
 		assertNotNull(strings);
@@ -98,7 +98,7 @@ public class NgramTest {
 		assertEquals("est", strings.get(i++));
 		assertEquals("st ", strings.get(i++));
 		assertEquals("t  ", strings.get(i++));
-		
+
 		s1 = "Te\tst\nnewline";
 		strings = this.ngramService.create(s1);
 		assertNotNull(strings);

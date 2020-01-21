@@ -1,16 +1,16 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
@@ -20,11 +20,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.neo4j.graphdb.Relationship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.stereotype.Service;
 
 import at.freebim.db.domain.base.rel.BaseRel;
@@ -33,13 +31,11 @@ import at.freebim.db.service.GraphService;
 import at.freebim.db.service.RelationService;
 
 /**
- * This service is used to create a graph from a node.
- * It implements {@link GraphService}.
- * 
- * @see at.freebim.db.service.GraphService
- * 
- * @author rainer.breuss@uibk.ac.at
+ * This service is used to create a graph from a node. It implements
+ * {@link GraphService}.
  *
+ * @author rainer.breuss@uibk.ac.at
+ * @see at.freebim.db.service.GraphService
  */
 @Service
 public class GraphServiceImpl implements GraphService {
@@ -48,44 +44,46 @@ public class GraphServiceImpl implements GraphService {
 	 * The logger.
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(GraphServiceImpl.class);
-	
+
 	/**
 	 * The service that handles dates.
 	 */
 	@Autowired
 	private DateService dateService;
-	
+
 	/**
 	 * The service that handles relations.
 	 */
 	@Autowired
 	private RelationService relationService;
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.GraphService#getGraphFor(java.lang.Long)
 	 */
 	@Override
 	public Graph getGraphFor(Long nodeId, boolean recursive, boolean withParams, boolean withEquals) {
-		
+
 		logger.debug("getGraphFor [{}] ...", nodeId);
 
-		
 		Graph graph = new Graph();
-		
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put( "id", nodeId );
-		params.put( "now", this.dateService.getMillis() );
-		
+
+		Map<String, Object> params = new HashMap<>();
+		params.put("id", nodeId);
+		params.put("now", this.dateService.getMillis());
+
 		StringBuilder b = new StringBuilder();
-		
-		b.append("START a=node({id})");
+
+		b.append("MATCH (a) WHERE ID(a)={id}");
 		b.append(" MATCH path = (a)-[r:PARENT_OF");
 		if (recursive) {
 			b.append("*");
 		}
 		b.append("]->(b)");
 		b.append(", (b)-[:REFERENCES]->(lib)");
-		b.append(" WHERE ALL(y IN nodes(path) WHERE y.validFrom < {now} AND (y.validTo IS NULL OR y.validTo > {now}) )");
+		b.append(
+				" WHERE ALL(y IN nodes(path) WHERE y.validFrom < {now} AND (y.validTo IS NULL OR y.validTo > {now}) )");
 		if (withParams) {
 			b.append(" OPTIONAL MATCH (b)-[prel:HAS_PARAMETER]->(p)");
 			b.append(", (p)-[:REFERENCES]->(plib)");
@@ -101,11 +99,21 @@ public class GraphServiceImpl implements GraphService {
 		b.append(", b.name AS name");
 		b.append(", ID(lib) AS libId");
 		b.append(", last(relationShips(path)) AS rel");
+
+		// added only for relationship mapping
+		b.append(", a");
+		b.append(", b");
+		b.append(", lib");
+
 		if (withParams) {
 			b.append(", ID(p) AS pid");
 			b.append(", p.name AS pname");
 			b.append(", ID(plib) AS plibId");
 			b.append(", prel AS prel");
+
+			// added only for relationship mapping
+			b.append(", p");
+			b.append(", plib");
 		}
 		if (withEquals) {
 			b.append(", ID(eq) AS eqid");
@@ -113,10 +121,14 @@ public class GraphServiceImpl implements GraphService {
 			b.append(", ID(eqlib) AS eqlibId");
 			b.append(", eqrel AS eqrel");
 			b.append(", SUBSTRING(head(filter (cn in labels(eq) where cn =~ '_.*')), 1) AS eqcn");
+
+			// added only for relationship mapping
+			b.append(", eq");
+			b.append(", eqlib");
 		}
 
 		b.append(" UNION ALL");
-		b.append(" START a=node({id}) MATCH (a)-[:REFERENCES]->(lib)");
+		b.append(" MATCH (a) WHERE ID(a)={id} MATCH (a)-[:REFERENCES]->(lib)");
 		if (withParams) {
 			b.append(" OPTIONAL MATCH (a)-[prel:HAS_PARAMETER]->(p)");
 			b.append(", (p)-[:REFERENCES]->(plib)");
@@ -132,11 +144,21 @@ public class GraphServiceImpl implements GraphService {
 		b.append(", a.name AS name");
 		b.append(", ID(lib) AS libId");
 		b.append(", null AS rel");
+
+		// added only for relationship mapping
+		b.append(", a");
+		b.append(", a as b");
+		b.append(", lib");
+
 		if (withParams) {
 			b.append(", ID(p) AS pid");
 			b.append(", p.name AS pname");
 			b.append(", ID(plib) AS plibId");
 			b.append(", prel AS prel");
+
+			// added only for relationship mapping
+			b.append(", p");
+			b.append(", plib");
 		}
 		if (withEquals) {
 			b.append(", ID(eq) AS eqid");
@@ -144,16 +166,19 @@ public class GraphServiceImpl implements GraphService {
 			b.append(", ID(eqlib) AS eqlibId");
 			b.append(", eqrel AS eqrel");
 			b.append(", SUBSTRING(head(filter (cn in labels(eq) where cn =~ '_.*')), 1) AS eqcn");
+
+			// added only for relationship mapping
+			b.append(", eq");
+			b.append(", eqlib");
 		}
 
-		
-		Result<Map<String, Object>> result = this.relationService.getTemplate().query(b.toString(), params);
+		Iterable<Map<String, Object>> result = this.relationService.getTemplate().query(b.toString(), params, true);
 		Iterator<Map<String, Object>> iter = result.iterator();
-		
+
 		while (iter.hasNext()) {
 
 			Map<String, Object> map = iter.next();
-			
+
 			Long id = (Long) map.get("id");
 			if (id != null) {
 				Node node = graph.nodes.get(id);
@@ -167,10 +192,9 @@ public class GraphServiceImpl implements GraphService {
 					node.libs.add(libId);
 				}
 			}
-			Relationship r = (Relationship) map.get("rel");
+			BaseRel<?, ?> r = (BaseRel<?, ?>) map.get("rel");
 			if (r != null) {
-				BaseRel<?,?> rel = this.relationService.createTreeRel(r);
-				graph.links.add(rel);
+				graph.links.add(r);
 			}
 
 			if (withParams) {
@@ -187,8 +211,8 @@ public class GraphServiceImpl implements GraphService {
 						pnode.libs.add(plibId);
 					}
 				}
-				Relationship pr = (Relationship) map.get("prel");
-				BaseRel<?,?> prel = this.relationService.createTreeRel(pr);
+				BaseRel<?, ?> pr = (BaseRel<?, ?>) map.get("prel");
+				BaseRel<?, ?> prel = pr;
 				graph.links.add(prel);
 			}
 
@@ -207,8 +231,8 @@ public class GraphServiceImpl implements GraphService {
 						eqnode.libs.add(eqlibId);
 					}
 				}
-				Relationship eqr = (Relationship) map.get("eqrel");
-				BaseRel<?,?> eqrel = this.relationService.createTreeRel(eqr);
+				BaseRel<?, ?> eqr = (BaseRel<?, ?>) map.get("eqrel");
+				BaseRel<?, ?> eqrel = eqr;
 				graph.links.add(eqrel);
 			}
 
@@ -217,6 +241,5 @@ public class GraphServiceImpl implements GraphService {
 
 		return graph;
 	}
-
 
 }

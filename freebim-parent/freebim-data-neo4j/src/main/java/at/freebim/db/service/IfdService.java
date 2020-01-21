@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package at.freebim.db.service;
 
@@ -20,36 +20,36 @@ import at.freebim.db.dto.IfdSearchInfo;
  */
 public interface IfdService {
 
-	public Map<?,?> currentUserCanEdit();
+	Map<?, ?> currentUserCanEdit();
 
-	public Map<?,?> currentUserIsOwner();
+	Map<?, ?> currentUserIsOwner();
 
-	public Map<?,?> getIfdLanguage();
+	Map<?, ?> getIfdLanguage();
 
-	public Map<?,?> sessionLogin(IfdLoginData loginData);
+	Map<?, ?> sessionLogin(IfdLoginData loginData);
 
-	public Map<?,?> sessionLogout();
+	Map<?, ?> sessionLogout();
 
-	public Map<?,?> searchFilterLanguageType(String languageGuid, String type, String search);
+	Map<?, ?> searchFilterLanguageType(String languageGuid, String type, String search);
 
-	public Map<?,?> putIfdName(IfdName ifdName);
+	Map<?, ?> putIfdName(IfdName ifdName);
 
-	public Map<?,?> putIfdDescription(IfdDescription ifdDescription);
+	Map<?, ?> putIfdDescription(IfdDescription ifdDescription);
 
-	public Map<?,?> putIfdNameForGuid(String guid, IfdName ifdName);
+	Map<?, ?> putIfdNameForGuid(String guid, IfdName ifdName);
 
-	public Map<?,?> putIfdDefinitionForGuid(String guid, IfdDefinition ifdDefinition);
+	Map<?, ?> putIfdDefinitionForGuid(String guid, IfdDefinition ifdDefinition);
 
-	public Map<?,?> putIfdConcept(IfdConcept ifdConcept);
+	Map<?, ?> putIfdConcept(IfdConcept ifdConcept);
 
-	public Map<?,?> getIfdConceptParents(String guid, IfdPageInfo pageInfo);
+	Map<?, ?> getIfdConceptParents(String guid, IfdPageInfo pageInfo);
 
-	public Map<?,?> getIfdConceptChildren(String guid, IfdPageInfo pageInfo);
+	Map<?, ?> getIfdConceptChildren(String guid, IfdPageInfo pageInfo);
 
-	public Map<?,?> getIfdConcept(String guid);
+	Map<?, ?> getIfdConcept(String guid);
 
-	public Map<?,?> searchForDuplicates(String type, IfdSearchInfo searchInfo);
+	Map<?, ?> searchForDuplicates(String type, IfdSearchInfo searchInfo);
 
-	public Map<?,?> putIfdCommentForGuid(String guid, IfdComment ifdComment);
+	Map<?, ?> putIfdCommentForGuid(String guid, IfdComment ifdComment);
 
 }

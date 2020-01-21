@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Configuration status="INFO" monitorInterval="3600">
+	<Properties>
+		<Property name="baseDir">/var/log/asi-propertyserver</Property>
+		<Property name="appName">asi-propertyserver</Property>
+	</Properties>
+	<Appenders>
+		<Console name="CONSOLE" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%d{ISO8601} [%10t] %5p %c{1}:%L - %m%n" />
+		</Console>
+
+		<!-- Rolling File Appender -->
+		<RollingFile name="RollingFile"
+			fileName="${baseDir}/current.log"
+			filePattern="${baseDir}/%d{yyyy-MM}/${appName}_%d{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout pattern="%d{ISO8601} [%10t] %5p %c{1}:%L - %m%n" />
+			<CronTriggeringPolicy schedule="0 0 0,12 * * ?" />
+			<DefaultRolloverStrategy>
+				<Delete basePath="${baseDir}" maxDepth="2">
+					<IfFileName glob="*/${appName}_*.log.gz">
+						<IfLastModified age="60d">
+							<IfAny>
+								<IfAccumulatedFileSize exceeds="1 GB" />
+								<IfAccumulatedFileCount exceeds="60" />
+							</IfAny>
+						</IfLastModified>
+					</IfFileName>
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+	</Appenders>
+
+	<Loggers>
+		<Root level="INFO">
+			<AppenderRef ref="RollingFile" />
+		</Root>
+		<Logger name="net.spectroom.neo4j.backup" level="WARN" />
+		
+	</Loggers>
+
+</Configuration>

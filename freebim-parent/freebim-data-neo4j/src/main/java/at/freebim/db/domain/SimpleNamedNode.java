@@ -1,43 +1,43 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
 package at.freebim.db.domain;
 
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.springframework.data.neo4j.annotation.Indexed;
-import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Index;
+import org.neo4j.ogm.annotation.NodeEntity;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import at.freebim.db.domain.base.HierarchicalBaseNode;
 import at.freebim.db.domain.base.Named;
 import at.freebim.db.domain.base.UUidIdentifyableVisitor;
-import at.freebim.db.domain.json.SimpleNamedNodeDeserializer;
-import at.freebim.db.domain.json.SimpleNamedNodeSerializer;
+import at.freebim.db.json.SimpleNamedNodeDeserializer;
+import at.freebim.db.json.SimpleNamedNodeSerializer;
 import net.spectroom.neo4j.backup.annotation.NodeBackup;
 
 /**
- * A simple node that has a name.
- * It extends {@link HierarchicalBaseNode} and
+ * A simple node that has a name. It extends {@link HierarchicalBaseNode} and
  * implements {@link Named}.
- * 
+ *
+ * @author rainer.breuss@uibk.ac.at
+ * @see org.neo4j.ogm.annotation.NodeEntity
  * @see at.freebim.db.domain.base.HierarchicalBaseNode
  * @see at.freebim.db.domain.base.Named
- * 
- * @author rainer.breuss@uibk.ac.at
- * */
+ */
 @NodeBackup
 @NodeEntity
 @JsonSerialize(using = SimpleNamedNodeSerializer.class)
@@ -48,57 +48,60 @@ public class SimpleNamedNode extends HierarchicalBaseNode implements Named {
 
 	/**
 	 * The name.
-	 * 
+	 *
 	 * @see at.freebim.db.domain.base.Named
+	 * @see org.neo4j.ogm.annotation.Index
 	 */
+	@Index
 	private String name;
-	
-	
+
 	/**
 	 * Get the type.
+	 *
+	 * @see org.neo4j.ogm.annotation.Index
 	 */
+	@Index
 	private String type;
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.domain.base.Named#getName()
 	 */
-	@Indexed
 	public String getName() {
 		return name;
 	}
 
 	/**
 	 * Set the name.
-	 * 
+	 *
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	
-
 	/**
 	 * Get the type.
-	 * 
+	 *
 	 * @return the type
 	 */
-	@Indexed
 	public String getType() {
 		return type;
 	}
 
 	/**
 	 * Set the type.
-	 * 
+	 *
 	 * @param type the type to set
 	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -110,7 +113,9 @@ public class SimpleNamedNode extends HierarchicalBaseNode implements Named {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -135,7 +140,9 @@ public class SimpleNamedNode extends HierarchicalBaseNode implements Named {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.domain.base.BaseNode#equalsData(java.lang.Object)
 	 */
 	@Override
@@ -162,8 +169,12 @@ public class SimpleNamedNode extends HierarchicalBaseNode implements Named {
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.domain.base.UUidIdentifyableVistitable#accept(at.freebim.db.domain.base.UUidIdentifyableVisitor)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.domain.base.UUidIdentifyableVistitable#accept(at.freebim.db.
+	 * domain.base.UUidIdentifyableVisitor)
 	 */
 	@Override
 	public void accept(UUidIdentifyableVisitor visitor) {

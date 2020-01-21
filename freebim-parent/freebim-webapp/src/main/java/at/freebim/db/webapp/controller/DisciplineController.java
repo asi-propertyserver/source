@@ -17,16 +17,16 @@
 package at.freebim.db.webapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.Discipline;
 import at.freebim.db.service.BaseNodeService;
 import at.freebim.db.service.DisciplineService;
 
 /**
- * The controller that handles the node/entity {@link Discipline}.
- * It extends {@link BaseController}.
+ * The controller that handles the node/entity {@link Discipline}. It extends
+ * {@link BaseController}.
  * 
  * @see at.freebim.db.domain.Discipline
  * @see at.freebim.db.webapp.controller.BaseController
@@ -35,7 +35,7 @@ import at.freebim.db.service.DisciplineService;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/discipline")
 public class DisciplineController extends BaseController<Discipline> {
 
@@ -44,15 +44,17 @@ public class DisciplineController extends BaseController<Discipline> {
 	 */
 	@Autowired
 	private DisciplineService disciplineService;
-	
-    /**
-     * Creates a new instance.
-     */
-    public DisciplineController() {
+
+	/**
+	 * Creates a new instance.
+	 */
+	public DisciplineController() {
 		super(Discipline.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override

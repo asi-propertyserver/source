@@ -21,20 +21,20 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.Component;
 import at.freebim.db.domain.Library;
 import at.freebim.db.service.BaseNodeService;
 import at.freebim.db.service.ComponentService;
+import io.swagger.annotations.ApiOperation;
 
 /**
- * The controller that handles the node/entity {@link Component}.
- * It extends {@link BaseUuidController}.
+ * The controller that handles the node/entity {@link Component}. It extends
+ * {@link BaseUuidController}.
  * 
  * @see at.freebim.db.domain.Component
  * @see at.freebim.db.webapp.controller.BaseUuidController
@@ -42,7 +42,7 @@ import at.freebim.db.service.ComponentService;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/component")
 public class ComponentController extends BaseUuidController<Component> {
 
@@ -56,8 +56,7 @@ public class ComponentController extends BaseUuidController<Component> {
 	 */
 	@Autowired
 	private ComponentService componentService;
-	
-	
+
 	/**
 	 * Creates a new instance.
 	 */
@@ -65,37 +64,35 @@ public class ComponentController extends BaseUuidController<Component> {
 		super(Component.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override
 	protected BaseNodeService<Component> getService() {
 		return this.componentService;
 	}
-	
+
 	/**
-	 * Get the list of {@link Component}s that have the provided name
-	 * and are part of the library that has the provided id.
+	 * Get the list of {@link Component}s that have the provided name and are part
+	 * of the library that has the provided id.
 	 * 
-	 * @param name the name of the {@link Component}
+	 * @param name  the name of the {@link Component}
 	 * @param libId the id of the {@link Library}
 	 * @param model the model
 	 * @return the {@link AjaxResponse} that includes the list of {@link Component}s
 	 */
-	@RequestMapping(value = "/getByNameFromLibrary", method = RequestMethod.POST)
-	public @ResponseBody  AjaxResponse getByNameFromLibrary(String name, Long libId, Model model) {
+	@ApiOperation(value = "Get all components by name from a library", notes = "Load all components that have the provided name from the library with the provided id")
+	@GetMapping(value = "/getByNameFromLibrary")
+	public @ResponseBody AjaxResponse getByNameFromLibrary(String name, Long libId) {
 		logger.debug("getByNameFromLibrary name=[{}], libId: [{}]", name, libId);
 
-		super.setUserInfo(model);
-		
 		AjaxResponse response = null;
 		ArrayList<Component> res = (ArrayList<Component>) this.componentService.getByNameFromLibrary(name, libId);
 
 		response = new AjaxResponse(res);
 		return response;
 	}
-
-
-	
 
 }

@@ -1,48 +1,49 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
 package at.freebim.db.domain.rel;
 
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.springframework.data.neo4j.annotation.RelationshipEntity;
+import org.neo4j.ogm.annotation.RelationshipEntity;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import at.freebim.db.domain.Library;
 import at.freebim.db.domain.base.UuidIdentifyable;
 import at.freebim.db.domain.base.rel.RelationType;
 import at.freebim.db.domain.base.rel.RelationTypeEnum;
 import at.freebim.db.domain.base.rel.TimestampedBaseRel;
-import at.freebim.db.domain.json.rel.ReferencesDeserializer;
-import at.freebim.db.domain.json.rel.ReferencesSerializer;
+import at.freebim.db.json.rel.ReferencesDeserializer;
+import at.freebim.db.json.rel.ReferencesSerializer;
 import net.spectroom.neo4j.backup.annotation.RelationshipBackup;
 
 /**
- * The node to node relation of nodes or classes {@link UuidIdentifyable} and {@link Library}.
- * It denotes that a node ({@link UuidIdentifyable}) is referenced by a {@link Library}.
- * This relation extends {@link TimestampedBaseRel}.
- * 
+ * The node to node relation of nodes or classes {@link UuidIdentifyable} and
+ * {@link Library}. It denotes that a node ({@link UuidIdentifyable}) is
+ * referenced by a {@link Library}. This relation extends
+ * {@link TimestampedBaseRel}.
+ *
+ * @author rainer.breuss@uibk.ac.at
+ * @see org.neo4j.ogm.annotation.RelationshipEntity
  * @see at.freebim.db.domain.base.UuidIdentifyable
  * @see at.freebim.db.domain.Library
  * @see at.freebim.db.domain.base.rel.TimestampedBaseRel
- * 
- * @author rainer.breuss@uibk.ac.at
- *
  */
 @RelationshipBackup
-@RelationshipEntity (type=RelationType.REFERENCES)
+@RelationshipEntity(type = RelationType.REFERENCES)
 @JsonSerialize(using = ReferencesSerializer.class)
 @JsonDeserialize(using = ReferencesDeserializer.class)
 public class References extends TimestampedBaseRel<UuidIdentifyable, Library> {
@@ -60,52 +61,61 @@ public class References extends TimestampedBaseRel<UuidIdentifyable, Library> {
 	private String refId;
 
 	/**
-	 * Creates a new instance of the relation with the type of the relation. 
+	 * Creates a new instance of the relation with the type of the relation.
 	 */
 	public References() {
 		super(RelationType.REFERENCES);
 	}
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.domain.base.rel.BaseRel#getType()
 	 */
 	@Override
 	public String getType() {
 		return RelationTypeEnum.REFERENCES.name();
 	}
+
 	/**
 	 * Get the name of the reference.
-	 * 
+	 *
 	 * @return the refIdName
 	 */
 	public String getRefIdName() {
 		return refIdName;
 	}
-	
-	/**
-	 * Get the id of the reference.
-	 * 
-	 * @return the refId
-	 */
-	public String getRefId() {
-		return refId;
-	}
+
 	/**
 	 * Set the name of the reference.
-	 * 
+	 *
 	 * @param refIdName the refIdName to set
 	 */
 	public void setRefIdName(String refIdName) {
 		this.refIdName = refIdName;
 	}
+
+	/**
+	 * Get the id of the reference.
+	 *
+	 * @return the refId
+	 */
+	public String getRefId() {
+		return refId;
+	}
+
 	/**
 	 * Set the id of the reference.
-	 * 
+	 *
 	 * @param refId the refId to set
 	 */
 	public void setRefId(String refId) {
 		this.refId = refId;
 	}
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -113,11 +123,13 @@ public class References extends TimestampedBaseRel<UuidIdentifyable, Library> {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((refId == null) ? 0 : refId.hashCode());
-		result = prime * result
-				+ ((refIdName == null) ? 0 : refIdName.hashCode());
+		result = prime * result + ((refIdName == null) ? 0 : refIdName.hashCode());
 		return result;
 	}
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

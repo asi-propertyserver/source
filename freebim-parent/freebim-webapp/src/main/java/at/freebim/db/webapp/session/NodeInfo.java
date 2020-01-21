@@ -28,29 +28,27 @@ import at.freebim.db.webapp.session.SessionTracker.SessionAction;
  *
  */
 public class NodeInfo {
-	
-	
+
 	/**
 	 * The class name.
 	 */
 	private String c;
-	
+
 	/**
 	 * The node id.
 	 */
 	private Long nodeId;
-	
+
 	/**
 	 * The time stamp.
 	 */
 	private Long ts;
-	
-	
+
 	/**
 	 * The action that has been performed in this session.
 	 */
 	private final SessionAction action;
-	
+
 	/**
 	 * Creates a new instance of the class.
 	 * 
@@ -61,7 +59,9 @@ public class NodeInfo {
 		this.action = action;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -131,6 +131,5 @@ public class NodeInfo {
 	public void setTs(Long ts) {
 		this.ts = ts;
 	}
-
 
 }

@@ -17,16 +17,16 @@
 package at.freebim.db.webapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.DataType;
 import at.freebim.db.service.BaseNodeService;
 import at.freebim.db.service.DataTypeService;
 
 /**
- * The controller that handles the node/entity {@link DataType}.
- * It extends {@link BaseController}.
+ * The controller that handles the node/entity {@link DataType}. It extends
+ * {@link BaseController}.
  * 
  * @see at.freebim.db.domain.DataType
  * @see at.freebim.db.webapp.controller.BaseController
@@ -34,7 +34,7 @@ import at.freebim.db.service.DataTypeService;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/datatype")
 public class DatatypeController extends BaseController<DataType> {
 
@@ -43,15 +43,17 @@ public class DatatypeController extends BaseController<DataType> {
 	 */
 	@Autowired
 	private DataTypeService dataTypeService;
-	
-    /**
-     * Creates a new instance.
-     */
-    public DatatypeController() {
+
+	/**
+	 * Creates a new instance.
+	 */
+	public DatatypeController() {
 		super(DataType.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override

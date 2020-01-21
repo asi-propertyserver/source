@@ -21,28 +21,32 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.BigBangNode;
 import at.freebim.db.service.BaseNodeService;
 import at.freebim.db.service.BigBangNodeService;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * @author rainer.breuss@uibk.ac.at
  */
-@Controller
+@RestController
 @RequestMapping("/bbn")
 public class BigBangNodeController extends BaseUuidController<BigBangNode> {
 
+	/** The logger */
 	private static final Logger logger = LoggerFactory.getLogger(BigBangNodeController.class);
 
 	@Autowired
 	private BigBangNodeService bigBangNodeService;
-	
+
+	/**
+	 * Creates a new instance.
+	 */
 	public BigBangNodeController() {
 		super(BigBangNode.class);
 	}
@@ -52,16 +56,17 @@ public class BigBangNodeController extends BaseUuidController<BigBangNode> {
 		return this.bigBangNodeService;
 	}
 
-	@RequestMapping(value = "", method = RequestMethod.GET)
-    public @ResponseBody AjaxResponse get(Model model) {
+	@ApiOperation(value = "Get the BigBangNode", notes = "Loads the absolute root of all elements (BigBangNode) from the database")
+	@GetMapping(value = "")
+	public @ResponseBody AjaxResponse get() {
 		logger.debug("get ...");
-		
+
 		AjaxResponse response = null;
 		try {
-			// Delegate to service 
+			// Delegate to service
 			BigBangNode bbn = this.bigBangNodeService.getBigBangNode();
 			response = new AjaxResponse(bbn);
-			
+
 		} catch (AuthenticationCredentialsNotFoundException e) {
 			response = new AjaxResponse(null);
 			response.setAccessDenied(true);
@@ -73,7 +78,7 @@ public class BigBangNodeController extends BaseUuidController<BigBangNode> {
 			response = new AjaxResponse(null);
 			response.setError(e.toString());
 		}
-		
+
 		return response;
 	}
 }

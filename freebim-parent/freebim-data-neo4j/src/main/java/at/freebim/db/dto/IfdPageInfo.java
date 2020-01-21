@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package at.freebim.db.dto;
 
@@ -16,44 +16,52 @@ public class IfdPageInfo implements Serializable {
 	private int page_size;
 	private int page;
 	private boolean cache;
-	
+
 	/**
 	 * @return the page_size
 	 */
 	public int getPage_size() {
 		return page_size;
 	}
+
 	/**
 	 * @param page_size the page_size to set
 	 */
 	public void setPage_size(int page_size) {
 		this.page_size = page_size;
 	}
+
 	/**
 	 * @return the page
 	 */
 	public int getPage() {
 		return page;
 	}
+
 	/**
 	 * @param page the page to set
 	 */
 	public void setPage(int page) {
 		this.page = page;
 	}
+
 	/**
 	 * @return the cache
 	 */
 	public boolean isCache() {
 		return cache;
 	}
+
 	/**
 	 * @param cache the cache to set
 	 */
 	public void setCache(boolean cache) {
 		this.cache = cache;
 	}
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -63,7 +71,5 @@ public class IfdPageInfo implements Serializable {
 				.append(cache).append("]");
 		return builder.toString();
 	}
-	
-	
 
 }

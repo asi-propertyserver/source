@@ -27,8 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,8 +37,8 @@ import at.freebim.db.domain.Company;
 import at.freebim.db.domain.Contributor;
 import at.freebim.db.domain.FreebimUser;
 import at.freebim.db.domain.base.Role;
-import at.freebim.db.domain.rel.WorksFor;
 import at.freebim.db.domain.rel.References;
+import at.freebim.db.domain.rel.WorksFor;
 import at.freebim.db.service.AppVersionService;
 import at.freebim.db.service.BigBangNodeService;
 import at.freebim.db.service.BsddNodeService;
@@ -51,15 +49,14 @@ import at.freebim.db.service.FreebimUserService;
 import at.freebim.db.service.RelationService;
 
 /**
- * This service is used to update the structure in the database to a specified version.
- * It implements {@link AppVersion}.
+ * This service is used to update the structure in the database to a specified
+ * version. It implements {@link AppVersion}.
  * 
  * @see at.freebim.db.webapp.controller.AppVersion
  * 
  * @author rainer.breuss@uibk.ac.at
  * 
  */
-@Configuration
 @Service
 public class AppVersionImpl implements AppVersion {
 
@@ -67,99 +64,99 @@ public class AppVersionImpl implements AppVersion {
 	 * The logger.
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(AppVersionImpl.class);
-	
+
 	/**
 	 * The application version.
 	 */
 	@Value("${app.version}")
 	protected String appVersion;
-	
+
 	/**
 	 * The time at which this version was build.
 	 */
 	@Value("${app.buildtime}")
 	protected String buildTime;
-	
+
 	/**
 	 * Determines if this build is a release build.
 	 */
 	@Value("${app.release}")
 	protected boolean release;
-	
+
 	/**
 	 * The user name of the admin.
 	 */
 	@Value("${admin.username}")
 	private String username;
-	
-	
+
 	/**
 	 * The password of the admin.
 	 */
 	@Value("${admin.password}")
 	private String password;
-	
+
 	/**
 	 * The service that handles the root node {@link BigBangNode}.
 	 */
 	@Autowired
 	private BigBangNodeService bigBangNodeService;
-	
+
 	/**
 	 * The service that handles the relations.
 	 */
 	@Autowired
 	private RelationService relationService;
-	
+
 	/**
 	 * The service that handles bsdd-nodes.
 	 */
 	@Autowired
 	private BsddNodeService bsddNodeService;
-	
+
 	/**
 	 * The service that handles the version of the app.
 	 */
 	@Autowired
-	private AppVersionService appVersionService; 
-	
+	private AppVersionService appVersionService;
+
 	/**
 	 * The service that handles the node {@link Contributor}.
 	 */
 	@Autowired
 	private ContributorService contributorService;
-	
+
 	/**
 	 * The service that handles the node {@link Company}.
 	 */
 	@Autowired
 	private CompanyService companyService;
-	
+
 	/**
 	 * The service that handles the date.
 	 */
 	@Autowired
 	private DateService dateService;
-	
+
 	/**
 	 * The service that handles the {@link FreebimUser}.
 	 */
 	@Autowired
 	private FreebimUserService freebimUserService;
-	
+
 	/**
-	 * Find the {@link BigBangNode} and make an update or 
-	 * correct {@link References} if necessary.
+	 * Find the {@link BigBangNode} and make an update or correct {@link References}
+	 * if necessary.
 	 */
 	@PostConstruct
 	public void init() {
 		logger.info("Application version = [{}], build time: {}.", this.appVersion, this.buildTime);
 		BigBangNode bbn = this.bigBangNodeService.getBigBangNode();
 		if (bbn != null) {
-			
+
 			FreebimUser admin = this.freebimUserService.get(this.username);
 
-			Authentication auth = new UsernamePasswordAuthenticationToken (admin.getUsername(), this.password, admin.getRoles());
+			Authentication auth = new UsernamePasswordAuthenticationToken(admin.getUsername(), this.password,
+					admin.getRoles());
 			SecurityContextHolder.getContext().setAuthentication(auth);
 
 			try {
@@ -167,13 +164,13 @@ public class AppVersionImpl implements AppVersion {
 			} catch (Exception e) {
 				logger.error("Error in correctComponentLibraryReferences: ", e);
 			}
-			
+
 			try {
 				this.performUpdate(bbn);
 			} catch (Exception e) {
 				logger.error("Error in performUpdate: ", e);
 			}
-			
+
 			SecurityContextHolder.getContext().setAuthentication(null);
 		}
 	}
@@ -184,21 +181,21 @@ public class AppVersionImpl implements AppVersion {
 	 * @param bbn the root node of the structure
 	 */
 	private void performUpdate(BigBangNode bbn) {
-		
+
 		if (this.appVersion.equals(bbn.getAppVersion())) {
 			bbn = this.bigBangNodeService.save(bbn);
 			logger.info("Application version = [{}] stored to BigBangNode.", bbn.getAppVersion());
 			return;
 		}
-		
+
 		if (bbn.getAppVersion() != null) {
-			
+
 			switch (bbn.getAppVersion()) {
-			
+
 			case "1.7.2":
 			case "1.7.2-SNAPSHOT":
 				logger.info("perform update from [{}] to [{}] ...", bbn.getAppVersion(), this.appVersion);
-				
+
 				// set class names to nodes of Equal relations
 				try {
 					this.setClassnamesToNodesOfEqualRelations();
@@ -206,7 +203,7 @@ public class AppVersionImpl implements AppVersion {
 					logger.error("Can't setClassnamesToNodesOfEqualRelations", e);
 				}
 
-				// apply spread Bsdd relations to Equal related nodes 
+				// apply spread Bsdd relations to Equal related nodes
 				try {
 					this.bsddNodeService.spreadToEqualNodes();
 				} catch (Exception e) {
@@ -219,12 +216,12 @@ public class AppVersionImpl implements AppVersion {
 				} catch (Exception e) {
 					logger.error("Can't setBsddFieldToEqualNodes", e);
 				}
-	
+
 				logger.info("perform update from [{}] done.", bbn.getAppVersion());
 
 				bbn.setAppVersion("1.7.3"); // next Version
 				return;
-				
+
 			case "1.7.3":
 			case "1.7.3-SNAPSHOT":
 				logger.info("perform update from [{}] to [{}] ...", bbn.getAppVersion(), this.appVersion);
@@ -233,7 +230,7 @@ public class AppVersionImpl implements AppVersion {
 				logger.info("perform update from [{}] done.", bbn.getAppVersion());
 				bbn.setAppVersion("1.8"); // next Version
 				break;
-				
+
 			case "1.8":
 				// create Company nodes for Contributors
 				logger.info("create Company nodes for Contributors ...");
@@ -248,7 +245,7 @@ public class AppVersionImpl implements AppVersion {
 				}
 				ArrayList<Contributor> contributors = this.contributorService.getAll(false);
 				for (Contributor contributor : contributors) {
-					
+
 					String companyName = contributor.getCompany().trim();
 					String cn = companyName.replaceAll(" ", "").trim().toLowerCase();
 					Company c = companies.get(cn);
@@ -265,8 +262,7 @@ public class AppVersionImpl implements AppVersion {
 					this.relationService.save(wf);
 				}
 				logger.info("create Company nodes for Contributors finished.");
-				
-				
+
 				// add the new role 'ROLE_EDIT' to all FreebimUser instances
 				// that have an assigned Contributor
 				logger.info("update users ...");
@@ -280,23 +276,23 @@ public class AppVersionImpl implements AppVersion {
 					if (c != null || roles.contains(Role.ROLE_USERMANAGER) || roles.contains(Role.ROLE_ADMIN)) {
 						if (!roles.contains(Role.ROLE_EDIT)) {
 							roles.add(Role.ROLE_EDIT);
-							user.setRoles(roles.toArray(new Role[]{}));
+							user.setRoles(roles.toArray(new Role[] {}));
 							user = this.freebimUserService.save(user);
 							logger.info("\trole '{}' added to user [{}].", Role.ROLE_EDIT, user.getUsername());
 						}
 					}
 				}
 				logger.info("update users finished.");
-				
+
 				logger.info("perform update from [{}] done.", bbn.getAppVersion());
 				bbn.setAppVersion("1.8.1"); // next Version
 				break;
-				
+
 			case "1.8.1":
 			case "1.8.1-SNAPSHOT":
 				bbn.setAppVersion("1.9"); // next Version
 				break;
-				
+
 			case "1.9":
 				logger.info("perform update from [{}] to [{}] ...", bbn.getAppVersion(), this.appVersion);
 				count = this.appVersionService.createParentOfRelations();
@@ -304,7 +300,7 @@ public class AppVersionImpl implements AppVersion {
 				logger.info("perform update from [{}] done.", bbn.getAppVersion());
 				bbn.setAppVersion("1.10"); // next Version
 				break;
-				
+
 			case "1.10":
 			case "1.10-SNAPSHOT":
 				logger.info("perform update from [{}] to [{}] ...", bbn.getAppVersion(), this.appVersion);
@@ -313,7 +309,7 @@ public class AppVersionImpl implements AppVersion {
 				logger.info("perform update from [{}] done.", bbn.getAppVersion());
 				bbn.setAppVersion("1.11"); // next Version
 				break;
-				
+
 			case "1.11":
 			case "1.11.1-SNAPSHOT":
 				count = this.appVersionService.dropEqualSelfRelations();
@@ -325,42 +321,43 @@ public class AppVersionImpl implements AppVersion {
 				logger.info("\t[{}] Multiple Equal Relations removed.", count);
 				bbn.setAppVersion("1.12.6"); // next Version
 				break;
-				
+
 			case "1.12.6":
 				logger.info("perform DB-cleanup ...");
 				this.appVersionService.performDbCleanup();
 				bbn.setAppVersion("1.12.7"); // next Version
 				break;
-				
+
 			case "1.12.7":
 				logger.info("perform DB-cleanup ...");
 				this.appVersionService.performDbCleanup();
 				bbn.setAppVersion(this.appVersion); // next Version
 				break;
-				
+
 			default:
 				logger.info("No specific update required for [{}].", bbn.getAppVersion());
 				bbn.setAppVersion(this.appVersion); // next Version
 				break;
 
-			} // switch (bbn.getAppVersion()) 
-			
+			} // switch (bbn.getAppVersion())
+
 			performUpdate(bbn);
 
 		} else {
-			
+
 			// no appVersion in BigBangNode before 1.7.3
 			logger.info("no Application version in BigBangNode.");
 			bbn.setAppVersion("1.7.2");
 			this.performUpdate(bbn);
 			return;
-			
+
 		}
-		
+
 	}
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.AppVersion#getAppVersion()
 	 */
 	@Override
@@ -368,8 +365,9 @@ public class AppVersionImpl implements AppVersion {
 		return appVersion;
 	}
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.AppVersion#getBuildTime()
 	 */
 	@Override
@@ -377,8 +375,9 @@ public class AppVersionImpl implements AppVersion {
 		return buildTime;
 	}
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.AppVersion#isRelease()
 	 */
 	@Override
@@ -388,18 +387,18 @@ public class AppVersionImpl implements AppVersion {
 
 	/**
 	 * Cross-Class-Equality, that is an Equal relation like
-	 *    
-	 *     (a:ValueListEntry)-[:EQUALS]-(b:Component)
-	 *     
+	 * 
+	 * (a:ValueListEntry)-[:EQUALS]-(b:Component)
+	 * 
 	 * need to know the class names of the related nodes.
 	 * 
-	 * This information wasn't stored prior to version 1.7.3,
-	 * so we have to fetch it once now.
+	 * This information wasn't stored prior to version 1.7.3, so we have to fetch it
+	 * once now.
 	 */
 	private void setClassnamesToNodesOfEqualRelations() {
-		
+
 		logger.info("setClassnamesToNodesOfEqualRelations ...");
-		
+
 		StringBuilder b = new StringBuilder();
 
 		b.append("MATCH (n)-[r:EQUALS]->(e)");
@@ -408,17 +407,18 @@ public class AppVersionImpl implements AppVersion {
 		b.append(" [y IN labels(e) WHERE y =~ \"_.+\" | replace(y, \"_\", \"\")] AS tc");
 		b.append(" WHERE fc <> tc SET r.fromClass=fc, r.toClass=tc");
 		b.append(" RETURN count(r) AS c");
-		
+
 		String query = b.toString();
-		
-		Result<Map<String, Object>> result = this.relationService.getTemplate().query(query, null);
+
+		Iterable<Map<String, Object>> result = this.relationService.getTemplate().query(query,
+				new HashMap<String, Object>());
 		Iterator<Map<String, Object>> iter = result.iterator();
-		
+
 		while (iter.hasNext()) {
 			Map<String, Object> map = iter.next();
 			Long count = (Long) map.get("c");
 			logger.info("setClassnamesToNodesOfEqualRelations n=[{}].", count);
 		}
 	}
-	
+
 }

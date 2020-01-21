@@ -16,13 +16,15 @@
  *****************************************************************************/
 package at.freebim.db.webservice.dto;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import at.freebim.db.domain.base.State;
 import at.freebim.db.domain.base.StatedBaseNode;
 import at.freebim.db.webservice.DtoHelper;
 
 /**
- * Base class representing a single DTO node with a state field.
- * The class extends {@link Base}.
+ * Base class representing a single DTO node with a state field. The class
+ * extends {@link Base}.
  * 
  * @see at.freebim.db.domain.base.StatedBaseNode
  * @see at.freebim.db.webservice.dto.Base
@@ -36,22 +38,23 @@ public class StatusBase<T extends StatedBaseNode> extends Base<T> {
 	/**
 	 * Creates a new instance.
 	 * 
-	 * @param node the node
+	 * @param node      the node
 	 * @param dtoHelper the helper class
 	 */
 	protected StatusBase(T node, DtoHelper dtoHelper) {
 		super(node, dtoHelper);
 	}
-	
+
 	/**
 	 * Get the state.
 	 * 
-	 * @return  the state
+	 * @return the state
 	 */
+	@XmlElement
 	public State getState() {
 		return this.node.getState();
 	}
-	
+
 	/**
 	 * Set the state.
 	 * 

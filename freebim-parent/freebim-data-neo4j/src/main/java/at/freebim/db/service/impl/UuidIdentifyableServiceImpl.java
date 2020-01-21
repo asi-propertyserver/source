@@ -1,16 +1,16 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
@@ -27,21 +27,19 @@ import at.freebim.db.service.RelationService;
 import at.freebim.db.service.UuidIdentifyableService;
 
 /**
- * This service defines the basics for all services that 
- * define functionality for a class <b>T</b> that extends {@link UuidIdentifyable}.
- * This service extends {@link LifetimeBaseNodeServiceImpl} and
- * implements {@link UuidIdentifyableService}.
- * 
+ * This service defines the basics for all services that define functionality
+ * for a class <b>T</b> that extends {@link UuidIdentifyable}. This service
+ * extends {@link LifetimeBaseNodeServiceImpl} and implements
+ * {@link UuidIdentifyableService}.
+ *
+ * @author rainer.breuss@uibk.ac.at
  * @see at.freebim.db.domain.base.UuidIdentifyable
  * @see at.freebim.db.service.impl.LifetimeBaseNodeServiceImpl
  * @see at.freebim.db.service.UuidIdentifyableService
- * 
- * @author rainer.breuss@uibk.ac.at
- *
  */
 public class UuidIdentifyableServiceImpl<T extends UuidIdentifyable> extends LifetimeBaseNodeServiceImpl<T>
 		implements UuidIdentifyableService<T> {
-	
+
 	/**
 	 * The logger.
 	 */
@@ -52,9 +50,13 @@ public class UuidIdentifyableServiceImpl<T extends UuidIdentifyable> extends Lif
 	 */
 	@Autowired
 	private RelationService relationService;
-	
-	/* (non-Javadoc)
-	 * @see at.freebim.db.service.impl.LifetimeBaseNodeServiceImpl#filterBeforeInsert(at.freebim.db.domain.base.LifetimeBaseNode)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.service.impl.LifetimeBaseNodeServiceImpl#filterBeforeInsert(at.
+	 * freebim.db.domain.base.LifetimeBaseNode)
 	 */
 	@Override
 	public T filterBeforeInsert(T node) {
@@ -68,11 +70,11 @@ public class UuidIdentifyableServiceImpl<T extends UuidIdentifyable> extends Lif
 
 	/**
 	 * Set the uuid for the provided node.
-	 * 
+	 *
 	 * @param node the node for which the uuid will be set
 	 */
 	private void setUuid(T node) {
-		
+
 		if (node != null) {
 			if (node.getUuid() == null || node.getUuid().length() == 0) {
 				logger.debug("setUuid");
@@ -80,15 +82,19 @@ public class UuidIdentifyableServiceImpl<T extends UuidIdentifyable> extends Lif
 				do {
 					uuid = UUID.randomUUID().toString();
 				} while (this.getByUuid(uuid) != null);
-				
+
 				node.setUuid(uuid);
 				logger.debug("UUID: {} set to node {}", uuid, node.getNodeId());
 			}
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.service.impl.BaseNodeServiceImpl#filterBeforeSave(at.freebim.db.domain.base.BaseNode)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.service.impl.BaseNodeServiceImpl#filterBeforeSave(at.freebim.db
+	 * .domain.base.BaseNode)
 	 */
 	@Override
 	public T filterBeforeSave(T node) {
@@ -96,8 +102,11 @@ public class UuidIdentifyableServiceImpl<T extends UuidIdentifyable> extends Lif
 		return super.filterBeforeSave(node);
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.service.UuidIdentifyableService#getByUuid(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.service.UuidIdentifyableService#getByUuid(java.lang.String)
 	 */
 	@Override
 	public UuidIdentifyable getByUuid(String uuid) {

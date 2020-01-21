@@ -23,20 +23,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.MessageNode;
 import at.freebim.db.service.BaseNodeService;
 import at.freebim.db.service.MessageNodeService;
 
 /**
- * The controller for the node/entity {@link MessageNode}.
- * It extends {@link BaseController}.
+ * The controller for the node/entity {@link MessageNode}. It extends
+ * {@link BaseController}.
  * 
  * @see at.freebim.db.domain.MessageNode
  * @see at.freebim.db.webapp.controller.BaseController
@@ -44,7 +44,7 @@ import at.freebim.db.service.MessageNodeService;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/messages")
 public class MessageNodeController extends BaseController<MessageNode> {
 
@@ -58,15 +58,17 @@ public class MessageNodeController extends BaseController<MessageNode> {
 	 */
 	@Autowired
 	private MessageNodeService messageNodeService;
-	
-    /**
-     * Creates a new instance.
-     */
-    public MessageNodeController() {
+
+	/**
+	 * Creates a new instance.
+	 */
+	public MessageNodeController() {
 		super(MessageNode.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override
@@ -77,19 +79,20 @@ public class MessageNodeController extends BaseController<MessageNode> {
 	/**
 	 * Get all current messages.
 	 * 
-	 * @return the {@link AjaxResponse} that includes all messages of 
-	 * the type {@link MessageNode} or the error message 
+	 * @return the {@link AjaxResponse} that includes all messages of the type
+	 *         {@link MessageNode} or the error message
 	 */
-	@RequestMapping(value = "/getCurrent", method = RequestMethod.POST)
-    public @ResponseBody AjaxResponse getCurrentMessages() {
+	@GetMapping(value = "/getCurrent")
+	public @ResponseBody AjaxResponse getCurrentMessages() {
 		logger.debug("getCurrentMessages ...");
-		
+
 		AjaxResponse response = null;
 		try {
-			ArrayList<MessageNode> res = (ArrayList<MessageNode>) ((MessageNodeService) this.getService()).getCurrentMessages();
+			ArrayList<MessageNode> res = (ArrayList<MessageNode>) ((MessageNodeService) this.getService())
+					.getCurrentMessages();
 			response = new AjaxResponse(res);
 			logger.debug("getCurrentMessages returned [{}] messages.", ((res == null) ? "null" : res.size()));
-			
+
 		} catch (AuthenticationCredentialsNotFoundException e) {
 			response = new AjaxResponse(null);
 			response.setAccessDenied(true);
@@ -103,27 +106,26 @@ public class MessageNodeController extends BaseController<MessageNode> {
 		}
 
 		savedNodesNotifications(response);
-		
+
 		return response;
-    }
-	
+	}
+
 	/**
 	 * Set a message as seen for the current logged in user.
 	 * 
 	 * @param nodeId the id of the {@link MessageNode} that will be set to seen
-	 * @param model the model
-	 * @return the {@link AjaxResponse} that includes if 
-	 * the message has been set successfully to seen or the error message
+	 * @return the {@link AjaxResponse} that includes if the message has been set
+	 *         successfully to seen or the error message
 	 */
-    @RequestMapping(value = "/setSeen", method = RequestMethod.POST)
-    public @ResponseBody AjaxResponse setSeen(@RequestParam(value="nodeId", required=true) Long nodeId, Model model) {
+	@PostMapping(value = "/setSeen")
+	public @ResponseBody AjaxResponse setSeen(@RequestParam(value = "nodeId", required = true) Long nodeId) {
 		logger.debug("setSeen ...");
 		AjaxResponse response = null;
 		try {
 			((MessageNodeService) this.getService()).setSeen(nodeId);
 			response = new AjaxResponse(true);
 			logger.debug("setSeen finished.");
-			
+
 		} catch (AuthenticationCredentialsNotFoundException e) {
 		} catch (AccessDeniedException e) {
 		} catch (Exception e) {
@@ -138,23 +140,23 @@ public class MessageNodeController extends BaseController<MessageNode> {
 	 * Set a message as closed for the current logged in user.
 	 * 
 	 * @param nodeId the id of the {@link MessageNode} that will be set to closed
-	 * @param model the model
-	 * @return the {@link AjaxResponse} that includes if 
-	 * the message has been set successfully to closed or the error message
+	 * @return the {@link AjaxResponse} that includes if the message has been set
+	 *         successfully to closed or the error message
 	 */
-	@RequestMapping(value = "/setClosed", method = RequestMethod.POST)
-    public @ResponseBody AjaxResponse setClosed(@RequestParam(value="nodeId", required=true) Long nodeId, Model model) {
+	@PostMapping(value = "/setClosed")
+	public @ResponseBody AjaxResponse setClosed(@RequestParam(value = "nodeId", required = true) Long nodeId) {
 		logger.debug("setClosed ...");
 		AjaxResponse response = null;
 		try {
 			((MessageNodeService) this.getService()).setClosed(nodeId);
 			response = new AjaxResponse(true);
 			logger.debug("setClosed finished.");
-			
+
 		} catch (AuthenticationCredentialsNotFoundException e) {
 		} catch (AccessDeniedException e) {
 		} catch (Exception e) {
-			logger.error(e.toString(), e);response = new AjaxResponse(null);
+			logger.error(e.toString(), e);
+			response = new AjaxResponse(null);
 			response.setError(e.toString());
 		}
 		return response;

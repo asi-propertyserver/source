@@ -17,16 +17,16 @@
 package at.freebim.db.webapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.Phase;
 import at.freebim.db.service.BaseNodeService;
 import at.freebim.db.service.PhaseService;
 
 /**
- * The controller for the node/entity {@link Phase}.
- * It extends {@link BaseUuidController}.
+ * The controller for the node/entity {@link Phase}. It extends
+ * {@link BaseUuidController}.
  * 
  * @see at.freebim.db.domain.Phase
  * @see at.freebim.db.webapp.controller.BaseUuidController
@@ -34,7 +34,7 @@ import at.freebim.db.service.PhaseService;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/phase")
 public class PhaseController extends BaseUuidController<Phase> {
 
@@ -43,15 +43,17 @@ public class PhaseController extends BaseUuidController<Phase> {
 	 */
 	@Autowired
 	private PhaseService service;
-	
-    /**
-     * Creates a new instance.
-     */
-    public PhaseController() {
+
+	/**
+	 * Creates a new instance.
+	 */
+	public PhaseController() {
 		super(Phase.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override

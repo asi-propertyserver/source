@@ -60,7 +60,7 @@ at.freebim.db.problems = {
 					}
 				});
 			}
-		});
+		}, null ,null, "GET");
 	},
 	
 	emptyMeasure : function () {
@@ -84,7 +84,7 @@ at.freebim.db.problems = {
 					}
 				});
 			}
-		});
+		}, null, null, "GET");
 	},
 	
 	emptyComponents : function () {
@@ -108,7 +108,7 @@ at.freebim.db.problems = {
 					}
 				});
 			}
-		});
+		}, null ,null, "GET");
 	},
 	
 	deletedPhase : function () {
@@ -132,7 +132,7 @@ at.freebim.db.problems = {
 					}
 				});
 			}
-		});
+		}, null, null, "GET");
 	},
 	
 	paramsToMoveUp : function () {
@@ -177,7 +177,7 @@ at.freebim.db.problems = {
 				setTimeout(function () {
 					jq(xd).accordion( "refresh" );
 				}, 50);
-			});
+			}, null, null, "GET");
 
 		};
 		var x = jq("#freebim_problems_params_move_up"), xd = document.createElement("div");
@@ -254,7 +254,7 @@ at.freebim.db.problems = {
 					jq(c2div).append("<span class='freebim-item freebim-contextmenu Component' nodeid='" + pair.b + "'>" + pair.bn + "</span>");
 				});
 			}
-		});
+		},null ,null, "GET");
 	}
 
 };

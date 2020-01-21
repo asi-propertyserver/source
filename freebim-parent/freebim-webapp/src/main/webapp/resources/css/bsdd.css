@@ -1,54 +1,57 @@
 @charset "utf-8";
 
-.bsdd-IfdBase, 
-.bsdd-fullNames, 
-.bsdd-version, 
-.bsdd-status, 
-.bsdd-shortNames, 
-.bsdd-lexemes,
-.bsdd-definitions,
-.bsdd-comments,
-.bsdd-organization,
-.bsdd-illustrations {
+.bsdd-IfdBase, .bsdd-fullNames, .bsdd-version, .bsdd-status,
+	.bsdd-shortNames, .bsdd-lexemes, .bsdd-definitions, .bsdd-comments,
+	.bsdd-organization, .bsdd-illustrations {
 	margin: 5px;
 }
+
 table.bsdd {
 	width: 100%;
 }
+
 tr[guid] {
 	background-image: url("/resources/tablerow20.png");
 }
+
 .ifd-logo {
 	float: left;
 	width: 20px;
 	padding: 10px 4px 0px 0;
 }
+
 .ifd-flag {
 	height: 16px;
 	padding: 0 3px 0 0;
 }
+
 input.bsdd-IfdLanguage-select[type="radio"] {
 	float: left;
 }
+
 .bsdd-IfdLanguage {
 	white-space: nowrap;
 }
+
 .bsdd-IfdConcept, .bsdd-IfdContext {
 	border: solid 1px lightgray;
 	margin: 20px 0px;
 	padding: 4px;
 }
+
 li.bsdd-shortListItem {
 	cursor: pointer;
 	margin: 1px 12px;
 }
+
 li.bsdd-shortListItem:hover {
 	text-decoration: underline;
 }
+
 .bsdd-content {
 	float: left;
 	width: 48%;
-	height: 100%;	
+	height: 100%;
 	overflow-y: scroll;
 }
 /* .bsdd-head {
@@ -58,25 +61,28 @@ li.bsdd-shortListItem:hover {
 .bsdd-head img {
 	float: left;
 }
+
 .fromBsddToFreebim {
 	background-color: rgba(255, 255, 0, 0.2);
 	border: solid 1px lightgray;
 }
+
 .fromBsddToFreebim:hover {
 	background-color: lightgray;
 	border: solid 1px black;
 	cursor: pointer;
 }
+
 .fromFreebimToBsdd {
 	background-color: rgba(255, 255, 0, 0.2);
 	border: solid 1px lightgray;
 }
+
 .fromFreebimToBsdd:hover {
 	background-color: lightgray;
 	border: solid 1px black;
 	cursor: pointer;
 }
-
 
 .ui-accordion .ui-accordion-header .ui-accordion-header-icon {
 	position: absolute;
@@ -89,24 +95,31 @@ li.bsdd-shortListItem:hover {
 /* .ui-accordion h3 div.de {
 	float: left;
 } */
-.ui-accordion h3 div.de, .ui-accordion h3 div.en, .ui-accordion h3 div.ifc {
+.ui-accordion h3 div.de, .ui-accordion h3 div.en, .ui-accordion h3 div.ifc
+	{
 	clear: none;
 	margin: 0;
 	padding: 0;
 }
+
 .ui-accordion h3 div.en {
 	margin-left: 50%;
 	clear: none;
 }
+
 th.ifd-lang {
 	width: 30px;
 }
+
 .bsdd-IfdLanguageRepresentationBase {
 	text-align: center;
 }
-.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active
+	{
 	border-bottom: none;
 }
+
 .ui-accordion .ui-accordion-content {
 	padding: 2.2em;
 	border-top: 0;

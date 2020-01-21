@@ -1,12 +1,12 @@
 <project name="db.freebim.at" default="dist" basedir=".">
-    <description>
-        used to generate minified JavaScript files,
-        called from maven.
-    </description>
-    
-    <property name="jsmin" location="./batch_jsmin.sh" />
+	<description>
+		used to generate minified JavaScript files,
+		called from maven.
+	</description>
 
-  	<target name="minify">
+	<property name="jsmin" location="./batch_jsmin.sh" />
+
+	<target name="minify">
 		<exec executable="${jsmin}" />
-  	</target>
+	</target>
 </project>

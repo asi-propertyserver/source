@@ -24,18 +24,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import at.freebim.db.domain.Company;
 import at.freebim.db.domain.Contributor;
-import at.freebim.db.domain.base.BaseNode;
 import at.freebim.db.domain.base.LifetimeBaseNode;
 import at.freebim.db.domain.rel.CompanyCompany;
 import at.freebim.db.domain.rel.WorksFor;
@@ -44,10 +44,11 @@ import at.freebim.db.service.CompanyService;
 import at.freebim.db.service.DateService;
 import at.freebim.db.service.FileService;
 import at.freebim.db.service.GraphService.Graph;
+import io.swagger.annotations.ApiOperation;
 
 /**
- * The controller that handles the node/entity {@link Company}.
- * It extends {@link BaseController}.
+ * The controller that handles the node/entity {@link Company}. It extends
+ * {@link BaseController}.
  * 
  * @see at.freebim.db.domain.Company
  * @see at.freebim.db.webapp.controller.BaseController
@@ -55,7 +56,7 @@ import at.freebim.db.service.GraphService.Graph;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/company")
 public class CompanyController extends BaseController<Company> {
 
@@ -63,10 +64,10 @@ public class CompanyController extends BaseController<Company> {
 	 * The logger.
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(CompanyController.class);
-	
+
 	/**
-	 * This class extends {@link at.freebim.db.service.GraphService.Node} simply 
-	 * by the field href.
+	 * This class extends {@link at.freebim.db.service.GraphService.Node} simply by
+	 * the field href.
 	 * 
 	 * @see at.freebim.db.service.GraphService.Node
 	 * 
@@ -75,17 +76,16 @@ public class CompanyController extends BaseController<Company> {
 	 */
 	public class Node extends at.freebim.db.service.GraphService.Node {
 		private static final long serialVersionUID = 1L;
-		
+
 		/**
 		 * A hypertext reference.
 		 */
-		public String href; 
-		
-		
+		public String href;
+
 		/**
 		 * Create new instance.
 		 * 
-		 * @param id the id of the node
+		 * @param id   the id of the node
 		 * @param name the name of the node
 		 * @param type the type of the node
 		 */
@@ -99,45 +99,48 @@ public class CompanyController extends BaseController<Company> {
 	 */
 	@Autowired
 	private CompanyService companyService;
-	
+
 	/**
 	 * The service that handles file uploads.
 	 */
 	@Autowired
 	private FileService fileUploadService;
-	
+
 	/**
 	 * The service that handles dates.
 	 */
 	@Autowired
 	private DateService dateService;
-	
-    /**
-     * Creates a new instance.
-     */
-    public CompanyController() {
+
+	/**
+	 * Creates a new instance.
+	 */
+	public CompanyController() {
 		super(Company.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override
 	protected BaseNodeService<Company> getService() {
 		return this.companyService;
 	}
-	
-    /**
-     * Get an image that has the provided file-name.
-     * 
-     * @param file the name of the file. This is provided as path variable.
-     * @param model the model
-     * @return a {@link FileSystemResource} to get the file
-     */
-    @RequestMapping(value = "/logo/{file:.+}", headers = "Accept=image/jpeg, image/jpg, image/png, image/gif, image/png", method = RequestMethod.GET)
-    public @ResponseBody FileSystemResource getImage(@PathVariable String file, Model model) {
+
+	/**
+	 * Get an image that has the provided file-name.
+	 * 
+	 * @param file  the name of the file. This is provided as path variable.
+	 * @param model the model
+	 * @return a {@link FileSystemResource} to get the file
+	 */
+	@ApiOperation(value = "Get an image", notes = "Load an image from the server that has the provided filename")
+	@GetMapping(value = "/logo/{file:.+}", headers = "Accept=image/jpeg, image/jpg, image/png, image/gif, image/png")
+	public @ResponseBody FileSystemResource getImage(@PathVariable String file, Model model) {
 		logger.debug("getImage  [{}]", file);
-		
+
 		super.setUserInfo(model);
 
 		try {
@@ -148,24 +151,27 @@ public class CompanyController extends BaseController<Company> {
 	}
 
 	/**
-	 * Upload a file to the server. The file is provided as {@link MultipartFile} from the request.
+	 * Upload a file to the server. The file is provided as {@link MultipartFile}
+	 * from the request.
 	 * 
-	 * @param file the file that will be uploaded
+	 * @param file  the file that will be uploaded
 	 * @param model the model
-	 * @return the {@link AjaxResponse} that includes the filename of the uploaded file
+	 * @return the {@link AjaxResponse} that includes the filename of the uploaded
+	 *         file
 	 */
-	@RequestMapping(value="/upload", method=RequestMethod.POST)
-    public @ResponseBody AjaxResponse handleFileUpload(@RequestParam("file") MultipartFile file, Model model) {
-		
+	@ApiOperation(value = "Upload a file", notes = "Uplaod a file to the server")
+	@PostMapping(value = "/upload")
+	public @ResponseBody AjaxResponse handleFileUpload(@RequestParam("file") MultipartFile file, Model model) {
+
 		AjaxResponse response = null;
-		
+
 		try {
 			String filename = this.fileUploadService.uploadFile(file);
-			
+
 			response = new AjaxResponse(filename);
-    		
+
 			savedNodesNotifications(response);
-            
+
 		} catch (AccessDeniedException e) {
 			response = new AjaxResponse(null);
 			response.setAccessDenied(true);
@@ -174,78 +180,81 @@ public class CompanyController extends BaseController<Company> {
 			response = new AjaxResponse(null);
 			response.setError(e.toString());
 		}
-		
+
 		return response;
-    }
-	
+	}
+
 	/**
-	 * Load a {@link Graph} of the company to company 
-	 * relations with the contributors that are part of that company.
+	 * Load a {@link Graph} of the company to company relations with the
+	 * contributors that are part of that company.
 	 * 
 	 * @param parentId
 	 * @param recursive
 	 * @param withParams
 	 * @param withEquals
-	 * @param model the model
+	 * @param model      the model
 	 * @return the {@link AjaxResponse} that includes the created {@link Graph}
 	 */
-	@RequestMapping(value = "/graph", method = RequestMethod.POST)
-	public @ResponseBody  AjaxResponse getChildsOfNode(Long parentId, boolean recursive, boolean withParams, boolean withEquals, Model model) {
+	@ApiOperation(value = "Load a graph", notes = "Load a {@link Graph} of the company to company relations with the contributors that are part of that company")
+	@GetMapping(value = "/graph")
+	public @ResponseBody AjaxResponse getChildsOfNode(Long parentId, boolean recursive, boolean withParams,
+			boolean withEquals) {
 		logger.debug("Received request: childs_of_node parentId=[{}]", parentId);
 
-		super.setUserInfo(model);
-		
 		AjaxResponse response = null;
 		Long now = this.dateService.getMillis();
 
 		Graph graph = new Graph();
-		
+
 		ArrayList<Company> companies = this.companyService.getAll(true);
 		for (Company comp : companies) {
 			Node node = new Node(comp.getNodeId(), comp.getName(), "Company");
 			node.href = comp.getLogo();
 			graph.nodes.put(comp.getNodeId(), node);
-			
+
 			// add Contributors to Company
 			Iterable<WorksFor> iterable = comp.getContributor();
-			Iterator<WorksFor> iter = iterable.iterator();
-			while (iter.hasNext()) {
-				WorksFor rel = iter.next();
-				BaseNode bn = rel.getN1();
-				Contributor c = (Contributor) this.relationService.fetch(bn);
-				if (LifetimeBaseNode.class.isAssignableFrom(c.getClass())) {
-					LifetimeBaseNode l = (LifetimeBaseNode) c;
-					if (l.getValidFrom() > now
-							|| (l.getValidTo() != null && l.getValidTo() <= now)) {
-						continue;
+
+			if (iterable != null) {
+				Iterator<WorksFor> iter = iterable.iterator();
+				while (iter.hasNext()) {
+					WorksFor rel = iter.next();
+					Contributor bn = rel.getN1();
+					if (LifetimeBaseNode.class.isAssignableFrom(bn.getClass())) {
+						LifetimeBaseNode l = (LifetimeBaseNode) bn;
+						if (l.getValidFrom() > now || (l.getValidTo() != null && l.getValidTo() <= now)) {
+							continue;
+						}
 					}
+					at.freebim.db.service.GraphService.Node cnode = new at.freebim.db.service.GraphService.Node(
+							bn.getNodeId(), bn.getName(), "Contributor");
+					graph.nodes.put(bn.getNodeId(), cnode);
+					graph.links.add(rel);
 				}
-				at.freebim.db.service.GraphService.Node cnode = new at.freebim.db.service.GraphService.Node(c.getNodeId(), c.getName(), "Contributor");
-				graph.nodes.put(c.getNodeId(), cnode);
-				graph.links.add(rel);
 			}
-			
+
 			// build Company structure
 			Iterable<CompanyCompany> iterable2 = comp.getCompany();
-			Iterator<CompanyCompany> iter2 = iterable2.iterator();
-			while (iter2.hasNext()) {
-				CompanyCompany rel = iter2.next();
-				BaseNode bn = rel.getN1();
-				if (bn.getNodeId().equals(comp.getNodeId())) {
-					bn = rel.getN2();
-				}
-				Company c = (Company) this.relationService.fetch(bn);
-				if (LifetimeBaseNode.class.isAssignableFrom(c.getClass())) {
-					LifetimeBaseNode l = (LifetimeBaseNode) c;
-					if (l.getValidFrom() > now
-							|| (l.getValidTo() != null && l.getValidTo() <= now)) {
-						continue;
+			if (iterable2 != null) {
+				Iterator<CompanyCompany> iter2 = iterable2.iterator();
+				while (iter2.hasNext()) {
+					CompanyCompany rel = iter2.next();
+					Company bn = rel.getN1();
+					if (bn.getNodeId().equals(comp.getNodeId())) {
+						bn = rel.getN2();
 					}
+
+					if (LifetimeBaseNode.class.isAssignableFrom(bn.getClass())) {
+						LifetimeBaseNode l = (LifetimeBaseNode) bn;
+						if (l.getValidFrom() > now || (l.getValidTo() != null && l.getValidTo() <= now)) {
+							continue;
+						}
+					}
+					graph.links.add(rel);
 				}
-				graph.links.add(rel);
 			}
 		}
-		
+
 		response = new AjaxResponse(graph);
 
 		return response;

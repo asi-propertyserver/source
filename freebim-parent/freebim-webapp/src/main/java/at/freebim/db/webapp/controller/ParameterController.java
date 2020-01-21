@@ -17,16 +17,16 @@
 package at.freebim.db.webapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.Parameter;
 import at.freebim.db.service.BaseNodeService;
 import at.freebim.db.service.ParameterService;
 
 /**
- * The controller for the node/entity {@link Parameter}.
- * It extends {@link BaseController}.
+ * The controller for the node/entity {@link Parameter}. It extends
+ * {@link BaseController}.
  * 
  * @see at.freebim.db.domain.Parameter
  * @see at.freebim.db.webapp.controller.BaseController
@@ -34,7 +34,7 @@ import at.freebim.db.service.ParameterService;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/param")
 public class ParameterController extends BaseController<Parameter> {
 
@@ -43,15 +43,17 @@ public class ParameterController extends BaseController<Parameter> {
 	 */
 	@Autowired
 	private ParameterService parameterService;
-	
-    /**
-     * Creates a new instance.
-     */
-    public ParameterController() {
+
+	/**
+	 * Creates a new instance.
+	 */
+	public ParameterController() {
 		super(Parameter.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override

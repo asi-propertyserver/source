@@ -179,16 +179,9 @@ at.freebim.db.search = {
 			}
 			jq(document).trigger("show_progress", [{key:"Search_load", msg: msg}]);
 			jq(d).html(msg);
-			jq.post("/search/search",
-					{ searchstring: s,
-				      searchtype : searchtype
-					},
-					function (response) {
+
+			at.freebim.db.request.get("/search/search", { searchstring: s, searchtype: searchtype}).then((response) => {
 						jq(document).trigger("hide_progress", [{key:"Search_load"}]);
-						at.freebim.db.login.checkAjaxLogin(response, function () {
-							jq(at.freebim.db.search).trigger("find", [{searchString: s}]);
-							return;
-		  				});
 						jq("#" + self.mainDivId + " .searchresult").empty();
 						var d = jq("#" + self.mainDivId + " .searchresult")[0];
 						if (response.result) {
@@ -279,7 +272,7 @@ at.freebim.db.search = {
 						}
 */					}
 					
-			).fail(function (error) {
+			).catch((error) => {
 				jq(document).trigger("hide_progress", [{key:"Search_load"}]);
 				alert("error: " + error);
 			});
@@ -448,7 +441,7 @@ at.freebim.db.search = {
 							},
 							content: function(callback) {
 								// don't show more than 100 paths in tooltip ...
-								jq.post("/relations/getAllPaths", { nodeId: v.node[nf.NODEID], onlyValid: true, max: 100 }, function(response) {
+								at.freebim.db.request.post("/relations/getAllPaths", {nodeId: v.node[nf.NODEID], onlyValid: true, max: 100}).then((response) => {
 									if (response && response.result) {
 										var i, j, m, n = response.result.length, txt, paths = [];
 										for (i=0; i<n; i++) {
@@ -493,7 +486,7 @@ at.freebim.db.search = {
 										
 										callback(txt);
 									}
-								}).fail(function(error) {
+								}).catch((error) => {
 									clazz.loading = false;
 								});
 							}

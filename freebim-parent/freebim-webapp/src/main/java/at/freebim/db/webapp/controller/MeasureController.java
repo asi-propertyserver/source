@@ -17,16 +17,16 @@
 package at.freebim.db.webapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.Measure;
 import at.freebim.db.service.BaseNodeService;
 import at.freebim.db.service.MeasureService;
 
 /**
- * The controller that handles the node/entity {@link Measure}.
- * It extends {@link BaseController}.
+ * The controller that handles the node/entity {@link Measure}. It extends
+ * {@link BaseController}.
  * 
  * @see at.freebim.db.domain.Measure
  * @see at.freebim.db.webapp.controller.BaseController
@@ -34,7 +34,7 @@ import at.freebim.db.service.MeasureService;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/measure")
 public class MeasureController extends BaseController<Measure> {
 
@@ -43,16 +43,17 @@ public class MeasureController extends BaseController<Measure> {
 	 */
 	@Autowired
 	private MeasureService measureService;
-	
-	
-    /**
-     * Creates a new instance.
-     */
-    public MeasureController() {
+
+	/**
+	 * Creates a new instance.
+	 */
+	public MeasureController() {
 		super(Measure.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override

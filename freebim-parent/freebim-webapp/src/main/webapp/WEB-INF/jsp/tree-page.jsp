@@ -1,7 +1,8 @@
-<%@ include file="doctype.jsp" %>
-	<script type="text/javascript" src="/resources/js/tree.js?ver=${version}" charset="UTF-8"></script>
-	<title>freeBIM - Hierarchie</title>
-<%@ include file="layout-begin.jsp" %>
+<%@ include file="doctype.jsp"%>
+<script type="text/javascript"
+	src="/resources/js/tree.js?ver=${version}" charset="UTF-8"></script>
+<title>freeBIM - Hierarchie</title>
+<%@ include file="layout-begin.jsp"%>
 
 <div class="ui-layout-center" id="root1"></div>
 <div class="ui-layout-east" id="root2"></div>
@@ -23,4 +24,4 @@
 		tree2.getChildren();
 	});
 </script>
-<%@ include file="layout-end.jsp" %>
+<%@ include file="layout-end.jsp"%>

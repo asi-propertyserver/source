@@ -38,12 +38,12 @@ public interface AppVersion {
 	 * @return the time at which the app was build
 	 */
 	public String getBuildTime();
-	
+
 	/**
 	 * Checks if this is a release version.
 	 * 
-	 * @return returns <code>true</code> if the app is a release version and 
-	 * <code>false</code> otherwise.
+	 * @return returns <code>true</code> if the app is a release version and
+	 *         <code>false</code> otherwise.
 	 */
 	public boolean isRelease();
 

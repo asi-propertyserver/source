@@ -1,16 +1,16 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
@@ -37,7 +37,7 @@ import at.freebim.db.repository.FreebimUserRepository;
  */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-	
+
 	/**
 	 * The logger.
 	 */
@@ -49,17 +49,18 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
 	private FreebimUserRepository userRepository;
 
-	
-	/* (non-Javadoc)
-	 * @see org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.security.core.userdetails.UserDetailsService#
+	 * loadUserByUsername(java.lang.String)
 	 */
-	@Transactional(readOnly=true)
-	public UserDetails loadUserByUsername(String username)
-			throws UsernameNotFoundException, DataAccessException {
-		
+	@Transactional(readOnly = true)
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
+
 		// Declare a null Spring User
 		UserDetails user = null;
-		
+
 		try {
 			logger.debug("loadUserByUsername: {}, {}", username, userRepository.toString());
 			// Search database for a user that matches the specified username
@@ -67,28 +68,26 @@ public class CustomUserDetailsService implements UserDetailsService {
 			// Or use JDBC to access your database
 			// FreebimUser is our custom domain user. This is not the same as Spring's User
 			FreebimUser freebimUser = userRepository.findByUsername(username);
-			
+
 			// Populate the Spring User object with details from the FreebimUser
-			user =  new User(
-					freebimUser.getUsername(), 
-					freebimUser.getPassword(),
-					true, // enabled
+			user = new User(freebimUser.getUsername(), freebimUser.getPassword(), true, // enabled
 					true, // accountNonExpired
 					true, // credentialsNonExpired
 					true, // accountNonLocked
-					freebimUser.getRoles() );
+					freebimUser.getRoles());
 
 			logger.debug("got user: {}, pwd={}", user.getUsername(), user.getPassword());
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("Error in retrieving user", e);
 		}
-		
+
 		// Return user to Spring for processing.
-		// Take note we're not the one evaluating whether this user is authenticated or valid
+		// Take note we're not the one evaluating whether this user is authenticated or
+		// valid
 		// We just merely retrieve a user that matches the specified username
 		return user;
 	}
-	
+
 }

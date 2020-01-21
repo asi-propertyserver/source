@@ -17,16 +17,16 @@
 package at.freebim.db.webapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.Document;
 import at.freebim.db.service.BaseNodeService;
 import at.freebim.db.service.DocumentService;
 
 /**
- * The controller that handles the node/entity {@link Document}.
- * It extends {@link BaseUuidController}.
+ * The controller that handles the node/entity {@link Document}. It extends
+ * {@link BaseUuidController}.
  * 
  * @see at.freebim.db.domain.Document
  * @see at.freebim.db.webapp.controller.BaseUuidController
@@ -34,7 +34,7 @@ import at.freebim.db.service.DocumentService;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/document")
 public class DocumentController extends BaseUuidController<Document> {
 
@@ -43,7 +43,7 @@ public class DocumentController extends BaseUuidController<Document> {
 	 */
 	@Autowired
 	private DocumentService documentService;
-	
+
 	/**
 	 * Creates a new instance.
 	 */
@@ -51,7 +51,9 @@ public class DocumentController extends BaseUuidController<Document> {
 		super(Document.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override

@@ -3,8 +3,8 @@
  */
 
 at.freebim.db.domain = {
-		
-	csv : function (s) {
+
+	csv: function (s) {
 		if (s === null || s === undefined) {
 			return net.spectroom.js.table.csvDelim;
 		}
@@ -12,8 +12,8 @@ at.freebim.db.domain = {
 		s = s.replace(/'/g, "");
 		return "\"" + s + "\"" + net.spectroom.js.table.csvDelim;
 	},
-	
-	init : function () {
+
+	init: function () {
 		var db = at.freebim.db, d = db.domain, nf = d.NodeFields, i18n = net.spectroom.js.i18n;
 		if (d.initialized) {
 			return;
@@ -22,129 +22,129 @@ at.freebim.db.domain = {
 		d.showDeleted = "hide-deleted";
 		d.showUnused = "hide-unused";
 		d.confirmDelete = true;
-		
+
 		/**
 		 * define some standard table columns
 		 */
 		d.columns = {
 			validFrom: {
-				label : "SINCE",
-				field : nf.VALID_FROM,
-				type : "callback",
-				data : function(v, td) {
+				label: "SINCE",
+				field: nf.VALID_FROM,
+				type: "callback",
+				data: function (v, td) {
 					var date = db.time.formatISO(v);
 					return date;
 				},
-				sort : true,
-				csv : false
+				sort: true,
+				csv: false
 			},
 			code: {
-				label : "CODE", // "Code",
-				field : nf.CODE,
-				type : "text",
-				sort : true
+				label: "CODE", // "Code",
+				field: nf.CODE,
+				type: "text",
+				sort: true
 			},
 			state: {
-				label : "STATUS",
-				field : nf.STATE,
-				type : "callback",
-				data : d.State.data,
-				sort : true,
-				csv : d.csv(jq(d.State.data).text())
+				label: "STATUS",
+				field: nf.STATE,
+				type: "callback",
+				data: d.State.data,
+				sort: true,
+				csv: d.csv(jq(d.State.data).text())
 			}
 		};
-		
+
 		/**
 		 * define some standard fields to be used in edit form:
 		 */
 		d.fields = {
-			nodeId : {
-				label : "",
-				type : "hidden",
-				field : nf.NODEID
+			nodeId: {
+				label: "",
+				type: "hidden",
+				field: nf.NODEID
 			},
-			validFrom : {
-				label : "",
-				type : "hidden",
-				field : nf.VALID_FROM
+			validFrom: {
+				label: "",
+				type: "hidden",
+				field: nf.VALID_FROM
 			},
-			validTo : {
-				label : "",
-				type : "hidden",
-				field : nf.VALID_TO
+			validTo: {
+				label: "",
+				type: "hidden",
+				field: nf.VALID_TO
 			},
-			name : {
-				label : "NAME",
-				type : "text",
-				field : nf.NAME,
-				className : "NAME"
+			name: {
+				label: "NAME",
+				type: "text",
+				field: nf.NAME,
+				className: "NAME"
 			},
-			nameEn : {
-				label : "NAME_INTL",
-				type : "text",
-				field : nf.NAME_EN,
-				className : "NAME-EN"
+			nameEn: {
+				label: "NAME_INTL",
+				type: "text",
+				field: nf.NAME_EN,
+				className: "NAME-EN"
 			},
-			desc : {
-				label : "DESCRIPTION",
-				type : "textarea",
-				field : nf.DESC,
-				className : "DESC"
+			desc: {
+				label: "DESCRIPTION",
+				type: "textarea",
+				field: nf.DESC,
+				className: "DESC"
 			},
-			descEn : {
-				label : "DESCRIPTION_INTL",
-				type : "textarea",
-				field : nf.DESC_EN,
-				className : "DESC-EN"
+			descEn: {
+				label: "DESCRIPTION_INTL",
+				type: "textarea",
+				field: nf.DESC_EN,
+				className: "DESC-EN"
 			},
-			code : {
-				label : "CODE",
-				type : "text",
-				field : nf.CODE,
-				className : "CODE"
+			code: {
+				label: "CODE",
+				type: "text",
+				field: nf.CODE,
+				className: "CODE"
 			},
-			state : {
-				label : "STATUS",
-				type : "select",
-				field : nf.STATE,
-				values : d.State.values,
-				data : d.State.data,
-				dataValue : d.State.dataValue,
-				readOnly : ((db.contributor && (db.contributor.maySetStatus || db.contributor.maySetReleaseStatus)) ? false : true)
+			state: {
+				label: "STATUS",
+				type: "select",
+				field: nf.STATE,
+				values: d.State.values,
+				data: d.State.data,
+				dataValue: d.State.dataValue,
+				readOnly: ((db.contributor && (db.contributor.maySetStatus || db.contributor.maySetReleaseStatus)) ? false : true)
 			},
-			statusComment : {
-				label : "STATUS_COMMENT",
-				type : "textarea",
-				field : nf.STATUS_COMMENT,
-				readOnly : ((db.contributor && (db.contributor.maySetStatus || db.contributor.maySetReleaseStatus)) ? false : true)
+			statusComment: {
+				label: "STATUS_COMMENT",
+				type: "textarea",
+				field: nf.STATUS_COMMENT,
+				readOnly: ((db.contributor && (db.contributor.maySetStatus || db.contributor.maySetReleaseStatus)) ? false : true)
 			},
-			bsDD : {
-				label : "BSDD_GUID",
-				type : "custom",
-				field : nf.BSDD_GUID,
-				createField : function (form, i, ip) {
+			bsDD: {
+				label: "BSDD_GUID",
+				type: "custom",
+				field: nf.BSDD_GUID,
+				createField: function (form, i, ip) {
 					// ip depends on entity ...
 				},
-				setEntityValue : function (form, i, entity, ip) {
-					var title = ((entity && entity[nf.BSDD_GUID] && db.bsdd.isValidGuid(entity[nf.BSDD_GUID]) ) ? "BSDD_SHOW_OBJECT"  
-							: ((entity && entity[nf.LOADED_BSDD]) ? "BSDD_SHOW_GUIDS" : "BSDD_CREATE_OBJECT" ));
+				setEntityValue: function (form, i, entity, ip) {
+					var title = ((entity && entity[nf.BSDD_GUID] && db.bsdd.isValidGuid(entity[nf.BSDD_GUID])) ? "BSDD_SHOW_OBJECT"
+						: ((entity && entity[nf.LOADED_BSDD]) ? "BSDD_SHOW_GUIDS" : "BSDD_CREATE_OBJECT"));
 					jq(ip).empty();
-					jq(ip).parent().append("<input type='text' class='jsForm-field' id='field_" + nf.BSDD_GUID + "' style='width: 300px;'" 
-							+ ((!(db.contributor && db.contributor.mayViewExtensions)) ? " readonly" : "")
-							+ " value='" + ((entity && entity[nf.BSDD_GUID]) ? entity[nf.BSDD_GUID] : ((entity && entity[nf.LOADED_BSDD]) ? entity[nf.LOADED_BSDD].length + " " + i18n.g_n("LOADED_BSDD_GUIDS", entity[nf.LOADED_BSDD].length) : "") ) + "'"
-							+ ">"
-							+ "<div class='bsdd-button'></div>");
-					if (entity && entity[nf.BSDD_GUID] && db.bsdd.isValidGuid(entity[nf.BSDD_GUID]) ) {
-						jq(ip).parent().find(".jsForm-field").attr("title", i18n.g("BSDD_CONVERT_GUID") ).attr("i18n_title", "BSDD_CONVERT_GUID");
+					jq(ip).parent().append("<input type='text' class='jsForm-field' id='field_" + nf.BSDD_GUID + "' style='width: 300px;'"
+						+ ((!(db.contributor && db.contributor.mayViewExtensions)) ? " readonly" : "")
+						+ " value='" + ((entity && entity[nf.BSDD_GUID]) ? entity[nf.BSDD_GUID] : ((entity && entity[nf.LOADED_BSDD]) ? entity[nf.LOADED_BSDD].length + " " + i18n.g_n("LOADED_BSDD_GUIDS", entity[nf.LOADED_BSDD].length) : "")) + "'"
+						+ ">"
+						+ "<div class='bsdd-button'></div>");
+					if (entity && entity[nf.BSDD_GUID] && db.bsdd.isValidGuid(entity[nf.BSDD_GUID])) {
+						jq(ip).parent().find(".jsForm-field").attr("title", i18n.g("BSDD_CONVERT_GUID")).attr("i18n_title", "BSDD_CONVERT_GUID");
 						jq(ip).parent().find(".bsdd-button");
-					} 
+					}
 					jq(ip).parent().addClass("GUID").find(".bsdd-button").attr("nodeid", entity[nf.NODEID]).attr("cn", entity[nf.CLASS_NAME]).attr("title", i18n.g(title)).attr("i18n_title", title);
 					jq(ip).remove();
 				},
-				getValue : function (x) {
+				getValue: function (x) {
 					return x.val();
 				},
-				validate : function (entity, x) {
+				validate: function (entity, x) {
 					if (db.bsdd.isValidGuid(x.val())) {
 						x.removeClass("invalid");
 					} else {
@@ -152,28 +152,28 @@ at.freebim.db.domain = {
 					}
 				}
 			},
-			freebimID : {
-				label : "FREEBIM_ID",
-				type : "text",
-				field : nf.FREEBIM_ID,
-				readOnly : !(at.freebim.db.user.isAdmin),
-				className : "freebim-freebimId"
+			freebimID: {
+				label: "FREEBIM_ID",
+				type: "text",
+				field: nf.FREEBIM_ID,
+				readOnly: !(at.freebim.db.user.isAdmin),
+				className: "freebim-freebimId"
 			},
-			id : {
-				label : "ID",
-				type : "text",
-				field : nf.NODEID,
-				readOnly : true,
-				className : "freebim-nodeId"
+			id: {
+				label: "ID",
+				type: "text",
+				field: nf.NODEID,
+				readOnly: true,
+				className: "freebim-nodeId"
 			},
-			docs : {
-				label : "DOC",
-				type : "custom",
-				field : nf.DOCUMENTED,
-				createField : function (form, i, ip) {
+			docs: {
+				label: "DOC",
+				type: "custom",
+				field: nf.DOCUMENTED,
+				createField: function (form, i, ip) {
 					d.relationFormField(form, i, ip, false, d.Document.title, d.RelationTypeEnum.DOCUMENTED_IN, nf.DOCUMENTED, "Document");
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					d.setEntityValue(form.clazz, i, ip, entity, nf.DOCUMENTED, "Document", "OUT");
 				}
 			}
@@ -184,21 +184,7 @@ at.freebim.db.domain = {
 				d.State.values.splice(idx, 1);
 			}
 		}
-		
-		if (db.user.username) {
-			db.updateTimer = setInterval(function () {
-				jq.post("/ping", {}, function(response) {
-					try {
-						if (response && response.savedNodes) {
-							d.handleSavedNodes(response.savedNodes);
-						}
-					} catch (e) {
-						db.logger.error("Error in ping handleSavedNodes: " + e.message);
-					}
-				}).fail(function(error) {
-				});
-			}, d.pingInterval);
-		}
+
 		if (!d.bbnId) {
 			d.loadBbn(function (bbn) {
 				d.bbn = bbn;
@@ -213,7 +199,7 @@ at.freebim.db.domain = {
 				x = jq("#show-deleted")[0];
 				if (x) { x.checked = ((val == "true") ? true : false); }
 			}
-			
+
 			val = net.spectroom.js.cookie.get("show-unused");
 			if (val != "") {
 				d.showUnused = ((val == "true") ? "show-unused" : "hide-unused");
@@ -226,13 +212,13 @@ at.freebim.db.domain = {
 				if (x) { x.checked = true; }
 				net.spectroom.js.cookie.set("show-unused", true, 14);
 			}
-			
+
 			val = net.spectroom.js.cookie.get("show-abstract");
 			if (val != "") {
 				db.user.isShowAbstract = ((val == "true") ? true : false);
 				x = jq("#show-abstract")[0];
 				if (x) { x.checked = ((val == "true") ? true : false); }
-			}		
+			}
 			val = net.spectroom.js.cookie.get("show-library");
 			if (val != "") {
 				db.user.isShowLibrary = ((val == "true") ? true : false);
@@ -283,14 +269,14 @@ at.freebim.db.domain = {
 			val = net.spectroom.js.cookie.get("at.freebim.db.lang");
 			if (val != "") {
 				db.lang = ((val == "en") ? val : "de");
-			}		
+			}
 			jq("input[type='radio'][name='at.freebim.db.lang'][value='" + db.lang + "']").attr("checked", true);
 		}
 		d.updateRelevance();
 	},
-	
-	showLibraryInfo : function() {
-		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, cr = jq("#contributor-responsibility"), i18n = net.spectroom.js.i18n; 
+
+	showLibraryInfo: function () {
+		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, cr = jq("#contributor-responsibility"), i18n = net.spectroom.js.i18n;
 		cr.empty();
 		if (db.contributor) {
 			db.contributor[nf.RESPONSIBLE] = [];
@@ -314,7 +300,7 @@ at.freebim.db.domain = {
 				ul = jq(ul);
 				var respLib = net.spectroom.js.cookie.get("at.freebim.db.contributor.responsible"), found = false;
 				db.contributor.currentLib = respLib;
-				for (i=0; i<n; i++) {
+				for (i = 0; i < n; i++) {
 					var libId = c[nf.RESPONSIBLE][i][rf.TO_NODE], li = document.createElement("li"), addLib = function (libId, li) {
 						ul.append(li);
 						d.getOrLoad(libId, d.Library.className, function (lib) {
@@ -337,14 +323,14 @@ at.freebim.db.domain = {
 								db.contributor.currentLib = libId;
 								net.spectroom.js.cookie.set("at.freebim.db.contributor.responsible", libId, 365);
 								found = true;
-							} 
+							}
 							if (!found) {
 								var respLib = jq("input[type='radio'][name='resp-lib']:checked").val();
 								if (!respLib) {
 									jq(document).trigger("alert", [{
-										title: "DLG_TITLE_FREEBIM_INFO", 
+										title: "DLG_TITLE_FREEBIM_INFO",
 										content: i18n.get("LOGIN_PLEASE_CHOOSE_LIB"),
-										okFn : function (val) { }
+										okFn: function (val) { }
 									}]);
 								}
 							}
@@ -353,23 +339,23 @@ at.freebim.db.domain = {
 					db.contributor[nf.RESPONSIBLE].push(libId);
 					addLib(libId, li);
 				}
-				
+
 			});
 		}
 	},
-		
-	bbnId : null,
-	
-	modifiedNodes : [],
-	
-	addModifiedNode : function (nodeId) {
+
+	bbnId: null,
+
+	modifiedNodes: [],
+
+	addModifiedNode: function (nodeId) {
 		nodeId *= 1;
 		if (at.freebim.db.domain.modifiedNodes.indexOf(nodeId) < 0) {
 			at.freebim.db.domain.modifiedNodes.push(nodeId);
 		}
 	},
 
-	relevantId : function (cn, id) {
+	relevantId: function (cn, id) {
 		if (cn) {
 			var clazz = at.freebim.db.domain[cn];
 			if (clazz && clazz.used) {
@@ -379,8 +365,8 @@ at.freebim.db.domain = {
 			return (id != undefined);
 		}
 	},
-	
-	showLibrary : function (el) {
+
+	showLibrary: function (el) {
 		var db = at.freebim.db, d = db.domain, nf = d.NodeFields, rf = d.RelationFields;
 		if (db.user.isShowLibrary) {
 			jq(el).find("sub.freebim-library").remove();
@@ -390,14 +376,14 @@ at.freebim.db.domain = {
 			var nodeId = jq(el).attr("nodeid"), node = d.get(nodeId);
 			if (node && node[nf.REFERENCES]) {
 				var i, n = node[nf.REFERENCES].length, libs = {}, keys, id;
-				for (i=0; i<n; i++) {
+				for (i = 0; i < n; i++) {
 					id = node[nf.REFERENCES][i][rf.TO_NODE];
 					if (!libs[id]) {
 						libs[id] = id;
 					}
 				}
 				keys = Object.keys(libs);
-				for (i=0; i<keys.length; i++) {
+				for (i = 0; i < keys.length; i++) {
 					d.getOrLoad(keys[i], d.Library.className, function (lib) {
 						var sub = document.createElement("sub");
 						d.renderNode(lib, sub);
@@ -409,8 +395,8 @@ at.freebim.db.domain = {
 			}
 		}
 	},
-	
-	showId : function (el) {
+
+	showId: function (el) {
 		if (at.freebim.db.user.isShowNodeId) {
 			jq(el).find("sub.freebim-nodeId").remove();
 			if (jq(el).closest("sub").length > 0) {
@@ -419,8 +405,8 @@ at.freebim.db.domain = {
 			jq(el).html(jq(el).html() + "<sub class='freebim-nodeId'> " + net.spectroom.js.i18n.get("ID") + "=" + jq(el).attr("nodeid") + "</sub>");
 		}
 	},
-	
-	showFreebimId : function (el) {
+
+	showFreebimId: function (el) {
 		var db = at.freebim.db, nf = db.domain.NodeFields;
 		if (db.user.isShowFreebimId) {
 			var nodeId = jq(el).attr("nodeid"), node = db.domain.get(nodeId);
@@ -433,8 +419,8 @@ at.freebim.db.domain = {
 			}
 		}
 	},
-	
-	showBsdd : function (el) {
+
+	showBsdd: function (el) {
 		var db = at.freebim.db, d = db.domain, nf = d.NodeFields;
 		if (db.user.isShowBsdd) {
 			var nodeId = jq(el).attr("nodeid"), node = d.get(nodeId);
@@ -448,7 +434,7 @@ at.freebim.db.domain = {
 		}
 	},
 
-	showPset : function (el) {
+	showPset: function (el) {
 		var db = at.freebim.db, d = db.domain, nf = d.NodeFields, rf = d.RelationFields;
 		if (db.user.isShowPset) {
 			var nodeId = jq(el).attr("nodeid"), node = d.get(nodeId), i, j, n, m;
@@ -473,8 +459,8 @@ at.freebim.db.domain = {
 						// check if that Component has a PSet that contains that Parameter
 						n = node[nf.PSETS].length;
 						m = comp[nf.PSETS].length;
-						for (i=0; i<n; i++) {
-							for (j=0; j<m; j++) {
+						for (i = 0; i < n; i++) {
+							for (j = 0; j < m; j++) {
 								if (node[nf.PSETS][i][rf.FROM_NODE] == comp[nf.PSETS][j][rf.TO_NODE]) {
 									var psetId = node[nf.PSETS][i][rf.FROM_NODE];
 									d.getOrLoad(psetId, "ParameterSet", function (e) {
@@ -487,12 +473,12 @@ at.freebim.db.domain = {
 					}
 				}
 				jq(sub).tooltip({
-					open: function(event, ui) {
+					open: function (event, ui) {
 						// remove all other tooltips!
-					    jq(ui.tooltip).siblings(".ui-tooltip").remove();
+						jq(ui.tooltip).siblings(".ui-tooltip").remove();
 					},
-					content: function(callback) {
-						var c = null, dir = null; 
+					content: function (callback) {
+						var c = null, dir = null;
 						if (node[nf.CLASS_NAME] == d.Component.className) {
 							c = d.Component;
 							dir = "OUT";
@@ -503,7 +489,7 @@ at.freebim.db.domain = {
 						if (c && dir) {
 							c.fetchEntries("li", node, nf.PSETS, "ParameterSet", dir, function (entries) {
 								var j, title = document.createElement("ul"), n = entries.length, x = jq(title);
-								for (j=0; j<n; j++) {
+								for (j = 0; j < n; j++) {
 									x.append(entries[j]);
 								}
 								// call the passed tooltip function to set the content
@@ -516,54 +502,54 @@ at.freebim.db.domain = {
 		}
 	},
 
-	handleSavedNodes : function (savedNodes) {
+	handleSavedNodes: function (savedNodes) {
 		if (savedNodes) {
 			var i, n = savedNodes.length, nodeInfo;
-			for (i=0; i<n; i++) {
+			for (i = 0; i < n; i++) {
 				nodeInfo = savedNodes[i];
 				at.freebim.db.domain.handleNodeInfo(nodeInfo);
 			}
 		}
 	},
-	
-	handleNodeInfo : function (nodeInfo) {
+
+	handleNodeInfo: function (nodeInfo) {
 		var db = at.freebim.db, d = db.domain, nf = d.NodeFields;
 		if (nodeInfo) {
 			var cl, id = "" + nodeInfo.nodeId, node = d.get(id);
 			switch (nodeInfo.action) {
-			case "RELATION_MODIFIED" : 
-			case "DELETED" : 
-			case "SAVED" : 
-				if (node) {
-					d[node[nf.CLASS_NAME]].init();
-					jq(document).trigger("getNode", [{nodeId: id, cn:node[nf.CLASS_NAME]}]);
-				}
-				break;
-			case "INSERTED" :
-				cl = nodeInfo[nf.CLASS_NAME];
-				if (cl && cl.initialized && cl.arr && cl.table) {
-					jq("." + nodeInfo.c + "[nodeid='" + id + "']").one("newNodeModified", function(event, data) {
-						var entity = data.entity;
-						jq("table.clazz_" + entity[nf.CLASS_NAME]).trigger("newInserted", [{entity : entity, ts: db.time.now()}]);
-					});
-					jq(document).trigger("getNode", [{nodeId: id, cn: nodeInfo[nf.CLASS_NAME]}]);
-				}
-				break;
+				case "RELATION_MODIFIED":
+				case "DELETED":
+				case "SAVED":
+					if (node) {
+						d[node[nf.CLASS_NAME]].init();
+						jq(document).trigger("getNode", [{ nodeId: id, cn: node[nf.CLASS_NAME] }]);
+					}
+					break;
+				case "INSERTED":
+					cl = nodeInfo[nf.CLASS_NAME];
+					if (cl && cl.initialized && cl.arr && cl.table) {
+						jq("." + nodeInfo.c + "[nodeid='" + id + "']").one("newNodeModified", function (event, data) {
+							var entity = data.entity;
+							jq("table.clazz_" + entity[nf.CLASS_NAME]).trigger("newInserted", [{ entity: entity, ts: db.time.now() }]);
+						});
+						jq(document).trigger("getNode", [{ nodeId: id, cn: nodeInfo[nf.CLASS_NAME] }]);
+					}
+					break;
 			}
 		}
 	},
 
-	deleteRelation : function (i, form, field, ul, ip, relId, nodeId) {
+	deleteRelation: function (i, form, field, ul, ip, relId, nodeId) {
 		var db = at.freebim.db, d = db.domain, rf = d.RelationFields;
 		d.addModifiedNode(nodeId);
 		// remove dropped entry from the array of entries
 		var j, entity = form.entity, arr = [];
-		for (j=0; j<entity[field].length; j++) {
+		for (j = 0; j < entity[field].length; j++) {
 			var he = entity[field][j];
 			if (he[rf.ID] == relId) {
 				// the trashed entry
 				continue;
-			} 
+			}
 			arr.push(he);
 		}
 		entity[field] = arr;
@@ -572,60 +558,62 @@ at.freebim.db.domain = {
 		form.setEntityValue(i, entity, ip);
 	},
 
-	loadBbn : function(cb) {
+	loadBbn: function (cb) {
 		var db = at.freebim.db, d = db.domain, nf = d.NodeFields;
-		d.bbnId = true;
+		d.bbnId = 0; //why true?
 
-		jq.get("/bbn",
-				{},
-				function (response) {
-			  		if (response.error != undefined) {
-			  			alert(response.error);
-			  		} else {
-			  			if (response.result) {
-				  			var bbn = response.result; // BigBangNode
-				  			d.bbnId = bbn[nf.NODEID];
-				  			d.bbn = bbn;
-				  			d.BigBangNode.used = [bbn[nf.NODEID]];
-				  			d.listen(bbn);
-				  			if (cb) {
-				  				cb(bbn);
-				  			}
-			  			} else {
-			  				db.login.checkAjaxLogin(response, function () {
-			  					d.loadBbn();
-			  					return;
-			  				});
-			  			}
-			  		}
-				}).fail(function (error) {
+		let refreshToken = localStorage.getItem("refresh-token");
+
+		if (refreshToken) {
+			at.freebim.db.request.get("/bbn", {}).then(function (response) {
+				if (response.error != undefined) {
+					alert(response.error);
+				} else {
+					if (response.result) {
+						var bbn = response.result; // BigBangNode
+						d.bbnId = bbn[nf.NODEID];
+						d.bbn = bbn;
+						d.BigBangNode.used = [bbn[nf.NODEID]];
+						d.listen(bbn);
+						if (cb) {
+							cb(bbn);
+						}
+					}
+				}
+			}).catch(function (error) {
+				if (error != null && error.status != 401) {
 					var msg = ((error) ? ((error.status) ? error.status + " " : "") + ((error.statusText) ? error.statusText + " " : "") : net.spectroom.js.i18n.get("ERROR"));
 					alert(msg);
-				});
+				}
+			});
+		}
+
 	},
 
-	get : function (nodeId) {
+	get: function (nodeId) {
 		return at.freebim.db.nodes["" + nodeId];
 	},
-	
-	getOrLoad : function (id, cn, f) {
+
+	getOrLoad: function (id, cn, f) {
 		var node = at.freebim.db.domain.get(id);
 		if (node) {
-			if (f) { 
+			if (f) {
 				f(node);
 			}
 		} else {
 			setTimeout(function () {
-				jq(document).trigger("getNodeWithCallback", [{nodeId: id, cn: cn, callback: function (e) {
-					if (f) {
-						f(e);
+				jq(document).trigger("getNodeWithCallback", [{
+					nodeId: id, cn: cn, callback: function (e) {
+						if (f) {
+							f(e);
+						}
 					}
-				} }]);
+				}]);
 			}, 1);
 		}
 	},
-	
-	listen : function (e) {
+
+	listen: function (e) {
 		var db = at.freebim.db, d = db.domain, nf = d.NodeFields;
 		if (e && e[nf.NODEID] != undefined) {
 			e.updated = db.time.now();
@@ -633,9 +621,9 @@ at.freebim.db.domain = {
 				e.deleted = 1;
 			}
 			if (e[nf.CLASS_NAME] != d.BigBangNode.className
-					&& e[nf.CLASS_NAME] != d.FreebimUser.className
-					&& e[nf.CLASS_NAME] != d.Contributor.className
-					&& !d.relevantId(e[nf.CLASS_NAME], e[nf.NODEID])) {
+				&& e[nf.CLASS_NAME] != d.FreebimUser.className
+				&& e[nf.CLASS_NAME] != d.Contributor.className
+				&& !d.relevantId(e[nf.CLASS_NAME], e[nf.NODEID])) {
 				e.unused = 1;
 			}
 			db.nodes["" + e[nf.NODEID]] = e;
@@ -643,11 +631,11 @@ at.freebim.db.domain = {
 			d.cleanupNode(e);
 		}
 	},
-	
+
 	/**
 	 * do some house keeping
 	 */
-	cleanupNode : function (e) {
+	cleanupNode: function (e) {
 /*		if (e) {
 			var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, rels;
 			if (e[nf.CLASS_NAME] === d.Component.className) {
@@ -678,8 +666,8 @@ at.freebim.db.domain = {
 			}
 		}
 */	},
-	
-	renderNodeId : function (nodeId, cn, el, parent, cb) {
+
+	renderNodeId: function (nodeId, cn, el, parent, cb) {
 		var d = at.freebim.db.domain;
 		d.getOrLoad(nodeId, cn, function (e) {
 			d.renderNode(e, el, parent);
@@ -688,8 +676,8 @@ at.freebim.db.domain = {
 			}
 		});
 	},
-	
-	renderNode : function (node, el, parent) {
+
+	renderNode: function (node, el, parent) {
 		var db = at.freebim.db, d = db.domain, nf = d.NodeFields;
 		if (node && el) {
 			var name = "", max = jq(el).attr("maxLength"), abbr = jq(el).attr("abbr");
@@ -701,13 +689,13 @@ at.freebim.db.domain = {
 				d[node[nf.CLASS_NAME]].init();
 				if ((el.nodeName == "DIV" || el.nodeName == "TD" || el.nodeName == "LI" || el.nodeName == "SUB") && node[nf.CLASS_NAME]) {
 					if (abbr) {
-		  				if (d[node[nf.CLASS_NAME]] && d[node[nf.CLASS_NAME]].getAbbrOf) {
-		  					name = d[node[nf.CLASS_NAME]].getAbbrOf(node, el);
-		  				}
+						if (d[node[nf.CLASS_NAME]] && d[node[nf.CLASS_NAME]].getAbbrOf) {
+							name = d[node[nf.CLASS_NAME]].getAbbrOf(node, el);
+						}
 					} else {
-		  				if (d[node[nf.CLASS_NAME]] && d[node[nf.CLASS_NAME]].getNameOf) {
-		  					name = d[node[nf.CLASS_NAME]].getNameOf(node, el);
-		  				}
+						if (d[node[nf.CLASS_NAME]] && d[node[nf.CLASS_NAME]].getNameOf) {
+							name = d[node[nf.CLASS_NAME]].getNameOf(node, el);
+						}
 					}
 				}
 				if (name == undefined) {
@@ -721,7 +709,7 @@ at.freebim.db.domain = {
 			d.setFreebimItemClasses(node, el, parent);
 		}
 	},
-	setFreebimItemClasses : function (node, el, parent) {
+	setFreebimItemClasses: function (node, el, parent) {
 		var db = at.freebim.db, d = db.domain, nf = d.NodeFields, c = db.contributor;
 		if (node && el) {
 			jq(el).addClass("freebim-item freebim-contextmenu " + node[nf.CLASS_NAME]).attr("nodeid", "" + node[nf.NODEID]).attr("c", "" + node[nf.CLASS_NAME]);
@@ -788,8 +776,8 @@ at.freebim.db.domain = {
 			jq(el).html(jq(el).html() + "<span class='bsdd-fetched-count'><span> (⌘</span><sub>" + bsddCount + "</sub><span>) </span></span>");
 		}
 	},
-	
-	mayEdit : function (entity) {
+
+	mayEdit: function (entity) {
 		var db = at.freebim.db, d = db.domain, nf = d.NodeFields, rf = d.RelationFields, c = db.contributor;
 		if (entity) {
 			if (entity[nf.CLASS_NAME] == "FreebimUser" || entity[nf.CLASS_NAME] == "Contributor") {
@@ -806,9 +794,9 @@ at.freebim.db.domain = {
 					if (entity[nf.REFERENCES] && entity[nf.REFERENCES].length > 0) {
 						if (c && c[nf.RESPONSIBLE]) {
 							var i, j, n = entity[nf.REFERENCES].length, m = c[nf.RESPONSIBLE].length;
-							for (i=0; i<n; i++) {
+							for (i = 0; i < n; i++) {
 								var libId = entity[nf.REFERENCES][i][rf.TO_NODE];
-								for (j=0; j<m; j++) {
+								for (j = 0; j < m; j++) {
 									if (libId == c[nf.RESPONSIBLE][j]) {
 										return true;
 									}
@@ -820,17 +808,17 @@ at.freebim.db.domain = {
 			}
 		}
 		return false;
-	}, 
-	
-	filters : {
-		bsdd : function (clazz, filterdiv, filterFn, srcFn) {
+	},
+
+	filters: {
+		bsdd: function (clazz, filterdiv, filterFn, srcFn) {
 			var d = at.freebim.db.domain, nf = d.NodeFields,
 				div = document.createElement("div"), cbBsdd = document.createElement("input"),
 				perform = function (row) {
 					var checked = jq(cbBsdd).is(':checked'), node = d.get(clazz.arr[row]);
 					if (!node || !checked) {
 						return undefined;
-					} 
+					}
 					return ((node === undefined) ? true : ((node[nf.BSDD_GUID]) ? false : true));
 				};
 			jq(cbBsdd).attr("type", "checkbox").change(function () {
@@ -840,15 +828,15 @@ at.freebim.db.domain = {
 			jq(filterdiv).append(div);
 			return perform;
 		}, // bsdd
-		
-		bsddLoaded : function (clazz, filterdiv, filterFn, srcFn) {
+
+		bsddLoaded: function (clazz, filterdiv, filterFn, srcFn) {
 			var d = at.freebim.db.domain, nf = d.NodeFields,
 				div = document.createElement("div"), cbBsdd = document.createElement("input"),
 				perform = function (row) {
 					var checked = jq(cbBsdd).is(':checked'), node = d.get(clazz.arr[row]);
 					if (!node || !checked) {
 						return undefined;
-					} 
+					}
 					return ((node === undefined) ? true : ((node[nf.LOADED_BSDD] && node[nf.LOADED_BSDD].length > 0) ? false : true));
 				};
 			jq(cbBsdd).attr("type", "checkbox").change(function () {
@@ -858,12 +846,12 @@ at.freebim.db.domain = {
 			jq(filterdiv).append(div);
 			return perform;
 		}, // bsdd
-		
-		text : function (clazz, filterdiv, filterFn, srcFn) {
+
+		text: function (clazz, filterdiv, filterFn, srcFn) {
 			var d = at.freebim.db.domain, nf = d.NodeFields, i18n = net.spectroom.js.i18n,
 				div = document.createElement("div"), ip = document.createElement("input"), cbex = document.createElement("input"),
 				perform = function (row) {
-					var node = d.get(clazz.arr[row]), 
+					var node = d.get(clazz.arr[row]),
 						filter = jq(ip).val();
 					if (filter) {
 						return srcFn(node, filter, jq(cbex).is(':checked'));
@@ -875,22 +863,22 @@ at.freebim.db.domain = {
 			jq(cbex).attr("type", "checkbox").addClass("filter-exact").change(function () {
 				filterFn();
 			});
-			jq(ip).keyup(function(event) {
+			jq(ip).keyup(function (event) {
 				filterFn();
 			});
 			jq(div).append(ip).append(cbex).append(i18n.get("FILTER_EXACTLY") + " ").addClass("filter-text").attr("title", i18n.g("FILTER_TEXT_TITLE")).attr("i18n_title", "FILTER_TEXT_TITLE");
 			jq(filterdiv).append(div);
 			return perform;
 		}, // text
-		
-		mark : function (clazz, filterdiv, filterFn, srcFn) {
+
+		mark: function (clazz, filterdiv, filterFn, srcFn) {
 			var d = at.freebim.db.domain, nf = d.NodeFields, i18n = net.spectroom.js.i18n,
 				div = document.createElement("div"), cbmark = document.createElement("input"),
 				perform = function (row) {
 					var checked = jq(cbmark).is(':checked'), node = d.get(clazz.arr[row]);
 					if (!node || !checked || at.freebim.db.marked.length == 0) {
 						return undefined;
-					} 
+					}
 					return srcFn(node, null, checked);
 				};
 			jq(cbmark).attr("type", "checkbox").change(function () {
@@ -898,18 +886,18 @@ at.freebim.db.domain = {
 			});
 			jq(div).append(cbmark).append(i18n.get("FILTER_MARKED") + " ").addClass("filter-marked").attr("title", i18n.g("FILTER_MARKED_TITLE")).attr("i18n_title", "FILTER_MARKED_TITLE");
 			jq(filterdiv).append(div);
-//			jq(document).trigger("_at.freebim.db.marked.changed");
+			//			jq(document).trigger("_at.freebim.db.marked.changed");
 			return perform;
 		}, // mark
-		
-		lib : function (clazz, filterdiv, filterFn, srcFn) {
+
+		lib: function (clazz, filterdiv, filterFn, srcFn) {
 			var d = at.freebim.db.domain, nf = d.NodeFields, i18n = net.spectroom.js.i18n,
-				div = document.createElement("div"), lib, i, n = d.Library.arr.length, 
-				ip = document.createElement("select"), 
+				div = document.createElement("div"), lib, i, n = d.Library.arr.length,
+				ip = document.createElement("select"),
 				o = document.createElement("option"),
 				perform = function (row) {
 					var node = d.get(clazz.arr[row]),
-					libId = jq(ip).val(); 
+						libId = jq(ip).val();
 					if (libId == "-") {
 						return undefined;
 					}
@@ -918,7 +906,7 @@ at.freebim.db.domain = {
 			jq(o).html(i18n.get("FILTER_LIBRARY_ALL")).attr("value", "-").selected = true;
 			jq(ip).append(o).addClass("lib-filter");
 			jq(div).append(" " + i18n.get("FILTER_LIBRARY") + ":").append(ip).addClass("filter-library").attr("title", i18n.g("FILTER_LIBRARY_TITLE")).attr("i18n_title", "FILTER_LIBRARY_TITLE");
-			for (i=0; i<n; i++) {
+			for (i = 0; i < n; i++) {
 				lib = d.get(d.Library.arr[i]);
 				if (lib && !lib.deleted) {
 					o = document.createElement("option");
@@ -932,27 +920,27 @@ at.freebim.db.domain = {
 			jq(filterdiv).append(div);
 			return perform;
 		}, // lib
-		
-		filterMarkedRelated : function (arr, dir) {
+
+		filterMarkedRelated: function (arr, dir) {
 			if (arr) {
 				var r, i, n = arr.length, m = at.freebim.db.isMarked, rf = at.freebim.db.domain.RelationFields;
-				for (i=0; i<n; i++) {
+				for (i = 0; i < n; i++) {
 					r = arr[i];
 					switch (dir) {
-					case "IN" : if (m(r[rf.FROM_NODE])) { return false; } break;
-					case "OUT" : if (m(r[rf.TO_NODE])) { return false; } break;
-					case "BOTH" : if (m(r[rf.FROM_NODE]) || m(r[rf.TO_NODE])) { return false; } break;
+						case "IN": if (m(r[rf.FROM_NODE])) { return false; } break;
+						case "OUT": if (m(r[rf.TO_NODE])) { return false; } break;
+						case "BOTH": if (m(r[rf.FROM_NODE]) || m(r[rf.TO_NODE])) { return false; } break;
 					}
 				}
 			}
 			return true;
 		},
-		filterByLib : function (node, libId, opt) {
+		filterByLib: function (node, libId, opt) {
 			var rf = at.freebim.db.domain.RelationFields, nf = at.freebim.db.domain.NodeFields, inLib = false;
 			if (node && libId && node[nf.REFERENCES]) {
 				libId *= 1;
-				var i, n = node[nf.REFERENCES].length; 
-				for (i=0; i<n; i++) {
+				var i, n = node[nf.REFERENCES].length;
+				for (i = 0; i < n; i++) {
 					if (node[nf.REFERENCES][i][rf.TO_NODE] * 1 == libId) {
 						inLib = true;
 						break;
@@ -961,7 +949,7 @@ at.freebim.db.domain = {
 			}
 			return !inLib;
 		},
-		filterByName : function (node, filter, opt) {
+		filterByName: function (node, filter, opt) {
 			var nf = at.freebim.db.domain.NodeFields;
 			if (opt) {
 				return (!node || node[nf.NAME] != filter);
@@ -974,7 +962,7 @@ at.freebim.db.domain = {
 			}
 			return filtered;
 		},
-		filterByCodeAndName : function (node, filter, opt) {
+		filterByCodeAndName: function (node, filter, opt) {
 			var nf = at.freebim.db.domain.NodeFields;
 			if (opt) {
 				return (!node || (node[nf.NAME] != filter && node[nf.CODE] != filter));
@@ -989,10 +977,10 @@ at.freebim.db.domain = {
 		}
 
 	},
-	
-	getNodeTimer : {},
-	
-	loadNode : function (nodeId, cn, callback) {
+
+	getNodeTimer: {},
+
+	loadNode: function (nodeId, cn, callback) {
 		var db = at.freebim.db, d = db.domain, nf = d.NodeFields, i18n = net.spectroom.js.i18n;
 		db.logger.debug("at.freebim.db.domain.loadNode(" + nodeId + ")");
 		d.getNodeTimer[nodeId] = null;
@@ -1007,11 +995,11 @@ at.freebim.db.domain = {
 		if (path === undefined) {
 			return;
 		}
-			
+
 		db.post("/" + path + "/get",
-			{nodeId : nodeId},
+			{ nodeId: nodeId, },
 			i18n.gA("LOADING", title),
-			function(response) {
+			function (response) {
 				if (response) {
 					if (response.result) {
 						var entity = response.result;
@@ -1019,19 +1007,20 @@ at.freebim.db.domain = {
 						if (callback) {
 							callback(entity);
 						}
-						jq("[nodeid='" + entity[nf.NODEID] + "']").trigger("newNodeModified", [{entity: entity}]);
+						jq("[nodeid='" + entity[nf.NODEID] + "']").trigger("newNodeModified", [{ entity: entity }]);
 					} else {
-						document.location.href = "/logout";
 						return;
 					}
-				} 
+				}
 				jq(document).trigger("filter", [{}]);
 			},
-			null // fail
+			null, // fail
+			null,
+			"GET"
 		);
 	},
-	
-	delayedLoadNode : function (nodeId, cn) {
+
+	delayedLoadNode: function (nodeId, cn) {
 		// load a node by it's nodeId
 		var d = at.freebim.db.domain, timer = d.getNodeTimer[nodeId];
 		if (timer) {
@@ -1042,11 +1031,11 @@ at.freebim.db.domain = {
 		}, 100);
 
 	},
-	
-	showLibraryChanged : function () {
+
+	showLibraryChanged: function () {
 		var db = at.freebim.db;
 		if (db.user.isShowLibrary) {
-			jq(".freebim-item[nodeid]").each(function() {
+			jq(".freebim-item[nodeid]").each(function () {
 				db.domain.showLibrary(jq(this));
 			});
 		} else {
@@ -1054,10 +1043,10 @@ at.freebim.db.domain = {
 		}
 		jq(document).trigger("freebimItemDisplayChanged");
 	},
-	showNodeIdChanged : function () {
+	showNodeIdChanged: function () {
 		var db = at.freebim.db;
 		if (db.user.isShowNodeId) {
-			jq(".freebim-item[nodeid]").each(function() {
+			jq(".freebim-item[nodeid]").each(function () {
 				db.domain.showId(jq(this));
 			});
 		} else {
@@ -1065,10 +1054,10 @@ at.freebim.db.domain = {
 		}
 		jq(document).trigger("freebimItemDisplayChanged");
 	},
-	showFreebimIdChanged : function () {
+	showFreebimIdChanged: function () {
 		var db = at.freebim.db;
 		if (db.user.isShowFreebimId) {
-			jq(".freebim-item[nodeid]").each(function() {
+			jq(".freebim-item[nodeid]").each(function () {
 				db.domain.showFreebimId(jq(this));
 			});
 		} else {
@@ -1076,10 +1065,10 @@ at.freebim.db.domain = {
 		}
 		jq(document).trigger("freebimItemDisplayChanged");
 	},
-	showBsddChanged : function () {
+	showBsddChanged: function () {
 		var db = at.freebim.db;
 		if (db.user.isShowBsdd) {
-			jq(".freebim-item[nodeid]").each(function() {
+			jq(".freebim-item[nodeid]").each(function () {
 				db.domain.showBsdd(jq(this));
 			});
 		} else {
@@ -1087,10 +1076,10 @@ at.freebim.db.domain = {
 		}
 		jq(document).trigger("freebimItemDisplayChanged");
 	},
-	showPsetChanged : function () {
+	showPsetChanged: function () {
 		var db = at.freebim.db;
 		if (db.user.isShowPset) {
-			jq(".Parameter.freebim-item[nodeid]").each(function() {
+			jq(".Parameter.freebim-item[nodeid]").each(function () {
 				db.domain.showPset(jq(this));
 			});
 		} else {
@@ -1098,44 +1087,44 @@ at.freebim.db.domain = {
 		}
 		jq(document).trigger("freebimItemDisplayChanged");
 	},
-	
-	isSelectable : function (node) {
+
+	isSelectable: function (node) {
 		var d = at.freebim.db.domain, nf = d.NodeFields;
-		return (node 
-				&& node[nf.CLASS_NAME] == d.Parameter.className
-				|| node[nf.CLASS_NAME] == d.Component.className
-				|| node[nf.CLASS_NAME] == d.DataType.className
-				|| node[nf.CLASS_NAME] == d.Document.className
-				|| node[nf.CLASS_NAME] == d.Measure.className
-				|| node[nf.CLASS_NAME] == d.Unit.className
-				|| node[nf.CLASS_NAME] == d.ValueList.className
-				|| node[nf.CLASS_NAME] == d.ValueListEntry.className);
+		return (node
+			&& node[nf.CLASS_NAME] == d.Parameter.className
+			|| node[nf.CLASS_NAME] == d.Component.className
+			|| node[nf.CLASS_NAME] == d.DataType.className
+			|| node[nf.CLASS_NAME] == d.Document.className
+			|| node[nf.CLASS_NAME] == d.Measure.className
+			|| node[nf.CLASS_NAME] == d.Unit.className
+			|| node[nf.CLASS_NAME] == d.ValueList.className
+			|| node[nf.CLASS_NAME] == d.ValueListEntry.className);
 	},
-	
-	updateRelevance : function () {
+
+	updateRelevance: function () {
 		var db = at.freebim.db, d = db.domain, cn, i18n = net.spectroom.js.i18n,
 			dataTables = ["Component", "Parameter", "ParameterSet", "Measure", "ValueList", "ValueListEntry"],
 			auxTables = ["Library", "Phase", "Unit", "DataType", "Discipline", "Document", "Company", "Contributor"],
-			i, n, 
+			i, n,
 			f = function (clazz, aux) {
 				clazz.init();
 				db.post("/" + clazz.path + "/ids", {}, i18n.gA("LOADING", clazz.i18n), function (response) {
 					clazz.used = response.result;
-					db.logger.info("[" + clazz.used.length + "] nodes relevant for "  + clazz.className);
-					jq(document).trigger("_used_loaded", [{cn: clazz.className}]);
+					db.logger.info("[" + clazz.used.length + "] nodes relevant for " + clazz.className);
+					jq(document).trigger("_used_loaded", [{ cn: clazz.className }]);
 					if (aux) {
 						db.fetchAux(clazz);
 					}
-				}, null);
+				}, null, null, "GET");
 			};
 		if (db.user.username) {
 			n = dataTables.length;
-			for (i=0; i<n; i++) {
+			for (i = 0; i < n; i++) {
 				cn = dataTables[i];
 				f(d[cn], false);
 			}
 			n = auxTables.length;
-			for (i=0; i<n; i++) {
+			for (i = 0; i < n; i++) {
 				cn = auxTables[i];
 				f(d[cn], true);
 			}
@@ -1145,33 +1134,33 @@ at.freebim.db.domain = {
 };
 
 at.freebim.db.domain.rel = at.freebim.db.domain.rel || {
-	rels : {}
+	rels: {}
 };
 
 at.freebim.db.domain.rel.UnitConversion = {
 
-	init : function () {
+	init: function () {
 		var d = at.freebim.db.domain, self = d.rel.UnitConversion, rf = d.RelationFields, nf = d.NodeFields, i18n = net.spectroom.js.i18n;
 		if (self.initialized) {
 			return;
 		}
-		
-		jq(self).on("at.freebim.db.domain.rel.UnitConversion.edit", function(event, data) {
+
+		jq(self).on("at.freebim.db.domain.rel.UnitConversion.edit", function (event, data) {
 			// rel is a UnitConversion relation
 			var rel = data.rel, okFn = data.okFn, btns = [], dlg = net.spectroom.js.newDiv();
 			btns.push({
-				text : i18n.getButton("DLG_BTN_CANCEL"),
-				click : function() {
+				text: i18n.getButton("DLG_BTN_CANCEL"),
+				click: function () {
 					jq(dlg).dialog("close");
 				}
 			});
 			btns.push({
-				text : i18n.getButton("DLG_BTN_OK"),
-				click : function() {
+				text: i18n.getButton("DLG_BTN_OK"),
+				click: function () {
 					var q = jq(dlg).find(".unit-conversion").val();
 					if (isNaN(q)) {
 						jq(document).trigger("alert", [{
-							title: "DLG_TITLE_FREEBIM_INFO", 
+							title: "DLG_TITLE_FREEBIM_INFO",
 							content: i18n.g1("NOT_A_REAL_NUMBER", q)
 						}]);
 						return;
@@ -1184,9 +1173,9 @@ at.freebim.db.domain.rel.UnitConversion = {
 				}
 			});
 			jq(dlg).dialog({
-				title : i18n.g("DLG_TITLE_UNIT_CONVERSION"),
+				title: i18n.g("DLG_TITLE_UNIT_CONVERSION"),
 				modal: true,
-				open : function () {
+				open: function () {
 					d.getOrLoad(rel[rf.FROM_NODE], d.Unit.className, function (srcUnit) {
 						d.getOrLoad(rel[rf.TO_NODE], d.Unit.className, function (targetUnit) {
 							var msg = i18n.g2("UNIT_CONVERSION", srcUnit[nf.NAME], targetUnit[nf.NAME]);
@@ -1198,13 +1187,13 @@ at.freebim.db.domain.rel.UnitConversion = {
 				close: function () {
 					jq(dlg).remove();
 				},
-				autoOpen : true,
-				width : 400,
-				height : 200,
-				buttons : btns
+				autoOpen: true,
+				width: 400,
+				height: 200,
+				buttons: btns
 			}).prev().attr("i18n_dlg", "DLG_TITLE_UNIT_CONVERSION");
 		});
-		jq(self).on("unitConversionRel", function(event, data) {
+		jq(self).on("unitConversionRel", function (event, data) {
 			d.getOrLoad(data.rel[rf.FROM_NODE], d.Unit.className, function (srcUnit) {
 				d.getOrLoad(data.rel[rf.TO_NODE], d.Unit.className, function (targetUnit) {
 					data.okFn("1 " + srcUnit[nf.NAME] + " ≙ " + data.rel[rf.QUALITY] + " " + targetUnit[nf.NAME]);
@@ -1215,13 +1204,13 @@ at.freebim.db.domain.rel.UnitConversion = {
 	}
 };
 at.freebim.db.domain.rel.Equals = {
-		
-	eqSign : function (rel) {
+
+	eqSign: function (rel) {
 		var rf = at.freebim.db.domain.RelationFields;
-		return ((rel[rf.QUALITY] >= 1) ? " = " : ((rel[rf.QUALITY] <= 0) ? " ≠ " : ((rel[rf.QUALITY] < 0.5) ? " ≉ " : " ≈ "))); 
+		return ((rel[rf.QUALITY] >= 1) ? " = " : ((rel[rf.QUALITY] <= 0) ? " ≠ " : ((rel[rf.QUALITY] < 0.5) ? " ≉ " : " ≈ ")));
 	},
 
-	getOtherNode : function (node, r, callback) {
+	getOtherNode: function (node, r, callback) {
 		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields;
 		// r is an Equals relation
 		var otherId, otherClass;
@@ -1239,25 +1228,25 @@ at.freebim.db.domain.rel.Equals = {
 			callback(eq);
 		});
 	},
-	
-	init : function () {
+
+	init: function () {
 		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, self = d.rel.Equals, i18n = net.spectroom.js.i18n;
 		if (self.initialized) {
 			return;
 		}
-		
-		jq(self).on("editEquals", function(event, data) {
+
+		jq(self).on("editEquals", function (event, data) {
 			// rel is a Equals relation
 			var rel = data.rel, okFn = data.okFn, btns = [], dlg = net.spectroom.js.newDiv();
 			btns.push({
-				text : i18n.getButton("DLG_BTN_CANCEL"),
-				click : function() {
+				text: i18n.getButton("DLG_BTN_CANCEL"),
+				click: function () {
 					jq(dlg).dialog("close");
 				}
 			});
 			btns.push({
-				text : i18n.getButton("DLG_BTN_OK"),
-				click : function() {
+				text: i18n.getButton("DLG_BTN_OK"),
+				click: function () {
 					var q = jq(dlg).find(".eqSelect").val();
 					rel[rf.QUALITY] = q / 100.;
 					if (okFn) {
@@ -1267,40 +1256,40 @@ at.freebim.db.domain.rel.Equals = {
 				}
 			});
 			jq(dlg).dialog({
-				title : i18n.g("DLG_TITLE_SPECIFY_EQ"),
-				modal : true,
-				autoOpen : true,
-				width : 400,
-				height : 200,
-				close : function(event, ui) {
+				title: i18n.g("DLG_TITLE_SPECIFY_EQ"),
+				modal: true,
+				autoOpen: true,
+				width: 400,
+				height: 200,
+				close: function (event, ui) {
 					jq(dlg).remove();
 				},
-				open : function () {
+				open: function () {
 					var opt, i, sel = document.createElement("select");
 					if (!rel[rf.QUALITY]) {
 						rel[rf.QUALITY] = 1;
 					}
-					for (i=0; i<=100; i+=10) {
+					for (i = 0; i <= 100; i += 10) {
 						opt = document.createElement("option");
 						opt.value = i;
 						sel.appendChild(opt);
-						opt.appendChild(document.createTextNode( i + "%"));
+						opt.appendChild(document.createTextNode(i + "%"));
 					}
-					
+
 					jq(dlg).append(i18n.get("SPECIFY_EQ1"))
 						.append(" ")
 						.append(sel)
 						.append(" ")
 						.append(i18n.get("SPECIFY_EQ2"));
-					
-					jq(sel).addClass("eqSelect").val(rel[rf.QUALITY] * 100).change(function() {
-				        rel[rf.QUALITY] = jq(this).val() / 100;
-				    });
+
+					jq(sel).addClass("eqSelect").val(rel[rf.QUALITY] * 100).change(function () {
+						rel[rf.QUALITY] = jq(this).val() / 100;
+					});
 				},
-				buttons : btns
+				buttons: btns
 			}).prev().attr("i18n_dlg", "DLG_TITLE_SPECIFY_EQ");
 		});
-		jq(self).on("equalsRel", function(event, data) {
+		jq(self).on("equalsRel", function (event, data) {
 			var rel = data.rel, okFn = data.okFn;
 			okFn(Math.floor(rel[rf.QUALITY] * 100.) + "%");
 		});
@@ -1323,10 +1312,10 @@ jq(document).delegate("input[type='radio'][name='at.freebim.db.domain.selectComp
 	jq(this).closest(".ui-dialog-content").find("input[type='text']").val(name);
 });
 at.freebim.db.domain.selectComponent = function (c, finFn) {
-	
+
 	var db = at.freebim.db, d = db.domain, nf = d.NodeFields, js = net.spectroom.js, i18n = js.i18n;
 
-	var btns = [], dlg = js.newDiv(), 
+	var btns = [], dlg = js.newDiv(),
 		label = document.createElement("label"),
 		ip = document.createElement("input"),
 		ul = document.createElement("ul"),
@@ -1335,7 +1324,7 @@ at.freebim.db.domain.selectComponent = function (c, finFn) {
 			var txt = jq(ip).val();
 			if (txt.length > 2) {
 				// find components by its name
-				db.post("/search/find", {searchstring: txt, clazz: "at.freebim.db.domain.Component" }, "", function (response) {
+				db.post("/search/find", { searchstring: txt, clazz: "at.freebim.db.domain.Component" }, "", function (response) {
 					// response.result is an array of MatchResult objects
 					// containing quality q and Component node 
 					if (response.result) {
@@ -1344,7 +1333,7 @@ at.freebim.db.domain.selectComponent = function (c, finFn) {
 						response.result.sort(function (a, b) {
 							return (b.q - a.q);
 						});
-						jq.each(response.result, function(i, mr) {
+						jq.each(response.result, function (i, mr) {
 							var div = document.createElement("div");
 							d.listen(mr.node);
 							d.renderNode(mr.node, div);
@@ -1358,30 +1347,30 @@ at.freebim.db.domain.selectComponent = function (c, finFn) {
 							jq(ul).find("input[type='radio'][nodeid='" + comp[nf.NODEID] + "']").attr("checked", "true");
 						}
 					}
-				});
+				}, null, null, "GET");
 			}
 		};
 	jq(ul).addClass("vlcomp");
 	jq(ip).attr("type", "text").css("width", "100%");
 	jq(label).html(i18n.g("CLAZZ_COMPONENT"));
-				
+
 	jq(ip).keyup(function () {
 		find();
 	});
-	
+
 	jq(dlg).append(label)
 		.append(ip)
 		.append(ul);
-	
+
 	btns.push({
-		text : i18n.getButton("DLG_BTN_CANCEL"),
-		click : function() {
+		text: i18n.getButton("DLG_BTN_CANCEL"),
+		click: function () {
 			jq(dlg).dialog("close");
 		}
 	});
 	btns.push({
-		text : i18n.getButton("DLG_BTN_OK"),
-		click : function() {
+		text: i18n.getButton("DLG_BTN_OK"),
+		click: function () {
 			var nodeId = jq(ul).find("input[type='radio'][name='at.freebim.db.domain.selectComponent']:checked").attr("nodeid"),
 				c = ((nodeId == "null") ? null : d.get(nodeId));
 			jq(dlg).dialog("close");
@@ -1389,30 +1378,30 @@ at.freebim.db.domain.selectComponent = function (c, finFn) {
 		}
 	});
 	jq(dlg).dialog({
-		title : i18n.g("DLG_TITLE_SPECIFY_COMPONENT"),
-		modal : true,
-		autoOpen : true,
-		width : 600,
-		height : 400,
-		close : function(event, ui) {
+		title: i18n.g("DLG_TITLE_SPECIFY_COMPONENT"),
+		modal: true,
+		autoOpen: true,
+		width: 600,
+		height: 400,
+		close: function (event, ui) {
 			jq(dlg).remove();
 		},
-		open : function () {
+		open: function () {
 			jq(ip).val((c) ? c[nf.NAME] : "");
 			find();
 		},
-		buttons : btns
+		buttons: btns
 	}).prev().attr("i18n_dlg", "DLG_TITLE_SPECIFY_COMPONENT");
 };
 
 at.freebim.db.domain.rel.HasValue = {
 
-	init : function () {
+	init: function () {
 		var db = at.freebim.db, d = db.domain, self = d.rel.HasValue, nf = d.NodeFields, rf = d.RelationFields, i18n = net.spectroom.js.i18n;
 		if (self.initialized) {
 			return;
 		}
-		
+
 		jq(self).on("editComponent", function (event, data) {
 
 			var rel = data.rel, finFn = function (c) {
@@ -1426,12 +1415,14 @@ at.freebim.db.domain.rel.HasValue = {
 					data.okFn();
 				}
 			};
-			jq(d.rel.HasValue).trigger("componentFromRel", [{rel: rel, okFn: function (c) {
-				at.freebim.db.domain.selectComponent(c, finFn);
-			}}]);
-			
+			jq(d.rel.HasValue).trigger("componentFromRel", [{
+				rel: rel, okFn: function (c) {
+					at.freebim.db.domain.selectComponent(c, finFn);
+				}
+			}]);
+
 		});
-		
+
 		/**
 		 * @param data.rel The HasValue relation.
 		 * @param data.okFn The ok callback function, to be called with the Component as single parameter: data.okFn(comp). 
@@ -1440,29 +1431,29 @@ at.freebim.db.domain.rel.HasValue = {
 			if (data.rel) {
 				var uuid = data.rel[rf.COMPONENT];
 				if (uuid) {
-					db.post("/component/getbyuuid", { u: uuid}, i18n.gA("LOADING", d.Component.title), function (response) {
+					db.post("/component/getbyuuid", { u: uuid }, i18n.gA("LOADING", d.Component.title), function (response) {
 						if (response.result) {
 							data.okFn(response.result);
 						}
-					});
+					}, null, null, "GET");
 				}
 			}
 		});
-		
+
 		self.initialized = true;
 	}
 };
 
 at.freebim.db.domain.rel.HasParameter = {
-		
-	selectedPhase : null,
-		
-	init : function () {
+
+	selectedPhase: null,
+
+	init: function () {
 		var db = at.freebim.db, d = db.domain, self = d.rel.HasParameter, nf = d.NodeFields, rf = d.RelationFields, i18n = net.spectroom.js.i18n;
 		if (self.initialized) {
 			return;
 		}
-		
+
 		self.initPhases = function (e, data) {
 			d.Phase.init();
 			if (!d.Phase.arr || d.Phase.arr.length == 0) {
@@ -1474,8 +1465,8 @@ at.freebim.db.domain.rel.HasParameter = {
 			}
 			return false;
 		};
-		
-		jq(self).on("editPhase", function(event, data) {
+
+		jq(self).on("editPhase", function (event, data) {
 
 			if (self.initPhases("editPhase", data)) {
 				return;
@@ -1483,7 +1474,7 @@ at.freebim.db.domain.rel.HasParameter = {
 
 			// rel is a HasParameter relation
 			var rel = data.rel, okFn = data.okFn, btns = [], dlg = net.spectroom.js.newDiv(), ph, phId, sel = document.createElement("select"), opt, i, n = d.Phase.arr.length;
-			for (i=0; i<n; i++) {
+			for (i = 0; i < n; i++) {
 				phId = d.Phase.arr[i];
 				ph = d.get(phId);
 				if (db.time.validNode(ph)) {
@@ -1499,15 +1490,15 @@ at.freebim.db.domain.rel.HasParameter = {
 			dlg.appendChild(sel);
 			if (rel[rf.PHASE]) {
 				btns.push({
-					text : i18n.getButton("DLG_BTN_CANCEL"),
-					click : function() {
+					text: i18n.getButton("DLG_BTN_CANCEL"),
+					click: function () {
 						jq(dlg).dialog("close");
 					}
 				});
 			}
 			btns.push({
-				text : i18n.getButton("DLG_BTN_OK"),
-				click : function() {
+				text: i18n.getButton("DLG_BTN_OK"),
+				click: function () {
 					var phId = jq(jq(dlg).children()[0]).val(), ph = d.get(phId);
 					rel[rf.PHASE] = ph[nf.FREEBIM_ID];
 					if (okFn) {
@@ -1517,19 +1508,19 @@ at.freebim.db.domain.rel.HasParameter = {
 				}
 			});
 			jq(dlg).dialog({
-				title : i18n.g("DLG_TITLE_SPECIFY_PHASE"),
-				modal : true,
-				autoOpen : true,
-				width : 400,
-				height : 200,
-				close : function(event, ui) {
+				title: i18n.g("DLG_TITLE_SPECIFY_PHASE"),
+				modal: true,
+				autoOpen: true,
+				width: 400,
+				height: 200,
+				close: function (event, ui) {
 					jq(dlg).remove();
 				},
-				buttons : btns
+				buttons: btns
 			}).prev().attr("i18n_dlg", "DLG_TITLE_SPECIFY_PHASE");
 		});
-		
-		jq(self).on("phaseFromRel", function(event, data) {
+
+		jq(self).on("phaseFromRel", function (event, data) {
 			if (self.initPhases("phaseFromRel", data)) {
 				return;
 			}
@@ -1538,11 +1529,11 @@ at.freebim.db.domain.rel.HasParameter = {
 				data.okFn(ph);
 			}
 		});
-		
+
 		self.phaseForUuid = function (u) {
 			if (d.Phase && d.Phase.arr) {
 				var ph, phId, i, n = d.Phase.arr.length;
-				for (i=0; i<n; i++) {
+				for (i = 0; i < n; i++) {
 					phId = d.Phase.arr[i];
 					ph = d.get(phId);
 					if (ph[nf.FREEBIM_ID] == u) {
@@ -1552,15 +1543,15 @@ at.freebim.db.domain.rel.HasParameter = {
 			}
 			return null;
 		};
-		
+
 		self.initialized = true;
 	}
 };
 
-at.freebim.db.domain.relationFormField = function(form, i, ip, orderable, relTableTitle, relType, field, relClass, dir, relAdded) {
+at.freebim.db.domain.relationFormField = function (form, i, ip, orderable, relTableTitle, relType, field, relClass, dir, relAdded) {
 	var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields;
 	d[relClass].init();
-	if(!dir) {
+	if (!dir) {
 		dir = "OUT";
 	}
 	// add an ul that could be made sortable afterwards:
@@ -1572,28 +1563,28 @@ at.freebim.db.domain.relationFormField = function(form, i, ip, orderable, relTab
 				if (orderable) {
 					jq(ul).sortable({
 						// entries have been resorted, update ordering ...
-						  stop : function( event, ui ) {
-							  var c, node, nodeId, k, l, n = ul.childNodes.length, entity = form.entity;
-							  for (k=0; k<n; k++) {
-								  c = ul.childNodes[k];
-								  nodeId = jq(c).attr("nodeid");
-								  if (nodeId) {
-									  node = d.get(nodeId);
-									  if (node) {
-										  for (l=0; l<n; l++) {
-											  if (dir == "OUT" && entity[field][l][rf.TO_NODE] == node[nf.NODEID]) {
-												  entity[field][l][rf.ORDERING] = k;
-												  break;
-											  } else if (dir == "IN" && entity[field][l][rf.FROM_NODE] == node[nf.NODEID]) {
-												  entity[field][l][rf.ORDERING] = k;
-												  break;
-											  }
-										  }
-									  }
-								  }
-							  }
-							  d.addModifiedNode(entity[nf.NODEID]);
-						  }
+						stop: function (event, ui) {
+							var c, node, nodeId, k, l, n = ul.childNodes.length, entity = form.entity;
+							for (k = 0; k < n; k++) {
+								c = ul.childNodes[k];
+								nodeId = jq(c).attr("nodeid");
+								if (nodeId) {
+									node = d.get(nodeId);
+									if (node) {
+										for (l = 0; l < n; l++) {
+											if (dir == "OUT" && entity[field][l][rf.TO_NODE] == node[nf.NODEID]) {
+												entity[field][l][rf.ORDERING] = k;
+												break;
+											} else if (dir == "IN" && entity[field][l][rf.FROM_NODE] == node[nf.NODEID]) {
+												entity[field][l][rf.ORDERING] = k;
+												break;
+											}
+										}
+									}
+								}
+							}
+							d.addModifiedNode(entity[nf.NODEID]);
+						}
 					});
 				}
 			} else {
@@ -1609,20 +1600,20 @@ at.freebim.db.domain.relationFormField = function(form, i, ip, orderable, relTab
 						accept: "." + relClass,
 						hoverClass: "drop-hover",
 						tolerance: "touch",
-						drop: function(event, ui) {
+						drop: function (event, ui) {
 							var x = jq(ui.draggable), relId = x.attr("relid"), nodeId = x.attr("nodeid");
-							d.deleteRelation (i, form, field, ul, ip, relId, nodeId);
+							d.deleteRelation(i, form, field, ul, ip, relId, nodeId);
 						}
 					}).css("background-image", "url(\"/resources/trash_empty_open2.png\")");
 				}
 				jq(ul).find("li." + relClass).draggable({
-					stop : function ( event, ui ) {
+					stop: function (event, ui) {
 						var entity = form.entity;
 						form.setEntityValue(i, entity, ip);
 					}
 				}).off("dblclick").dblclick(function () {
 					var x = jq(this), relId = x.attr("relid"), nodeId = x.attr("nodeid");
-					d.deleteRelation (i, form, field, ul, ip, relId, nodeId);
+					d.deleteRelation(i, form, field, ul, ip, relId, nodeId);
 					return false;
 				});
 			} else {
@@ -1638,110 +1629,110 @@ at.freebim.db.domain.relationFormField = function(form, i, ip, orderable, relTab
 		ip.appendChild(trash);
 		ip.appendChild(addBtn);
 		addBtn.appendChild(document.createTextNode("✚︎"));
-		
+
 		var assign = function (nodeId) {
 			var entity = form.entity;
 			if (entity && nodeId != undefined) {
 				d.addModifiedNode(nodeId);
-				  var he = {};
-				  he[rf.ID] = "_" + net.spectroom.js.rndId(); // a temporary ID
-				  he[rf.TYPE] = relType;
-				  if (dir == "IN") {
-					  he[rf.TO_NODE] = entity[nf.NODEID];
-					  he[rf.FROM_NODE] = nodeId;
-				  } else {
-					  he[rf.FROM_NODE] = entity[nf.NODEID];
-					  he[rf.TO_NODE] = nodeId;
-				  }
-				  entity[field] = entity[field] || [];
-				  he[rf.ORDERING] = entity[field].length;
-				  if ("Document" == relClass) {
-					  he[rf.TIMESTAMP] = db.time.now() - db.delta;
-				  }
-				  entity[field].push(he);
-				  if (relAdded) {
-					  relAdded(he, function () {
-						  form.setEntityValue(i, entity, ip);
-					  });
-				  }
-			  }
+				var he = {};
+				he[rf.ID] = "_" + net.spectroom.js.rndId(); // a temporary ID
+				he[rf.TYPE] = relType;
+				if (dir == "IN") {
+					he[rf.TO_NODE] = entity[nf.NODEID];
+					he[rf.FROM_NODE] = nodeId;
+				} else {
+					he[rf.FROM_NODE] = entity[nf.NODEID];
+					he[rf.TO_NODE] = nodeId;
+				}
+				entity[field] = entity[field] || [];
+				he[rf.ORDERING] = entity[field].length;
+				if ("Document" == relClass) {
+					he[rf.TIMESTAMP] = db.time.now() - db.delta;
+				}
+				entity[field].push(he);
+				if (relAdded) {
+					relAdded(he, function () {
+						form.setEntityValue(i, entity, ip);
+					});
+				}
+			}
 		};
-		
-		jq(addBtn).addClass("freebim-button").off("click").click(function() {
+
+		jq(addBtn).addClass("freebim-button").off("click").click(function () {
 			// open a new dialog to drag related items from, or to create a new one:
 			var dlg = net.spectroom.js.newDiv();
 			jq(dlg).addClass("floating-table").dialog({
-				title : relTableTitle,
-				modal : true,
-				autoOpen : true,
-				width : 800,
-				height : 300,
-				beforeClose: function( event, ui ) {
+				title: relTableTitle,
+				modal: true,
+				autoOpen: true,
+				width: 800,
+				height: 300,
+				beforeClose: function (event, ui) {
 					jq(ip).parents(".ui-dialog").droppable("destroy"); // the form is droppable
-					
+
 					jq(dlg).find(".draggable").off("click").draggable("destroy");
-					jq(dlg).find(".content").appendTo( jq("#" + relClass) );
+					jq(dlg).find(".content").appendTo(jq("#" + relClass));
 				},
-				close : function(event, ui) {
+				close: function (event, ui) {
 					jq(dlg).hide();
 					enableSorting(true);
 					jq(trash).show();
 					jq(addBtn).show();
 					var w = jq(ip).closest(".ui-dialog");
 					jq(w).position({
-						  my: "center center",
-						  at: "center center",
-						  of: window,
-						  collision: "none"
+						my: "center center",
+						at: "center center",
+						of: window,
+						collision: "none"
 					});
 					setTimeout(function () {
 						jq(dlg).remove();
 					}, 500);
-					
+
 				},
-				open : function() {
-					var u = jq(dlg).parent(); 
+				open: function () {
+					var u = jq(dlg).parent();
 					jq(u).position({
-						  my: "left bottom ",
-						  at: "left+7 bottom-7 ",
-						  of: window,
-						  collision: "none"
+						my: "left bottom ",
+						at: "left+7 bottom-7 ",
+						of: window,
+						collision: "none"
 					});
 					var w = jq(ip).closest(".ui-dialog");
 					jq(w).position({
-						  my: "right top",
-						  at: "right-7 top+7",
-						  of: window,
-						  collision: "none"
+						my: "right top",
+						at: "right-7 top+7",
+						of: window,
+						collision: "none"
 					});
 					jq(trash).hide();
 					jq(addBtn).hide();
 					enableSorting(false);
 					jq(ip).parents(".ui-dialog").droppable({ // the form is droppable
-						  accept: "." + relClass,
-						  hoverClass: "drop-hover",
-						  tolerance: "touch",
-						  drop: function(event, ui) {
-							  // i.e. ValueListEntry to add ...
-							  var nodeId, e, entity = form.entity;
-							  if (ui && ui.draggable) {
-								  nodeId = jq(ui.draggable).attr("nodeid");
-								  if (nodeId != undefined) {
-									  assign(nodeId);
-									  form.setEntityValue(i, entity, ip);
-									  e = jq("#" + form.parent.id).find("*[nodeid='" + nodeId + "']")[0];
-									  if (e) {
-										  e.scrollIntoView(true);
-									  }
-								  }
-							  }
-						  }
+						accept: "." + relClass,
+						hoverClass: "drop-hover",
+						tolerance: "touch",
+						drop: function (event, ui) {
+							// i.e. ValueListEntry to add ...
+							var nodeId, e, entity = form.entity;
+							if (ui && ui.draggable) {
+								nodeId = jq(ui.draggable).attr("nodeid");
+								if (nodeId != undefined) {
+									assign(nodeId);
+									form.setEntityValue(i, entity, ip);
+									e = jq("#" + form.parent.id).find("*[nodeid='" + nodeId + "']")[0];
+									if (e) {
+										e.scrollIntoView(true);
+									}
+								}
+							}
+						}
 					});
 					jq(dlg).css("overflow", "hidden");
 				}
 			});
 			if (!d[relClass].table.id) {
-				jq(d[relClass].table).one(d[relClass].className + "_tableCreated", function(event, data) {
+				jq(d[relClass].table).one(d[relClass].className + "_tableCreated", function (event, data) {
 					jq(dlg).find("td.freebim-item." + relClass).draggable({
 						helper: "clone",
 						appendTo: jq(addBtn).parent(),
@@ -1758,10 +1749,10 @@ at.freebim.db.domain.relationFormField = function(form, i, ip, orderable, relTab
 						}
 					});
 				});
-				jq(document).trigger("_showTable", [{parent: dlg.id, cn: relClass}]);
+				jq(document).trigger("_showTable", [{ parent: dlg.id, cn: relClass }]);
 			} else {
-//				d[relClass].table.prevParent = jq("#" + d[relClass].table.id + " .content");
-//				d[relClass].table.prevDisp = jq("#" + d[relClass].table.id).css("display");
+				//				d[relClass].table.prevParent = jq("#" + d[relClass].table.id + " .content");
+				//				d[relClass].table.prevDisp = jq("#" + d[relClass].table.id).css("display");
 				jq("#" + d[relClass].table.id).appendTo(dlg);
 
 				jq(dlg).find("td.freebim-item." + relClass).draggable({
@@ -1799,7 +1790,7 @@ at.freebim.db.domain.relationFormField = function(form, i, ip, orderable, relTab
 				});
 			});
 		});
-		jq(trash).addClass("freebim-trash freebim-button").off("click").click(function($) {
+		jq(trash).addClass("freebim-trash freebim-button").off("click").click(function ($) {
 			if (jq(trash).hasClass("ui-droppable")) {
 				// disable trash, enable sorting
 				jq(addBtn).show();
@@ -1824,28 +1815,28 @@ at.freebim.db.domain.setEntityValue = function (clazz, idx, ip, entity, field, r
 	var ul = ip.childNodes[0], trash = ip.childNodes[1], rf = d.RelationFields;
 	clazz.fetchEntries("li", entity, field, relClass, dir, function (entries) {
 		var j, n = entries.length, getRel = function (relid) {
-				var e, i;
-				for (i=0; i<n; i++) {
-					e = entity[field][i];
-					if (e[rf.ID] == relid) {
-						return e;
-					}
-				} 
-	
-			}, relatedStuff = function(el, ro) {
-				var relid = jq(el).attr("relid"), rel = getRel(relid);
-				if (relClicked && !ro) {
-					jq(el).off("click").click(function(event) {
-						event.stopPropagation();
-						event.preventDefault();
-						relClicked(rel);
-						return false;
-					});
+			var e, i;
+			for (i = 0; i < n; i++) {
+				e = entity[field][i];
+				if (e[rf.ID] == relid) {
+					return e;
 				}
-				if (relInfo) {
-					relInfo(el, rel);
-				}
-			};
+			}
+
+		}, relatedStuff = function (el, ro) {
+			var relid = jq(el).attr("relid"), rel = getRel(relid);
+			if (relClicked && !ro) {
+				jq(el).off("click").click(function (event) {
+					event.stopPropagation();
+					event.preventDefault();
+					relClicked(rel);
+					return false;
+				});
+			}
+			if (relInfo) {
+				relInfo(el, rel);
+			}
+		};
 		jq(ul).empty();
 		for (j = 0; j < n; j++) {
 			var entry = entries[j], ro = clazz.form.fields[idx].readOnly;
@@ -1862,27 +1853,27 @@ at.freebim.db.domain.setEntityValue = function (clazz, idx, ip, entity, field, r
 	// entity.entries is an array of HasEntry objects
 	if (jq(trash).hasClass("ui-droppable")) {
 		jq(ul).find("li." + relClass).draggable({
-			stop : function ( event, ui ) {
+			stop: function (event, ui) {
 				var entity = clazz.form.entity;
 				clazz.form.setEntityValue(idx, entity, ip);
 			}
 		}).off("dblclick").dblclick(function () {
 			var x = jq(ui.draggable), relId = x.attr("relid"), nodeId = x.attr("nodeid");
-			d.deleteRelation (idx, clazz.form, field, ul, ip, relId, nodeId);
+			d.deleteRelation(idx, clazz.form, field, ul, ip, relId, nodeId);
 		});
 	}
 };
 
 at.freebim.db.domain.BaseNode = {
 
-	init : function(clazz, path) {
+	init: function (clazz, path) {
 		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, cn = clazz.className, i18n = net.spectroom.js.i18n;
 
 		db.logger.debug(cn + ": BaseNode.init called");
 
 		clazz.path = path;
-		
-		clazz.getNodes = function() {
+
+		clazz.getNodes = function () {
 			var arr = clazz.arr;
 			if (arr) {
 				var i, n = arr.length, node, res = [];
@@ -1897,15 +1888,15 @@ at.freebim.db.domain.BaseNode = {
 				}
 				return res;
 			} else {
-				jq(document).trigger("_load", [{cn: cn}]);
+				jq(document).trigger("_load", [{ cn: cn }]);
 				return cn + "_loaded";
 			}
 		};
-		
+
 		clazz.sort = function () {
 			var field = ((clazz.sortfield) ? clazz.sortfield : nf.NAME);
 			clazz.arr.sort(function (a, b) {
-				a = d.get(a)[field]; 
+				a = d.get(a)[field];
 				b = d.get(b)[field];
 				if (a < b)
 					return -1;
@@ -1915,8 +1906,8 @@ at.freebim.db.domain.BaseNode = {
 					return 0;
 			});
 		};
-		
-		clazz.tdWithAbbr = function(nodeId, tr, td, row, col) {
+
+		clazz.tdWithAbbr = function (nodeId, tr, td, row, col) {
 			if (nodeId != undefined) {
 				jq(td).attr("abbr", "1");
 				d.renderNodeId(nodeId, cn, td, null, null);
@@ -1925,7 +1916,7 @@ at.freebim.db.domain.BaseNode = {
 			}
 		};
 
-		clazz.tdWithName = function(nodeId, tr, td, row, col) {
+		clazz.tdWithName = function (nodeId, tr, td, row, col) {
 			if (nodeId != undefined) {
 				d.get(nodeId, cn, function (node) {
 					jq(td).attr("nodeid", nodeId).addClass("freebim-item " + cn);
@@ -1935,28 +1926,28 @@ at.freebim.db.domain.BaseNode = {
 				return "";
 			}
 		};
-		
+
 		clazz.getId = function (node) {
 			return ((node) ? node[nf.NODEID] : null);
 		};
-		
-		clazz.getName = clazz.getName || function(node, elem) {
+
+		clazz.getName = clazz.getName || function (node, elem) {
 			if (node) {
 				return clazz.getNameOf(node, elem);
 			}
 			return "";
 		};
-		clazz.getAbbrOf = clazz.getAbbrOf || function(entity, elem) {
+		clazz.getAbbrOf = clazz.getAbbrOf || function (entity, elem) {
 			if (entity) {
 				if (elem) {
 					elem.title = ((db.lang == "en") ? ((entity[nf.NAME_EN]) ? entity[nf.NAME_EN] : "") : ((entity[nf.NAME]) ? entity[nf.NAME] : ""));
 				}
 				return ((entity && entity[nf.CODE]) ? entity[nf.CODE]
-						: ((entity && entity[nf.NAME]) ? entity[nf.NAME] : ""));
+					: ((entity && entity[nf.NAME]) ? entity[nf.NAME] : ""));
 			}
 			return "";
 		};
-		clazz.getNameOf = clazz.getNameOf || function(entity, elem) {
+		clazz.getNameOf = clazz.getNameOf || function (entity, elem) {
 			if (entity) {
 				if (elem) {
 					elem.title = ((db.lang == "en") ? ((entity[nf.DESC_EN]) ? entity[nf.DESC_EN] : "") : ((entity[nf.DESC]) ? entity[nf.DESC] : ""));
@@ -1972,7 +1963,7 @@ at.freebim.db.domain.BaseNode = {
 		clazz.canDelete = function (entity) {
 			if (entity) {
 				var del = true, ec = entity[nf.CONTRIBUTED_BY];
-				if (entity[nf.CLASS_NAME] == "FreebimUser" 
+				if (entity[nf.CLASS_NAME] == "FreebimUser"
 					|| entity[nf.CLASS_NAME] == "Contributor"
 					|| entity[nf.CLASS_NAME] == "Company") {
 					return db.user.usermanager;
@@ -1983,7 +1974,7 @@ at.freebim.db.domain.BaseNode = {
 					// test if entity was created by the currently logged in contributor
 					del = false;
 					var i, n = ec.length, c = null;
-					for (i=0; i<n; i++) {
+					for (i = 0; i < n; i++) {
 						c = ec[i]; // c is a ContributedBy relation
 						if (c[rf.ct] == d.ContributionType.CREATE && db.contributor.id == c[rf.TO_NODE]) {
 							del = true;
@@ -1998,12 +1989,12 @@ at.freebim.db.domain.BaseNode = {
 			if (!entity) {
 				return false;
 			}
-			if (clazz.className == "FreebimUser" 
+			if (clazz.className == "FreebimUser"
 				|| clazz.className == "Contributor"
 				|| entity[nf.CLASS_NAME] == "Company") {
 				if (!db.user.usermanager) {
 					return false;
-				} 
+				}
 			} else {
 				if (!db.contributor || !db.contributor.id) {
 					return false;
@@ -2016,15 +2007,15 @@ at.freebim.db.domain.BaseNode = {
 						return false;
 					}
 				}
-			}			
+			}
 			return ((entity.deleted && entity.deleted == 1) ? false : true);
 		};
-		
+
 		clazz.relevantRelCount = function (v, field, clName) {
 			var i, c = 0, n;
 			if (v && v[field]) {
 				n = v[field].length;
-				for (i=0; i<n; i++) {
+				for (i = 0; i < n; i++) {
 					var rel = v[field][i], other = ((v[nf.NODEID] == rel[rf.TO_NODE]) ? rel[rf.FROM_NODE] : rel[rf.TO_NODE]);
 					other *= 1;
 					if (clName) {
@@ -2050,8 +2041,8 @@ at.freebim.db.domain.BaseNode = {
 			}
 			return c;
 		};
-		
-		clazz.showRelations = function(td, row, field, dir, clName) {
+
+		clazz.showRelations = function (td, row, field, dir, clName) {
 			var v = clazz.table.dataCallback(row); // v is i.e. a ValueListEntry
 			jq(td).empty();
 			if (v && v[field] && v[field].length > 0) { // v[field] is an array of i.e. HasEntry relations
@@ -2070,14 +2061,14 @@ at.freebim.db.domain.BaseNode = {
 				// entries will pop up in tooltip
 				td.title = "";
 				jq(td).tooltip({
-					open: function(event, ui) {
+					open: function (event, ui) {
 						// remove all other tooltips!
-					    jq(ui.tooltip).siblings(".ui-tooltip").remove();
+						jq(ui.tooltip).siblings(".ui-tooltip").remove();
 					},
-					content: function(callback) {
+					content: function (callback) {
 						clazz.fetchEntries("li", v, field, clName, dir, function (entries) {
 							var j, title = document.createElement("ul"), n = entries.length, x = jq(title);
-							for (j=0; j<n; j++) {
+							for (j = 0; j < n; j++) {
 								x.append(entries[j]);
 							}
 							// call the passed tooltip function to set the content
@@ -2087,41 +2078,41 @@ at.freebim.db.domain.BaseNode = {
 				});
 			}
 		};
-		
-		clazz.setFieldStates = function(mayEdit) {
+
+		clazz.setFieldStates = function (mayEdit) {
 			var i, n = clazz.form.fields.length;
-			for (i=0; i<n; i++) {
+			for (i = 0; i < n; i++) {
 				var f = clazz.form.fields[i];
 				switch (f.field) {
-				case nf.NAME : 
-				case nf.NAME_EN : 
-				case nf.DESC : 
-				case nf.DESC_EN : 
-				case nf.CODE : 
-				case nf.PARENTS : 
-				case nf.PARTS : 
-				case nf.HAS_PARAMETER : 
-				case nf.MATERIAL : 
-				case nf.DISCIPLINE : 
-				case nf.URL : 
-				case nf.MEASURES : 
-				case nf.HP : 
-				case nf.HEX_COLOR :
-				case nf.DEFAULT : // defaultString
-				case nf.DATATYPE :
-				case nf.HAS_VALUE :
-				case nf.HAS_ENTRY :
-				case nf.COMMENT :
-				case nf.CHILDS :
-				case nf.PSETS :
-				case nf.OWNERS :
-				case nf.PREFIX :
-					f.readOnly = !mayEdit;
-					break;
+					case nf.NAME:
+					case nf.NAME_EN:
+					case nf.DESC:
+					case nf.DESC_EN:
+					case nf.CODE:
+					case nf.PARENTS:
+					case nf.PARTS:
+					case nf.HAS_PARAMETER:
+					case nf.MATERIAL:
+					case nf.DISCIPLINE:
+					case nf.URL:
+					case nf.MEASURES:
+					case nf.HP:
+					case nf.HEX_COLOR:
+					case nf.DEFAULT: // defaultString
+					case nf.DATATYPE:
+					case nf.HAS_VALUE:
+					case nf.HAS_ENTRY:
+					case nf.COMMENT:
+					case nf.CHILDS:
+					case nf.PSETS:
+					case nf.OWNERS:
+					case nf.PREFIX:
+						f.readOnly = !mayEdit;
+						break;
 				}
-			}		
+			}
 		};
-		
+
 		/**
 		 * @param {at.freebim.db.domain.ValueList} v The ValueList to fetch all ValueListEntry objects for.
 		 * @param {function} doneFn Callback that would be called ater all entries have been fetched. Entries passed as first argument.  
@@ -2130,7 +2121,7 @@ at.freebim.db.domain.BaseNode = {
 			if (!v) {
 				return;
 			}
-			var max = 1000, fn = function() {
+			var max = 1000, fn = function () {
 				var n, i, entries = [], f = v[field], done, add;
 				if (max-- < 0) {
 					// prevent block on error (if we aren't able to fetch all entries ...)
@@ -2164,7 +2155,7 @@ at.freebim.db.domain.BaseNode = {
 							}
 						});
 					};
-					for (i=0; i<n; i++) {
+					for (i = 0; i < n; i++) {
 						var rel = f[i], nid = ((dir == "IN") ? rel[rf.FROM_NODE] : ((dir == "OUT") ? rel[rf.TO_NODE] : ((rel[rf.FROM_NODE] == v[nf.NODEID]) ? rel[rf.TO_NODE] : rel[rf.FROM_NODE])));
 						add(nid, rel[rf.ID]);
 					}
@@ -2175,31 +2166,31 @@ at.freebim.db.domain.BaseNode = {
 			fn();
 		};
 
-		
+
 		clazz.saveRelations = function (entity, rels, isInsert, ts, callback, bsddGuidChanged) {
 			if (rels != null && jq.isArray(rels) && rels.length > 0) {
 				var relData = [], data, i, m, n = rels.length, rel;
-				for (i=0; i<n; i++) {
+				for (i = 0; i < n; i++) {
 					rel = rels[i];
 					data = rel[rf.DATA];
 					if (data) {
 						m = data.length;
-						for (var j=0; j<m; j++) {
+						for (var j = 0; j < m; j++) {
 							var r = data[j];
 							if (r[rf.ID] != undefined && isNaN(r[rf.ID]) && r[rf.ID].indexOf("_") == 0) {
 								// remove temporary ID
 								r[rf.ID] = null;
 							}
 							switch (rel[rf.DIRECTION]) {
-							case "IN" : r[rf.TO_NODE] = entity[nf.NODEID]; break;
-							case "OUT" : r[rf.FROM_NODE] = entity[nf.NODEID]; break;
-							case "BOTH" : 
-								if (r[rf.FROM_NODE] == null) {
-									r[rf.FROM_NODE] = entity[nf.NODEID];
-								} else if (r[rf.TO_NODE] == null) {
-									r[rf.TO_NODE] = entity[nf.NODEID];
-								}
-								break;
+								case "IN": r[rf.TO_NODE] = entity[nf.NODEID]; break;
+								case "OUT": r[rf.FROM_NODE] = entity[nf.NODEID]; break;
+								case "BOTH":
+									if (r[rf.FROM_NODE] == null) {
+										r[rf.FROM_NODE] = entity[nf.NODEID];
+									} else if (r[rf.TO_NODE] == null) {
+										r[rf.TO_NODE] = entity[nf.NODEID];
+									}
+									break;
 							}
 						}
 					}
@@ -2210,8 +2201,8 @@ at.freebim.db.domain.BaseNode = {
 					newData[rf.RELATIONS] = rel[rf.DATA];
 					relData.push(newData);
 				}
-				db.post("/" + path + "/saveRelations", 
-					{ nodeId: entity[nf.NODEID], relArray : JSON.stringify(relData) },
+				db.post("/" + path + "/saveRelations",
+					{ nodeId: entity[nf.NODEID], relArray: relData },
 					i18n.g("SAVING_RELATIONS"), // "Beziehungen speichern ...",
 					function (response) {
 						if (response.error != undefined) {
@@ -2219,118 +2210,120 @@ at.freebim.db.domain.BaseNode = {
 						} else {
 							if (response.result) {
 								entity = response.result;
-								
+
 								if (isInsert) {
 									// is the newly inserted node relevant?
 									switch (entity[nf[nf.CLASS_NAME]]) {
-									case d.Component.className:
-										if (entity[nf.PARENTS] && entity[nf.PARENTS].length > 0) {
-											// (:Component)-[:PARENT_OF]->(:Component) exists
-											d.Component.used.push(entity[nf.NODEID]);
-										}
-										break;
-									case d.Parameter.className:
-										if (entity[nf.HP] && entity[nf.HP].length > 0) {
-											// (:Component)-[:HAS_PARAMETER]->(:Parameter) exists
-											d.Parameter.used.push(entity[nf.NODEID]);
-										}
-										break;
+										case d.Component.className:
+											if (entity[nf.PARENTS] && entity[nf.PARENTS].length > 0) {
+												// (:Component)-[:PARENT_OF]->(:Component) exists
+												d.Component.used.push(entity[nf.NODEID]);
+											}
+											break;
+										case d.Parameter.className:
+											if (entity[nf.HP] && entity[nf.HP].length > 0) {
+												// (:Component)-[:HAS_PARAMETER]->(:Parameter) exists
+												d.Parameter.used.push(entity[nf.NODEID]);
+											}
+											break;
 									}
 								}
-								
+
 								d.listen(entity);
 								if (bsddGuidChanged) {
-									jq(document).trigger("_bsddGuidChanged", [{entity: entity}]);
+									jq(document).trigger("_bsddGuidChanged", [{ entity: entity }]);
 								}
-//								jq(document).trigger(cn + "_saved");
+								//								jq(document).trigger(cn + "_saved");
 								if (callback) {
 									callback(entity);
 								}
 								if (isInsert) {
-									
+
 									// is the newly inserted node relevant?
 									switch (entity[nf[nf.CLASS_NAME]]) {
-									case d.Component.className:
-										if (entity[nf.PARENTS] && entity[nf.PARENTS].length > 0) {
-											// (:Component)-[:PARENT_OF]->(:Component) exists
-											d.Component.used.push(entity[nf.NODEID]);
-										}
-										break;
-									case d.Parameter.className:
-										if (entity[nf.HP] && entity[nf.HP].length > 0) {
-											// (:Component)-[:HAS_PARAMETER]->(:Parameter) exists
-											d.Parameter.used.push(entity[nf.NODEID]);
-										}
-										break;
+										case d.Component.className:
+											if (entity[nf.PARENTS] && entity[nf.PARENTS].length > 0) {
+												// (:Component)-[:PARENT_OF]->(:Component) exists
+												d.Component.used.push(entity[nf.NODEID]);
+											}
+											break;
+										case d.Parameter.className:
+											if (entity[nf.HP] && entity[nf.HP].length > 0) {
+												// (:Component)-[:HAS_PARAMETER]->(:Parameter) exists
+												d.Parameter.used.push(entity[nf.NODEID]);
+											}
+											break;
 									}
-									
-									jq("table.clazz_" + entity[nf.CLASS_NAME]).trigger("newInserted", [{entity: entity, ts: ts}]);
+
+									jq("table.clazz_" + entity[nf.CLASS_NAME]).trigger("newInserted", [{ entity: entity, ts: ts }]);
 									if (entity[nf.CLASS_NAME] == d.Component.className) {
-										jq("div.Component.tree-node[nodeid]").trigger("newInserted", [{entity: entity, ts: ts}]);
+										jq("div.Component.tree-node[nodeid]").trigger("newInserted", [{ entity: entity, ts: ts }]);
 									}
 									jq(document).trigger("alert", [{
-										title: "DLG_TITLE_FREEBIM_INFO", 
+										title: "DLG_TITLE_FREEBIM_INFO",
 										content: i18n.gA1("SUCCESSFULLY_INSERTED", clazz.i18n, clazz.getNameOf(entity)),
-										autoClose : 1500 
+										autoClose: 1500
 									}]);
 								} else {
-									jq("[nodeid='" + entity[nf.NODEID] + "']").trigger("newNodeModified", [{entity: entity, ts: ts}]);
+									jq("[nodeid='" + entity[nf.NODEID] + "']").trigger("newNodeModified", [{ entity: entity, ts: ts }]);
 									jq(document).trigger("alert", [{
-										title: "DLG_TITLE_FREEBIM_INFO", 
+										title: "DLG_TITLE_FREEBIM_INFO",
 										content: i18n.gA1("SUCCESSFULLY_SAVED", clazz.i18n, clazz.getNameOf(entity)),
-										autoClose : 1500 
+										autoClose: 1500
 									}]);
 								}
 							}
 						}
 					},
-					null // fail
+					null, // fail
+					null,
+					"PUT"
 				);
 			} else {
 				if (isInsert) {
-					jq("table.clazz_" + entity[nf.CLASS_NAME]).trigger("newInserted", [{entity: entity, ts : ts}]);
+					jq("table.clazz_" + entity[nf.CLASS_NAME]).trigger("newInserted", [{ entity: entity, ts: ts }]);
 					jq(document).trigger("alert", [{
-						title: "DLG_TITLE_FREEBIM_INFO", 
+						title: "DLG_TITLE_FREEBIM_INFO",
 						content: i18n.gA1("SUCCESSFULLY_INSERTED", clazz.i18n, clazz.getNameOf(entity)),
-						autoClose : 1500 
+						autoClose: 1500
 					}]);
 				} else {
-					jq("[nodeid='" + entity[nf.NODEID] + "']").trigger("newNodeModified", [{entity: entity, ts: ts}]);
+					jq("[nodeid='" + entity[nf.NODEID] + "']").trigger("newNodeModified", [{ entity: entity, ts: ts }]);
 					jq(document).trigger("alert", [{
-						title: "DLG_TITLE_FREEBIM_INFO", 
+						title: "DLG_TITLE_FREEBIM_INFO",
 						content: i18n.gA1("SUCCESSFULLY_SAVED", clazz.i18n, clazz.getNameOf(entity)),
-						autoClose : 1500 
+						autoClose: 1500
 					}]);
 				}
 			}
 		};
 		// BaseNode relations:
-		
+
 		clazz.relations.push(rf.make(nf.EQUALS, d.RelationTypeEnum.EQUALS, "Equals", "BOTH"));
-		
+
 		if (clazz.isContributed || clazz.className === d.Document.className) {
 			// UuidIdentifyable relations
 			clazz.relations.push(rf.make(nf.REFERENCES, d.RelationTypeEnum.REFERENCES, "References", "OUT"));
 			clazz.relations.push(rf.make(nf.LOADED_BSDD, d.RelationTypeEnum.BSDD, "Bsdd", "IN"));
 		}
-		
+
 		// ContributedBaseNode relations
 		if (clazz.isContributed) {
 			clazz.relations.push(rf.make(nf.CONTRIBUTED_BY, d.RelationTypeEnum.CONTRIBUTED_BY, "ContributedBy", "OUT"));
 			clazz.relations.push(rf.make(nf.DOCUMENTED, d.RelationTypeEnum.DOCUMENTED_IN, "DocumentedIn", "OUT"));
 		}
-		
+
 		// HierarchicalBaseNode relations
 		if (clazz.isHierarchical) {
 			clazz.relations.push(rf.make(nf.PARENTS, d.RelationTypeEnum.PARENT_OF, "ParentOf", "IN"));
 			clazz.relations.push(rf.make(nf.CHILDS, d.RelationTypeEnum.PARENT_OF, "ParentOf", "OUT"));
 			clazz.relations.push(rf.make(nf.PSETS, d.RelationTypeEnum.HAS_PARAMETER_SET, "HasParameterSet", "OUT"));
 		}
-		
+
 		clazz.initialized = true;
 	},
-	
-	postInit : function (clazz, noEqualsField) {
+
+	postInit: function (clazz, noEqualsField) {
 		var db = at.freebim.db, d = db.domain, nf = d.NodeFields, i18n = net.spectroom.js.i18n;
 		if (clazz.table) {
 			clazz.table.counter = true;
@@ -2350,7 +2343,7 @@ at.freebim.db.domain.BaseNode = {
 					db.user.doShowAbstract();
 				}, 200);
 			};*/
-			
+
 			clazz.table.rowCreated = function (data) {
 				var /*table = data.table, row = data.row, */tr = data.tr, node = data.value; /* node = table.dataCallback(row); */
 				if (node) {
@@ -2374,7 +2367,7 @@ at.freebim.db.domain.BaseNode = {
 				if (clazz.selectedNodeId) {
 					var table = clazz.table, i, n = table.tbody.childNodes.length;
 					if (clazz.selectedNodeId) {
-						for (i=0; i<n; i++) {
+						for (i = 0; i < n; i++) {
 							var tr = table.tbody.childNodes[i];
 							var nodeId = jq(tr).attr("nodeid");
 							if (nodeId == clazz.selectedNodeId) {
@@ -2388,7 +2381,7 @@ at.freebim.db.domain.BaseNode = {
 				}
 				jq(net.spectroom.js.table).trigger("_tableCount", [{}]);
 			});
-			
+
 			jq(net.spectroom.js.table).on("_tableCount", function (event, data) {
 				if (clazz.table && clazz.table.id) {
 					if (clazz.table.counterTimer) {
@@ -2399,52 +2392,52 @@ at.freebim.db.domain.BaseNode = {
 						var counter = jq("#" + clazz.table.id).find("div.counter");
 						if (counter && counter.length > 0) {
 							var invisible = jq("#" + clazz.table.id + " .jsTable-data tbody").children(".jsTable-emptyRow, .hide-deleted, .hide-unused, .jsTable-filtered, .hide-abstract").length,
-							totalCount = jq("#" + clazz.table.id + " .jsTable-data tbody").children().length,
-							visCount = (totalCount - invisible);
+								totalCount = jq("#" + clazz.table.id + " .jsTable-data tbody").children().length,
+								visCount = (totalCount - invisible);
 							jq(counter).html("" + visCount);
 						}
 					}, 250);
 				}
 			});
 		}
-		
+
 		// insert ID and freeBIM-ID fields:
 		clazz.form.fields.splice(0, 0, d.fields.id, d.fields.freebimID);
 		clazz.form.fields.splice(0, 0, {
-			label : "",
-			type : "hidden",
-			field : nf.CLASS_NAME,
-			fixed : clazz.className
+			label: "",
+			type: "hidden",
+			field: nf.CLASS_NAME,
+			fixed: clazz.className
 		});
-		
+
 		// move up bsDD-GUID field (after freeBIM-ID field):
 		var idx = clazz.form.fields.indexOf(d.fields.bsDD);
 		if (idx >= 0) {
 			clazz.form.fields.splice(idx, 1);
 			clazz.form.fields.splice(2, 0, d.fields.bsDD);
 		}
-				
+
 		if (!noEqualsField) {
 			clazz.form.fields.push({
-				label : "EQUALITY",
-				type : "custom",
-				field : nf.EQUALS,
-				createField : function(form, i, ip) {
+				label: "EQUALITY",
+				type: "custom",
+				field: nf.EQUALS,
+				createField: function (form, i, ip) {
 					var orderable = false;
-					relAdded = function (rel, okFn) { 
+					relAdded = function (rel, okFn) {
 						// rel is the just created relation
 						d.rel.Equals.init();
-						jq(d.rel.Equals).trigger("editEquals", [{rel: rel, okFn: okFn}]);
+						jq(d.rel.Equals).trigger("editEquals", [{ rel: rel, okFn: okFn }]);
 					};
 					d.relationFormField(form, i, ip, orderable, clazz.title, d.RelationTypeEnum.EQUALS, nf.EQUALS, clazz.className, "BOTH", relAdded);
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					var relClicked = function (rel) {
 						var okFn = function () {
 							form.setEntityValue(i, entity, ip);
 						};
 						d.rel.Equals.init();
-						jq(d.rel.Equals).trigger("editEquals", [{rel: rel, okFn: okFn}]);
+						jq(d.rel.Equals).trigger("editEquals", [{ rel: rel, okFn: okFn }]);
 
 					}, relInfo = function (el, rel) {
 						var okFn = function (eq) {
@@ -2453,7 +2446,7 @@ at.freebim.db.domain.BaseNode = {
 							jq(sub).appendTo(el);
 						};
 						d.rel.Equals.init();
-						jq(d.rel.Equals).trigger("equalsRel", [{rel: rel, okFn: okFn}]);
+						jq(d.rel.Equals).trigger("equalsRel", [{ rel: rel, okFn: okFn }]);
 					};
 					d.setEntityValue(form.clazz, i, ip, entity, nf.EQUALS, clazz.className, "BOTH", relInfo, relClicked);
 				}
@@ -2464,63 +2457,63 @@ at.freebim.db.domain.BaseNode = {
 }; // at.freebim.db.domain.BaseNode
 
 at.freebim.db.domain.ParameterSetType = {
-	className : "ParameterSetType",
-	i18n : "CLAZZ_PARAMETERSETTYPE",
-	title : net.spectroom.js.i18n.g("CLAZZ_PARAMETERSETTYPE"), // "Parameterset Typ",
-	values : [ 1, 2 ],
-	data : function(id) {
+	className: "ParameterSetType",
+	i18n: "CLAZZ_PARAMETERSETTYPE",
+	title: net.spectroom.js.i18n.g("CLAZZ_PARAMETERSETTYPE"), // "Parameterset Typ",
+	values: [1, 2],
+	data: function (id) {
 		var i18n = net.spectroom.js.i18n;
 		switch (id) {
-		case 1:
-			return i18n.get("PROPERTY");
-		case 2:
-			return i18n.get("QUANTITY");
+			case 1:
+				return i18n.get("PROPERTY");
+			case 2:
+				return i18n.get("QUANTITY");
 		}
 	},
-	dataValue : function(id) {
+	dataValue: function (id) {
 		return id;
 	}
 };
 
 at.freebim.db.domain.ParameterType = {
-	className : "ParameterType",
-	i18n : "CLAZZ_PARAMETERTYPE",
-	title : net.spectroom.js.i18n.g("CLAZZ_PARAMETERTYPE"), // "Parameter Typ",
-	values : [ 9, 2, 1, 3, 4, 5 ],
-	data : function(id) {
+	className: "ParameterType",
+	i18n: "CLAZZ_PARAMETERTYPE",
+	title: net.spectroom.js.i18n.g("CLAZZ_PARAMETERTYPE"), // "Parameter Typ",
+	values: [9, 2, 1, 3, 4, 5],
+	data: function (id) {
 		var i18n = net.spectroom.js.i18n;
 		switch (id) {
-		default:
-		case 9:
-			return i18n.get("PTYPE_UNDEFINED");
-		case 2:
-			return i18n.get("PTYPE_INSTANCE");
-		case 1:
-			return i18n.get("PTYPE_TYPE");
-		case 3:
-			return i18n.get("PTYPE_DERIVED");
-		case 4:
-			return i18n.get("PTYPE_IFC_ATTRIBUTE");
-		case 5:
-			return i18n.get("PTYPE_IFC_OPTIONAL_ATTRIBUTE");
+			default:
+			case 9:
+				return i18n.get("PTYPE_UNDEFINED");
+			case 2:
+				return i18n.get("PTYPE_INSTANCE");
+			case 1:
+				return i18n.get("PTYPE_TYPE");
+			case 3:
+				return i18n.get("PTYPE_DERIVED");
+			case 4:
+				return i18n.get("PTYPE_IFC_ATTRIBUTE");
+			case 5:
+				return i18n.get("PTYPE_IFC_OPTIONAL_ATTRIBUTE");
 		}
 	},
-	dataValue : function(id) {
+	dataValue: function (id) {
 		return id;
 	}
 };
 
 at.freebim.db.domain.BigBangNode = {
-	className : "BigBangNode",
-	i18n : "FREEBIM_TYROL",
-	title : "*",
+	className: "BigBangNode",
+	i18n: "FREEBIM_TYROL",
+	title: "*",
 	path: undefined,
-	isContributed : true,
-	isHierarchical : true,
-	getNameOf : function(entity, elem) {
+	isContributed: true,
+	isHierarchical: true,
+	getNameOf: function (entity, elem) {
 		return "*";
 	},
-	init : function () {
+	init: function () {
 		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, self = d.BigBangNode, i18n = net.spectroom.js.i18n;
 		if (self.initialized) {
 			return;
@@ -2528,38 +2521,38 @@ at.freebim.db.domain.BigBangNode = {
 		self.relations = [];
 		self.base = Object.create(d.BaseNode);
 		self.base.init(self, "bbn");
-		
+
 		d.Library.init();
-		
+
 		self.form = Object.create(net.spectroom.js.form);
-		self.form.fields = [ 
-			d.fields.nodeId, 
+		self.form.fields = [
+			d.fields.nodeId,
 			d.fields.validFrom,
-			d.fields.validTo, 
-			d.fields.code, 
+			d.fields.validTo,
+			d.fields.code,
 			d.fields.name,
-			d.fields.nameEn,  
-			d.fields.desc, 
-			d.fields.descEn, 
+			d.fields.nameEn,
+			d.fields.desc,
+			d.fields.descEn,
 			{
-				label : "Version",
-				type : "hidden",
-				field : nf.VERSION,
+				label: "Version",
+				type: "hidden",
+				field: nf.VERSION,
 			},
 			{
-				label : "TAB_LIBRARIES",
-				type : "custom",
-				field : nf.CHILDS,
-				createField : function (form, i, ip) {
+				label: "TAB_LIBRARIES",
+				type: "custom",
+				field: nf.CHILDS,
+				createField: function (form, i, ip) {
 					var orderable = true;
 					d.relationFormField(form, i, ip, orderable, d.Library.title, d.RelationTypeEnum.PARENT_OF, nf.CHILDS, "Library", "OUT");
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					d.setEntityValue(form.clazz, i, ip, entity, nf.CHILDS, "Library", "OUT");
 				}
 			},
 			d.fields.state,
-			d.fields.statusComment, 
+			d.fields.statusComment,
 			d.fields.docs
 		];
 		self.form.fields[3].type = "hidden";
@@ -2570,27 +2563,27 @@ at.freebim.db.domain.BigBangNode = {
 		self.form.fields[10].type = "hidden";
 		self.form.fields[11].type = "hidden";
 		self.form.fields[12].type = "hidden";
-		
+
 		self.form.create(null, self, self);
-		
+
 		self.base.postInit(self, true);
 		self.initialized = true;
 	}
 };
 
 at.freebim.db.domain.BsddNode = {
-	className : "BsddNode",
-	i18n : "CLAZZ_BSDDNODE",
-	title : net.spectroom.js.i18n.g("CLAZZ_BSDDNODE"),
-	isContributed : false,
-	isHierarchical : false,
-	getNameOf : function(entity, elem) {
+	className: "BsddNode",
+	i18n: "CLAZZ_BSDDNODE",
+	title: net.spectroom.js.i18n.g("CLAZZ_BSDDNODE"),
+	isContributed: false,
+	isHierarchical: false,
+	getNameOf: function (entity, elem) {
 		return entity[at.freebim.db.domain.NodeFields.BSDD_GUID];
 	},
-	init : function () {
+	init: function () {
 		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, self = d.BsddNode;
 		if (!self.initialized) {
-			self.relations =  [rf.make(nf.NODES, d.RelationTypeEnum.BSDD, "Bsdd", "OUT")];
+			self.relations = [rf.make(nf.NODES, d.RelationTypeEnum.BSDD, "Bsdd", "OUT")];
 			self.base = Object.create(d.BaseNode);
 			self.base.init(self, "bsdd");
 		}
@@ -2598,129 +2591,129 @@ at.freebim.db.domain.BsddNode = {
 };
 
 at.freebim.db.domain.SimpleNamedNode = {
-		className : "SimpleNamedNode",
-		i18n : "CLAZZ_SIMPLENAMEDNODE",
-		title : net.spectroom.js.i18n.g("CLAZZ_SIMPLENAMEDNODE"), // "Element",
-		isContributed : true,
-		isHierarchical : true,
-		getNameOf : function(entity, elem) {
-			var nf = at.freebim.db.domain.NodeFields;
-			if (entity) {
-				if (elem) {
-					elem.title = ((at.freebim.db.lang == "en") ? ((entity[nf.DESC_EN]) ? entity[nf.DESC_EN] : "") : ((entity[nf.DESC]) ? entity[nf.DESC] : ""));
-				}
-				return ((entity[nf.CODE]) ? entity[nf.CODE] + " - " : "") + ((at.freebim.db.lang == "en") ? ((entity[nf.NAME_EN]) ? entity[nf.NAME_EN] : "") : ((entity[nf.NAME]) ? entity[nf.NAME] : ""));
+	className: "SimpleNamedNode",
+	i18n: "CLAZZ_SIMPLENAMEDNODE",
+	title: net.spectroom.js.i18n.g("CLAZZ_SIMPLENAMEDNODE"), // "Element",
+	isContributed: true,
+	isHierarchical: true,
+	getNameOf: function (entity, elem) {
+		var nf = at.freebim.db.domain.NodeFields;
+		if (entity) {
+			if (elem) {
+				elem.title = ((at.freebim.db.lang == "en") ? ((entity[nf.DESC_EN]) ? entity[nf.DESC_EN] : "") : ((entity[nf.DESC]) ? entity[nf.DESC] : ""));
 			}
-			return "";
-		},
-		init : function () {
-			at.freebim.db.domain.SimpleNamedNode.initialized = true;
+			return ((entity[nf.CODE]) ? entity[nf.CODE] + " - " : "") + ((at.freebim.db.lang == "en") ? ((entity[nf.NAME_EN]) ? entity[nf.NAME_EN] : "") : ((entity[nf.NAME]) ? entity[nf.NAME] : ""));
 		}
-	};
+		return "";
+	},
+	init: function () {
+		at.freebim.db.domain.SimpleNamedNode.initialized = true;
+	}
+};
 
 at.freebim.db.domain.ComponentType = {
-	className : "ComponentType",
-	i18n : "CLAZZ_COMPONENTTYPE",
-	title : net.spectroom.js.i18n.g("CLAZZ_COMPONENTTYPE"), // "Art",
-	values : [ 1, 2, 3, 4, 5 ],
-	data : function(id) {
+	className: "ComponentType",
+	i18n: "CLAZZ_COMPONENTTYPE",
+	title: net.spectroom.js.i18n.g("CLAZZ_COMPONENTTYPE"), // "Art",
+	values: [1, 2, 3, 4, 5],
+	data: function (id) {
 		var i18n = net.spectroom.js.i18n;
 		switch (id) {
-		case 1:
-			return i18n.g("COMPTYPE_UNDEFINED"); // "undefiniert";
-		case 2:
-			return i18n.g("COMPTYPE_ABSTRACT"); // "abstrakt";
-		case 3:
-			return i18n.g("COMPTYPE_CONCRETE"); // "konkret";
-		case 4:
-			return i18n.g("COMPTYPE_COMPOSED"); // "zusammengesetzt";
-		case 5:
-			return i18n.g("COMPTYPE_COMPOSED_VARIABLE"); // "variabel zusammengestzt";
+			case 1:
+				return i18n.g("COMPTYPE_UNDEFINED"); // "undefiniert";
+			case 2:
+				return i18n.g("COMPTYPE_ABSTRACT"); // "abstrakt";
+			case 3:
+				return i18n.g("COMPTYPE_CONCRETE"); // "konkret";
+			case 4:
+				return i18n.g("COMPTYPE_COMPOSED"); // "zusammengesetzt";
+			case 5:
+				return i18n.g("COMPTYPE_COMPOSED_VARIABLE"); // "variabel zusammengestzt";
 		}
 	},
-	dataValue : function(id) {
+	dataValue: function (id) {
 		return id;
 	}
 };
 
 at.freebim.db.domain.Component = {
 
-	className : "Component",
-	i18n : "CLAZZ_COMPONENT",
-	title : net.spectroom.js.i18n.g("CLAZZ_COMPONENT"), // "Komponente",
-	arr : null,
-	isContributed : true,
-	isHierarchical : true,
+	className: "Component",
+	i18n: "CLAZZ_COMPONENT",
+	title: net.spectroom.js.i18n.g("CLAZZ_COMPONENT"), // "Komponente",
+	arr: null,
+	isContributed: true,
+	isHierarchical: true,
 
-	init : function() {
+	init: function () {
 		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, i18n = net.spectroom.js.i18n,
 			f = d.filters, fmr = f.filterMarkedRelated, self = d.Component;
 		if (self.initialized) {
 			return;
 		}
-		self.relations =  [rf.make(nf.HAS_PARAMETER, d.RelationTypeEnum.HAS_PARAMETER, "HasParameter", "OUT"),
-		                   rf.make(nf.PARTS, d.RelationTypeEnum.COMP_COMP, "ComponentComponent", "OUT"),
-		                   rf.make(nf.MATERIAL, d.RelationTypeEnum.OF_MATERIAL, "OfMaterial", "OUT"),
-		                   rf.make(nf.OVERRIDE, d.RelationTypeEnum.VALUE_OVERRIDE, "ValueOverride", "OUT")];
+		self.relations = [rf.make(nf.HAS_PARAMETER, d.RelationTypeEnum.HAS_PARAMETER, "HasParameter", "OUT"),
+		rf.make(nf.PARTS, d.RelationTypeEnum.COMP_COMP, "ComponentComponent", "OUT"),
+		rf.make(nf.MATERIAL, d.RelationTypeEnum.OF_MATERIAL, "OfMaterial", "OUT"),
+		rf.make(nf.OVERRIDE, d.RelationTypeEnum.VALUE_OVERRIDE, "ValueOverride", "OUT")];
 
 		self.base = Object.create(d.BaseNode);
 		self.base.init(self, "component");
-		
+
 		self.form = Object.create(net.spectroom.js.form);
-		self.form.fields = [ 
-			d.fields.nodeId, 
+		self.form.fields = [
+			d.fields.nodeId,
 			d.fields.validFrom,
-			d.fields.validTo, 
-			d.fields.code, 
+			d.fields.validTo,
+			d.fields.code,
 			d.fields.name,
-			d.fields.nameEn,  
-			d.fields.desc, 
-			d.fields.descEn, 
+			d.fields.nameEn,
+			d.fields.desc,
+			d.fields.descEn,
 			{
-				label : "ASSIGNED_TO",
-				type : "custom",
-				field : nf.PARENTS,
-				createField : function (form, i, ip) {
+				label: "ASSIGNED_TO",
+				type: "custom",
+				field: nf.PARENTS,
+				createField: function (form, i, ip) {
 					var orderable = false;
 					d.relationFormField(form, i, ip, orderable, d.Component.title, d.RelationTypeEnum.PARENT_OF, nf.PARENTS, "Component", "IN");
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					d.setEntityValue(form.clazz, i, ip, entity, nf.PARENTS, "Component", "IN");
 				}
 			},
 			{
-				label : "ASSIGNED_COMPONENTS",
-				type : "custom",
-				field : nf.CHILDS,
-				createField : function (form, i, ip) {
+				label: "ASSIGNED_COMPONENTS",
+				type: "custom",
+				field: nf.CHILDS,
+				createField: function (form, i, ip) {
 					var orderable = true;
 					d.relationFormField(form, i, ip, orderable, d.Component.title, d.RelationTypeEnum.PARENT_OF, nf.CHILDS, "Component", "OUT");
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					d.setEntityValue(form.clazz, i, ip, entity, nf.CHILDS, "Component", "OUT");
 				}
 			},
 			{
-				label : "ASSIGNED_PARAMETERS",
-				type : "custom",
-				field : nf.HAS_PARAMETER,
-				createField : function (form, i, ip) {
+				label: "ASSIGNED_PARAMETERS",
+				type: "custom",
+				field: nf.HAS_PARAMETER,
+				createField: function (form, i, ip) {
 					var orderable = true,
-					relAdded = function (rel, okFn) { 
-						// rel is the just created relation
-						d.rel.HasParameter.init();
-						jq(d.rel.HasParameter).trigger("editPhase", [{rel: rel, okFn: okFn}]);
-					};
+						relAdded = function (rel, okFn) {
+							// rel is the just created relation
+							d.rel.HasParameter.init();
+							jq(d.rel.HasParameter).trigger("editPhase", [{ rel: rel, okFn: okFn }]);
+						};
 					d.relationFormField(form, i, ip, orderable, d.Parameter.title, d.RelationTypeEnum.HAS_PARAMETER, nf.HAS_PARAMETER, "Parameter", "OUT", relAdded);
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					var relClicked = function (rel) {
 						var okFn = function () {
 							form.setEntityValue(i, entity, ip);
 						};
 						d.rel.HasParameter.init();
-						jq(d.rel.HasParameter).trigger("editPhase", [{rel: rel, okFn: okFn}]);
-	
+						jq(d.rel.HasParameter).trigger("editPhase", [{ rel: rel, okFn: okFn }]);
+
 					}, relInfo = function (el, rel) {
 						var okFn = function (ph) {
 							var sub = document.createElement("sub");
@@ -2729,118 +2722,123 @@ at.freebim.db.domain.Component = {
 							jq(sub).removeClass("freebim-contextmenu");
 						};
 						d.rel.HasParameter.init();
-						jq(d.rel.HasParameter).trigger("phaseFromRel", [{rel: rel, okFn: okFn}]);
+						jq(d.rel.HasParameter).trigger("phaseFromRel", [{ rel: rel, okFn: okFn }]);
 					};
 					d.setEntityValue(form.clazz, i, ip, entity, nf.HAS_PARAMETER, "Parameter", "OUT", relInfo, relClicked);
 				}
 			},
 			{
-				label : "PARTS", // "Bestandteile",
-				type : "custom",
-				field : nf.PARTS,
-				createField : function (form, i, ip) {
+				label: "PARTS", // "Bestandteile",
+				type: "custom",
+				field: nf.PARTS,
+				createField: function (form, i, ip) {
 					var orderable = true;
 					d.relationFormField(form, i, ip, orderable, d.Component.title, d.RelationTypeEnum.COMP_COMP, nf.PARTS, "Component");
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					d.setEntityValue(form.clazz, i, ip, entity, nf.PARTS, "Component", "OUT");
 				}
 			},
 			{
-				label : "MATERIAL",
-				type : "custom",
-				field : nf.MATERIAL,
-				createField : function (form, i, ip) {
+				label: "MATERIAL",
+				type: "custom",
+				field: nf.MATERIAL,
+				createField: function (form, i, ip) {
 					var orderable = false;
 					d.relationFormField(form, i, ip, orderable, d.Component.title, d.RelationTypeEnum.OF_MATERIAL, nf.MATERIAL, "Component");
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					d.setEntityValue(form.clazz, i, ip, entity, nf.MATERIAL, "Component", "OUT");
 				}
 			},
 			{
-				label : "PARAMETERSETS", // "Parameter-Sets",
-				type : "custom",
-				field : nf.PSETS,
-				createField : function (form, i, ip) {
+				label: "PARAMETERSETS", // "Parameter-Sets",
+				type: "custom",
+				field: nf.PSETS,
+				createField: function (form, i, ip) {
 					var orderable = false;
 					d.relationFormField(form, i, ip, orderable, d.ParameterSet.title, d.RelationTypeEnum.HAS_PARAMETER_SET, nf.PSETS, "ParameterSet");
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					d.setEntityValue(form.clazz, i, ip, entity, nf.PSETS, "ParameterSet", "OUT");
 				}
-			},{
-				label : "CLAZZ_COMPONENTTYPE",
-				type : "select",
-				field : nf.TYPE,
-				values : d.ComponentType.values,
-				data : d.ComponentType.data,
-				dataValue : d.ComponentType.dataValue
+			}, {
+				label: "CLAZZ_COMPONENTTYPE",
+				type: "select",
+				field: nf.TYPE,
+				values: d.ComponentType.values,
+				data: d.ComponentType.data,
+				dataValue: d.ComponentType.dataValue
 			},
 			d.fields.state,
-			d.fields.statusComment, 
+			d.fields.statusComment,
 			d.fields.docs,
 			d.fields.bsDD
 		];
-		
+
 		self.form.create(null, self, self);
-		
+
 		self.table = Object.create(net.spectroom.js.table);
 		self.table.edit = true;
 		self.table.add = true;
 		self.table.filters = [
-			{ add : f.text, 
-				f : f.filterByCodeAndName
+			{
+				add: f.text,
+				f: f.filterByCodeAndName
 			},
-			{ add : f.mark,
-				f : function (node, filter, opt) {
+			{
+				add: f.mark,
+				f: function (node, filter, opt) {
 					var params = node[nf.HAS_PARAMETER];
-		             			if (db.isMarked(node[nf.NODEID])) {
-		             				return false;
-		             			}
-		             			if (!fmr(node[nf.PARENTS], "IN")) {
-		             				return false;
-		             			}
-		             			if (!fmr(params, "OUT")) {
-		             				return false;
-		             			}
-		             			if (!fmr(node[nf.PARTS], "OUT")) {
-		             				return false;
-		             			}
-		             			if (!fmr(node[nf.PSETS], "OUT")) {
-		             				return false;
-		             			}
-		             			if (!fmr(node[nf.MATERIAL], "OUT")) {
-		             				return false;
-		             			}
-		             			if (!fmr(node[nf.DOCUMENTED], "OUT")) {
-		             				return false;
-		             			}
-		             			if (!fmr(node[nf.EQUALS], "BOTH")) {
-		             				return false;
-		             			}
-		             			if (params) {
-		             				d.rel.HasParameter.init();
-		             				var ph, r, i, n = params.length;
-		             				for (i=0; i<n; i++) {
-		             					r = params[i];
-		             					ph = d.rel.HasParameter.phaseForUuid(r[rf.PHASE]);
-		             					if (ph && db.isMarked(ph[nf.NODEID])) {
-		             						return false;
-		             					}
-		             				}
-		             			}
-		             			return true;
-		                     }
+					if (db.isMarked(node[nf.NODEID])) {
+						return false;
+					}
+					if (!fmr(node[nf.PARENTS], "IN")) {
+						return false;
+					}
+					if (!fmr(params, "OUT")) {
+						return false;
+					}
+					if (!fmr(node[nf.PARTS], "OUT")) {
+						return false;
+					}
+					if (!fmr(node[nf.PSETS], "OUT")) {
+						return false;
+					}
+					if (!fmr(node[nf.MATERIAL], "OUT")) {
+						return false;
+					}
+					if (!fmr(node[nf.DOCUMENTED], "OUT")) {
+						return false;
+					}
+					if (!fmr(node[nf.EQUALS], "BOTH")) {
+						return false;
+					}
+					if (params) {
+						d.rel.HasParameter.init();
+						var ph, r, i, n = params.length;
+						for (i = 0; i < n; i++) {
+							r = params[i];
+							ph = d.rel.HasParameter.phaseForUuid(r[rf.PHASE]);
+							if (ph && db.isMarked(ph[nf.NODEID])) {
+								return false;
+							}
+						}
+					}
+					return true;
+				}
 			},
-			{ add : f.lib,
-				f : f.filterByLib
-			}, 
-			{ add : f.bsdd, 
-				f : undefined
-			}, 
-			{ add : f.bsddLoaded, 
-				f : undefined
+			{
+				add: f.lib,
+				f: f.filterByLib
+			},
+			{
+				add: f.bsdd,
+				f: undefined
+			},
+			{
+				add: f.bsddLoaded,
+				f: undefined
 			}/*, 
 			{ add : function (clazz, filterdiv, filterFn, srcFn) {
 					var div = document.createElement("div"), cbBsdd = document.createElement("input"),
@@ -2868,31 +2866,31 @@ at.freebim.db.domain.Component = {
 			}*/
 		];
 
-/*		self.table.customFilter = function (filterdiv) {
-			var ip = document.createElement("input");
-			ip.type = "radio";
-			ip.name = "ComponentRadio";
-			ip.value = "ALL";
-			ip.checked = true;
-			filterdiv.appendChild(ip);
-			filterdiv.appendChild(document.createTextNode("alle"));
-			ip = document.createElement("input");
-			ip.type = "radio";
-			ip.name = "ComponentRadio";
-			ip.value = "COMP";
-			filterdiv.appendChild(ip);
-			filterdiv.appendChild(document.createTextNode("Bauteile"));
-			ip = document.createElement("input");
-			ip.type = "radio";
-			ip.name = "ComponentRadio";
-			ip.value = "MAT";
-			filterdiv.appendChild(ip);
-			filterdiv.appendChild(document.createTextNode("Materialien"));
-			jq("input[name=ComponentRadio]:radio").change(function () {
-				self.table.doFilter();
-			});
-		};*/
-		self.table.dataCallback = function(row, tr) {
+		/*		self.table.customFilter = function (filterdiv) {
+					var ip = document.createElement("input");
+					ip.type = "radio";
+					ip.name = "ComponentRadio";
+					ip.value = "ALL";
+					ip.checked = true;
+					filterdiv.appendChild(ip);
+					filterdiv.appendChild(document.createTextNode("alle"));
+					ip = document.createElement("input");
+					ip.type = "radio";
+					ip.name = "ComponentRadio";
+					ip.value = "COMP";
+					filterdiv.appendChild(ip);
+					filterdiv.appendChild(document.createTextNode("Bauteile"));
+					ip = document.createElement("input");
+					ip.type = "radio";
+					ip.name = "ComponentRadio";
+					ip.value = "MAT";
+					filterdiv.appendChild(ip);
+					filterdiv.appendChild(document.createTextNode("Materialien"));
+					jq("input[name=ComponentRadio]:radio").change(function () {
+						self.table.doFilter();
+					});
+				};*/
+		self.table.dataCallback = function (row, tr) {
 			var id = self.arr[row], node = d.get(id);
 			jq(tr).attr("nodeid", id);
 			if (node) {
@@ -2903,104 +2901,104 @@ at.freebim.db.domain.Component = {
 		};
 		self.table.idCol = nf.NODEID;
 		self.table.csv = "code" + self.table.csvDelim
-						+ "freeBIM-ID" + self.table.csvDelim
-						+ "name-de" + self.table.csvDelim
-						+ "name-en" + self.table.csvDelim
-						+ "description-de" + self.table.csvDelim
-						+ "description-en" + self.table.csvDelim
-						+ "bsDD-GUID" + self.table.csvDelim
-						+ "type" + self.table.csvDelim
-						+ "status" + self.table.csvDelim;
+			+ "freeBIM-ID" + self.table.csvDelim
+			+ "name-de" + self.table.csvDelim
+			+ "name-en" + self.table.csvDelim
+			+ "description-de" + self.table.csvDelim
+			+ "description-en" + self.table.csvDelim
+			+ "bsDD-GUID" + self.table.csvDelim
+			+ "type" + self.table.csvDelim
+			+ "status" + self.table.csvDelim;
 		self.table.cols = [
-				d.columns.code,
-				{
-					label : "NAME", // "Name",
-					field : nf.NAME,
-					type : "custom",
-					createCell : function (tr, td, row, col) {
-						var v = self.table.dataCallback(row);
-						jq(td).attr("maxLength", "32");
-						d.renderNode(v, td);
-						if (v[nf.IS_MATERIAL]) {
-							jq(td).addClass("material");
-						}
-					},
-					cl : "freebim-item Component",
-					sortValue : function (row) {
-						var v = self.table.dataCallback(row);
-						return d.Component.getNameOf(v);
-					},
-					sort : true,
-					csv : function (row, col) {
-						var v = self.table.dataCallback(row);
-						return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]) + d.csv(v[nf.NAME_EN]);
+			d.columns.code,
+			{
+				label: "NAME", // "Name",
+				field: nf.NAME,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					var v = self.table.dataCallback(row);
+					jq(td).attr("maxLength", "32");
+					d.renderNode(v, td);
+					if (v[nf.IS_MATERIAL]) {
+						jq(td).addClass("material");
 					}
 				},
-				{
-					label : "DESCRIPTION", // "Beschreibung",
-					field : nf.DESC,
-					type : "custom",
-					createCell : function (tr, td, row, col) {
-						var nodeId = self.arr[row], 
+				cl: "freebim-item Component",
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					return d.Component.getNameOf(v);
+				},
+				sort: true,
+				csv: function (row, col) {
+					var v = self.table.dataCallback(row);
+					return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]) + d.csv(v[nf.NAME_EN]);
+				}
+			},
+			{
+				label: "DESCRIPTION", // "Beschreibung",
+				field: nf.DESC,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					var nodeId = self.arr[row],
 						node = d.get(nodeId),
 						desc = d.Component.getDescOf(node);
-						jq(td).html(net.spectroom.js.shrinkText(desc, 64, td)).addClass("freebim-desc").attr("nodeid", node[nf.NODEID]);
-					},
-					sortValue : function (row) {
-						var v = self.table.dataCallback(row);
-						return d.Component.getDescOf(v);
-					},
-					sort : true,
-					csv : function (row, col) {
-						var v = self.table.dataCallback(row);
-						return d.csv(v[nf.DESC]) + d.csv(v[nf.DESC_EN]) + d.csv(v[nf.BSDD_GUID]);
-					}
+					jq(td).html(net.spectroom.js.shrinkText(desc, 64, td)).addClass("freebim-desc").attr("nodeid", node[nf.NODEID]);
 				},
-				{
-					label : "CLAZZ_COMPONENTTYPE", // "Art",
-					field : nf.TYPE,
-					type : "callback",
-					values : d.ComponentType.values,
-					data : d.ComponentType.data,
-					dataValue : d.ComponentType.dataValue,
-					sort: true
-				}, {
-					label : "CLAZZ_PARAMETER", // "Parameter",
-					field : nf.HAS_PARAMETER,
-					type : "custom",
-					createCell : function(tr, td, row, col) {
-						self.showRelations(td, row, nf.HAS_PARAMETER, "OUT", "Parameter");
-					},
-					cl : "Parameter",
-					sort : true,
-					sortValue : function(row) {
-						var v = self.table.dataCallback(row); 
-						if (v) {
-							return self.relevantRelCount(v, nf.HAS_PARAMETER, "Parameter");
-						} 
-						return 0;
-					},
-					csv : false
-				}, {
-					label : "PARTS", // "Bestandteile",
-					field : nf.PARTS,
-					type : "custom",
-					createCell : function(tr, td, row, col) {
-						self.showRelations(td, row, nf.PARTS, "OUT", "Component");
-					},
-					cl : "Component",
-					sort : true,
-					sortValue : function(row) {
-						var v = self.table.dataCallback(row); 
-						if (v) {
-							return self.relevantRelCount(v, nf.PARTS, "Component");
-						} 
-						return 0;
-					},
-					csv : false
-				}, 
-				d.columns.state
-			];
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					return d.Component.getDescOf(v);
+				},
+				sort: true,
+				csv: function (row, col) {
+					var v = self.table.dataCallback(row);
+					return d.csv(v[nf.DESC]) + d.csv(v[nf.DESC_EN]) + d.csv(v[nf.BSDD_GUID]);
+				}
+			},
+			{
+				label: "CLAZZ_COMPONENTTYPE", // "Art",
+				field: nf.TYPE,
+				type: "callback",
+				values: d.ComponentType.values,
+				data: d.ComponentType.data,
+				dataValue: d.ComponentType.dataValue,
+				sort: true
+			}, {
+				label: "CLAZZ_PARAMETER", // "Parameter",
+				field: nf.HAS_PARAMETER,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					self.showRelations(td, row, nf.HAS_PARAMETER, "OUT", "Parameter");
+				},
+				cl: "Parameter",
+				sort: true,
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					if (v) {
+						return self.relevantRelCount(v, nf.HAS_PARAMETER, "Parameter");
+					}
+					return 0;
+				},
+				csv: false
+			}, {
+				label: "PARTS", // "Bestandteile",
+				field: nf.PARTS,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					self.showRelations(td, row, nf.PARTS, "OUT", "Component");
+				},
+				cl: "Component",
+				sort: true,
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					if (v) {
+						return self.relevantRelCount(v, nf.PARTS, "Component");
+					}
+					return 0;
+				},
+				csv: false
+			},
+			d.columns.state
+		];
 
 		self.base.postInit(self);
 		self.table.initialSort = 2;
@@ -3008,12 +3006,12 @@ at.freebim.db.domain.Component = {
 }; // at.freebim.db.domain.Component
 
 at.freebim.db.domain.Contributor = {
-	className : "Contributor",
-	i18n : "CLAZZ_CONTRIBUTOR",
-	title : net.spectroom.js.i18n.g("CLAZZ_CONTRIBUTOR"), // "Bearbeiter",
-	arr : null,
+	className: "Contributor",
+	i18n: "CLAZZ_CONTRIBUTOR",
+	title: net.spectroom.js.i18n.g("CLAZZ_CONTRIBUTOR"), // "Bearbeiter",
+	arr: null,
 
-	getAbbrOf : function(entity, elem) {
+	getAbbrOf: function (entity, elem) {
 		var nf = at.freebim.db.domain.NodeFields;
 		if (entity) {
 			if (elem) {
@@ -3024,101 +3022,101 @@ at.freebim.db.domain.Contributor = {
 			return "";
 		}
 	},
-	getNameOf : function(entity, elem) {
+	getNameOf: function (entity, elem) {
 		var nf = at.freebim.db.domain.NodeFields;
 		if (entity) {
 			if (elem) {
 				elem.title = ((entity[nf.CODE]) ? entity[nf.CODE] : "");
 			}
 			return ((entity[nf.TITLE]) ? entity[nf.TITLE] + " " : "")
-					+ ((entity[nf.FIRSTNAME]) ? entity[nf.FIRSTNAME] + " " : "")
-					+ ((entity[nf.LASTNAME]) ? entity[nf.LASTNAME] : "");
+				+ ((entity[nf.FIRSTNAME]) ? entity[nf.FIRSTNAME] + " " : "")
+				+ ((entity[nf.LASTNAME]) ? entity[nf.LASTNAME] : "");
 		} else {
 			return "";
 		}
 	},
 
-	init : function() {
+	init: function () {
 		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, f = d.filters, self = d.Contributor, i18n = net.spectroom.js.i18n;
 		if (self.initialized) {
 			return;
 		}
-		self.relations =  [rf.make(nf.RESPONSIBLE, d.RelationTypeEnum.RESPONSIBLE, "Responsible", "OUT"),
-		                   rf.make(nf.WORKS_FOR, d.RelationTypeEnum.WORKS_FOR, "WorksFor", "OUT")];
+		self.relations = [rf.make(nf.RESPONSIBLE, d.RelationTypeEnum.RESPONSIBLE, "Responsible", "OUT"),
+		rf.make(nf.WORKS_FOR, d.RelationTypeEnum.WORKS_FOR, "WorksFor", "OUT")];
 
 		self.base = Object.create(d.BaseNode);
 		self.base.init(self, "contributor");
-		
-		
+
+
 		self.form = Object.create(net.spectroom.js.form);
-		self.form.fields = [ 
-			d.fields.nodeId, 
+		self.form.fields = [
+			d.fields.nodeId,
 			d.fields.validFrom,
 			d.fields.validTo,
 			d.fields.code, {
-				label : "FIRST_NAME", // "Vorname",
-				type : "text",
-				field : nf.FIRSTNAME
+				label: "FIRST_NAME", // "Vorname",
+				type: "text",
+				field: nf.FIRSTNAME
 			}, {
-				label : "LAST_NAME", // "Familienname",
-				type : "text",
-				field : nf.LASTNAME
+				label: "LAST_NAME", // "Familienname",
+				type: "text",
+				field: nf.LASTNAME
 			}, {
-				label : "TITLE", // "Titel",
-				type : "text",
-				field : nf.TITLE
+				label: "TITLE", // "Titel",
+				type: "text",
+				field: nf.TITLE
 			}, {
-				label : "IFD_USER_EMAIL", // "E-Mail",
-				type : "text",
-				field : nf.EMAIL
+				label: "IFD_USER_EMAIL", // "E-Mail",
+				type: "text",
+				field: nf.EMAIL
 			}, {
-				label : "COMPANY", // "Company",
-				type : "custom",
-				field : nf.WORKS_FOR,
-				createField : function (form, i, ip) {
+				label: "COMPANY", // "Company",
+				type: "custom",
+				field: nf.WORKS_FOR,
+				createField: function (form, i, ip) {
 					var orderable = true;
 					d.relationFormField(form, i, ip, orderable, d.Company.title, d.RelationTypeEnum.WORKS_FOR, nf.WORKS_FOR, "Company", "OUT");
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					d.setEntityValue(form.clazz, i, ip, entity, nf.WORKS_FOR, "Company", "OUT");
 				}
 			}, {
-				label : "RESPONSIBLE_FOR_LIB", // "Verantwortlich für Bibliothek",
-				type : "custom",
-				field : nf.RESPONSIBLE,
-				createField : function (form, i, ip) {
+				label: "RESPONSIBLE_FOR_LIB", // "Verantwortlich für Bibliothek",
+				type: "custom",
+				field: nf.RESPONSIBLE,
+				createField: function (form, i, ip) {
 					var orderable = true;
 					d.relationFormField(form, i, ip, orderable, d.Library.title, d.RelationTypeEnum.RESPONSIBLE, nf.RESPONSIBLE, "Library", "OUT");
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					d.setEntityValue(form.clazz, i, ip, entity, nf.RESPONSIBLE, "Library", "OUT");
 				}
-			},{
-				label : "PERMISSIONS", // "Berechtigungen",
-				type : "checkboxgroup",
-				field : nf.ROLES,
-				values : [  {
-					label : "PERMISSION_DELETE", // "Löschberechtigung",
-					value : "ROLE_DELETE"
+			}, {
+				label: "PERMISSIONS", // "Berechtigungen",
+				type: "checkboxgroup",
+				field: nf.ROLES,
+				values: [{
+					label: "PERMISSION_DELETE", // "Löschberechtigung",
+					value: "ROLE_DELETE"
 				}, {
-					label : "PERMISSION_DEMO", // "Demonstrator",
-					value : "ROLE_VIEW_EXTENSIONS"
+					label: "PERMISSION_DEMO", // "Demonstrator",
+					value: "ROLE_VIEW_EXTENSIONS"
 				}, {
-					label : "PERMISSION_LIBRARY", // "Bibliotheken verw.",
-					value : "ROLE_LIBRARY_REFERENCES"
+					label: "PERMISSION_LIBRARY", // "Bibliotheken verw.",
+					value: "ROLE_LIBRARY_REFERENCES"
 				}, {
-					label : "PERMISSION_STATUS", // "Status ändern",
-					value : "ROLE_SET_STATUS"
+					label: "PERMISSION_STATUS", // "Status ändern",
+					value: "ROLE_SET_STATUS"
 				}, {
-					label : "PERMISSION_RELEASE", // "Freigeben",
-					value : "ROLE_SET_RELEASE_STATUS"
-				} ]
+					label: "PERMISSION_RELEASE", // "Freigeben",
+					value: "ROLE_SET_RELEASE_STATUS"
+				}]
 			}
 		];
 		self.form.create(null, self, self);
 
 		self.table = Object.create(net.spectroom.js.table);
-		self.table.dataCallback = function(row) {
+		self.table.dataCallback = function (row) {
 			var node = d.get(self.arr[row]);
 			if (db.user.usermanager == true) {
 				return node;
@@ -3127,159 +3125,160 @@ at.freebim.db.domain.Contributor = {
 			}
 		};
 		self.table.filters = [
-		{ add : f.text, 
-			f : function (node, filter, opt) {
-				if (opt) {
-					return (!node || (node[nf.CODE] != filter && node[nf.FIRSTNAME] != filter && node[nf.LASTNAME] != filter));
+			{
+				add: f.text,
+				f: function (node, filter, opt) {
+					if (opt) {
+						return (!node || (node[nf.CODE] != filter && node[nf.FIRSTNAME] != filter && node[nf.LASTNAME] != filter));
+					}
+					filter = ((filter.toLowerCase) ? filter.toLowerCase() : filter);
+					var src = ((node) ? ((node[nf.FIRSTNAME]) ? node[nf.FIRSTNAME] + " " : "") + ((node[nf.LASTNAME]) ? node[nf.LASTNAME] + " " : "") + ((node[nf.CODE]) ? node[nf.CODE] : "") : "");
+					if (src && src.toLowerCase) {
+						src = src.toLowerCase();
+						return (src.indexOf(filter) < 0);
+					}
 				}
-				filter = ((filter.toLowerCase) ? filter.toLowerCase() : filter);
-				var src = ((node) ? ((node[nf.FIRSTNAME]) ? node[nf.FIRSTNAME] + " " : "") + ((node[nf.LASTNAME]) ? node[nf.LASTNAME] + " " : "") + ((node[nf.CODE]) ? node[nf.CODE] : "") : "");
-				if (src && src.toLowerCase) {
-					src = src.toLowerCase();
-					return (src.indexOf(filter) < 0);
-				}
-			}
-		}];
+			}];
 		self.table.idCol = nf.NODEID;
 		self.table.cols = [
-				{
-					label : "CODE", // "Code",
-					field : nf.CODE,
-					type : "custom",
-					createCell : function (tr, td, row, col) {
-						var v = self.table.dataCallback(row);
-						jq(td).attr("abbr", "1");
-						d.renderNode(v, td);
-					},
-					cl : "freebim-item Contributor",
-					sortValue : function (row) {
-						var v = self.table.dataCallback(row);
-						return ((v != null) ? v[nf.CODE] : "");
-					},
-					sort : true
+			{
+				label: "CODE", // "Code",
+				field: nf.CODE,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					var v = self.table.dataCallback(row);
+					jq(td).attr("abbr", "1");
+					d.renderNode(v, td);
 				},
-				{
-					label : "FIRST_NAME", // "Vorname",
-					field : nf.FIRSTNAME,
-					type : "text",
-					sort : true
+				cl: "freebim-item Contributor",
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					return ((v != null) ? v[nf.CODE] : "");
 				},
-				{
-					label : "LAST_NAME", // "Familienname",
-					field : nf.LASTNAME,
-					type : "text",
-					sort : true
-				},
-				{
-					label : "TITLE", // "Titel",
-					field : nf.TITLE,
-					type : "text",
-					sort : false
-				} ];
+				sort: true
+			},
+			{
+				label: "FIRST_NAME", // "Vorname",
+				field: nf.FIRSTNAME,
+				type: "text",
+				sort: true
+			},
+			{
+				label: "LAST_NAME", // "Familienname",
+				field: nf.LASTNAME,
+				type: "text",
+				sort: true
+			},
+			{
+				label: "TITLE", // "Titel",
+				field: nf.TITLE,
+				type: "text",
+				sort: false
+			}];
 		if (db.user.usermanager == true) {
 			self.table.edit = true;
 			self.table.add = true;
 			self.table.cols.push({
-				label : "RESPONSIBLE", // "Verantwortlich",
-				field : nf.RESPONSIBLE,
-				type : "custom",
-				createCell : function(tr, td, row, col) {
+				label: "RESPONSIBLE", // "Verantwortlich",
+				field: nf.RESPONSIBLE,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
 					var v = self.table.dataCallback(row); // v is a Contributor
 					jq(td).empty();
 					if (v && v[nf.RESPONSIBLE] && v[nf.RESPONSIBLE].length > 0) { // v[nf.RESPONSIBLE] is an array of Responsible relations
-						self.fetchEntries("div", v, nf.RESPONSIBLE, "Library", "OUT", function(responsible) {
+						self.fetchEntries("div", v, nf.RESPONSIBLE, "Library", "OUT", function (responsible) {
 							jq(td).empty();
 							var j;
-							for (j=0; j<responsible.length; j++) {
+							for (j = 0; j < responsible.length; j++) {
 								td.appendChild(responsible[j]);
 							}
 							jq(self.table).trigger("cellChanged", [{}]);
 						});
 					}
 				},
-				sort : false
+				sort: false
 			});
 			self.table.cols.push({
-				label : "PERMISSION_DEL", // "löschen",
-				field : nf.ROLES,
-				type : "callback",
-				data : function(v, td) {
+				label: "PERMISSION_DEL", // "löschen",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
 					return ((v.indexOf("ROLE_DELETE") >= 0) ? "✔︎" : " ");
 				},
-				sort : true,
-				cl : "permission"
+				sort: true,
+				cl: "permission"
 			});
 			self.table.cols.push({
-				label : "PERMISSION_DEMO", // "Demonstrator",
-				field : nf.ROLES,
-				type : "callback",
-				data : function(v, td) {
+				label: "PERMISSION_DEMO", // "Demonstrator",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
 					return ((v.indexOf("ROLE_VIEW_EXTENSIONS") >= 0) ? "✔︎" : " ");
 				},
-				sort : true,
-				cl : "permission"
+				sort: true,
+				cl: "permission"
 			});
 			self.table.cols.push({
-				label : "PERMISSION_LIB", // "Bib. verw.",
-				field : nf.ROLES,
-				type : "callback",
-				data : function(v, td) {
+				label: "PERMISSION_LIB", // "Bib. verw.",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
 					return ((v.indexOf("ROLE_LIBRARY_REFERENCES") >= 0) ? "✔︎" : " ");
 				},
-				sort : true,
-				cl : "permission"
+				sort: true,
+				cl: "permission"
 			});
 			self.table.cols.push({
-				label : "PERMISSION_STATUS", // "Status ändern",
-				field : nf.ROLES,
-				type : "callback",
-				data : function(v, td) {
+				label: "PERMISSION_STATUS", // "Status ändern",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
 					return ((v.indexOf("ROLE_SET_STATUS") >= 0) ? "✔︎" : " ");
 				},
-				sort : true,
-				cl : "permission"
+				sort: true,
+				cl: "permission"
 			});
 			self.table.cols.push({
-				label : "PERMISSION_RELEASE", // "Freigeben",
-				field : nf.ROLES,
-				type : "callback",
-				data : function(v, td) {
+				label: "PERMISSION_RELEASE", // "Freigeben",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
 					return ((v.indexOf("ROLE_SET_RELEASE_STATUS") >= 0) ? "✔︎" : " ");
 				},
-				sort : true,
-				cl : "permission"
+				sort: true,
+				cl: "permission"
 			});
 		} else {
 			self.table.cols.push({
-				label : "IFD_USER_EMAIL", // "E-Mail",
-				field : nf.EMAIL,
-				type : "text",
-				sort : true,
-				href : function(row, col) {
+				label: "IFD_USER_EMAIL", // "E-Mail",
+				field: nf.EMAIL,
+				type: "text",
+				sort: true,
+				href: function (row, col) {
 					var entity = d.get(self.arr[row]);
 					document.location.href = "mailto:" + entity[nf.EMAIL] + "?subject=freeBIM - Datenbank";
 				}
 			});
 			self.table.cols.push({
-				label : "COMPANY", // "Unternehmen",
-				field : nf.COMPANY,
-				type : "custom",
-				maxlen : 32,
-				createCell : function(tr, td, row, col) {
+				label: "COMPANY", // "Unternehmen",
+				field: nf.COMPANY,
+				type: "custom",
+				maxlen: 32,
+				createCell: function (tr, td, row, col) {
 					var v = self.table.dataCallback(row); // v is a Contributor
 					jq(td).empty();
 					if (v && v[nf.WORKS_FOR] && v[nf.WORKS_FOR].length > 0) { // v[nf.WORKS_FOR] is an array of WorksFor relations
-						self.fetchEntries("div", v, nf.WORKS_FOR, "Company", "OUT", function(c) {
+						self.fetchEntries("div", v, nf.WORKS_FOR, "Company", "OUT", function (c) {
 							jq(td).empty();
 							var j;
-							for (j=0; j<c.length; j++) {
+							for (j = 0; j < c.length; j++) {
 								td.appendChild(c[j]);
 							}
 							jq(self.table).trigger("cellChanged", [{}]);
 						});
 					}
 				},
-				sort : false
+				sort: false
 			});
 		}
 		self.sortfield = nf.CODE;
@@ -3289,169 +3288,171 @@ at.freebim.db.domain.Contributor = {
 }; // at.freebim.db.domain.Contributor
 
 at.freebim.db.domain.Company = {
-	className : "Company",
-	i18n : "COMPANY",
-	title : net.spectroom.js.i18n.g("COMPANY"), // "Company",
-	arr : null,
+	className: "Company",
+	i18n: "COMPANY",
+	title: net.spectroom.js.i18n.g("COMPANY"), // "Company",
+	arr: null,
 
-	init : function() {
-		var db = at.freebim.db, d = db.domain, nf = d.NodeFields, rf = d.RelationFields, f = d.filters, 
+	init: function () {
+		var db = at.freebim.db, d = db.domain, nf = d.NodeFields, rf = d.RelationFields, f = d.filters,
 			fmr = f.filterMarkedRelated, self = d.Company, i18n = net.spectroom.js.i18n;
 		if (self.initialized) {
 			return;
 		}
-		self.relations =  [rf.make(nf.WORKS_FOR, d.RelationTypeEnum.WORKS_FOR, "WorksFor", "IN"),
-		                   rf.make(nf.COMPANY_COMPANY, d.RelationTypeEnum.COMPANY_COMPANY, "CompanyCompany", "BOTH")];
+		self.relations = [rf.make(nf.WORKS_FOR, d.RelationTypeEnum.WORKS_FOR, "WorksFor", "IN"),
+		rf.make(nf.COMPANY_COMPANY, d.RelationTypeEnum.COMPANY_COMPANY, "CompanyCompany", "BOTH")];
 		self.base = Object.create(d.BaseNode);
 		self.base.init(self, "company");
 
 		self.form = Object.create(net.spectroom.js.form);
-		self.form.fields = [ 
-		        			d.fields.code,
-		        			d.fields.name, 
-		        			{
-		        				label : "URL",
-		        				type : "text",
-		        				field : nf.URL
-		        			}, {
-		        				label : "LOGO",
-		        				type : "custom",
-		        				field : nf.LOGO,
-		        				createField : function (form, i, ip) {
-		        					// create a 'dropzone.js' image upload 
-		        					var img = document.createElement("img");
-		        					jq(img).appendTo(ip).dropzone({ 
-		        						url: "/company/upload",
-		        						thumbnailHeight: "130px",
-		        						clickable: true,
-		        						acceptedFiles: "image/*",
-		        						maxFilesize: 2,
-		        						init : function () {
-		        							this.on("success", function(file, response) {
-				        						form.entity[nf.LOGO] = response.result;
-				        						jq(img).attr("src", "company/logo/" + form.entity[nf.LOGO])
-				        							.attr("alt", form.entity[nf.NAME])
-				        							.attr("height", "40px")
-				        							.css("width", "")
-				        							.css("height", "");
-				        					});
-		        							this.on("complete", function (file, response) {
-				        						console.log(response);
-				        					});
-		        							this.on("error", function (response, error, xhr) {
-				        						console.log(response);
-				        					});
-		        						}
-		        					})
-		        					.css("width", "100%")
-		        					.css("height", "30px");
-		        				},
-		        				setEntityValue : function (form, i, entity, ip) {
-		        					jq(ip).attr("nodeid", entity[nf.NODEID]);
-		        					if (entity[nf.LOGO] && entity[nf.LOGO].length > 0) {
-		        						// show assigned image
-		        						var btn = document.createElement("input"), img = jq(ip).find("img");
-		        						jq(img).attr("src", "company/logo/" + entity[nf.LOGO])
-		        							.attr("alt", entity[nf.NAME])
-		        							.attr("height", "40px")
-		        							.css("width", "")
-		        							.css("height", "");
-		        						// add 'remove image' button:
-		        						jq(btn).appendTo(ip)
-		        							.attr("type", "button")
-		        							.css("color", "red")
-		        							.attr("value", "✗")
-		        							.attr("title", i18n.g("BSDD_REMOVE"))
-		        							.addClass("std-button")
-		        							.click(function () {
-		        								entity[nf.LOGO] = null;
-		        								jq(img).attr("src", "company/logo/nd.png");
-		        							});
-		        					}
-		        				}
-		        			},
-		        			{
-		        				label : "CLAZZ_CONTRIBUTOR",
-		        				type : "custom",
-		        				field : nf.WORKS_FOR,
-		        				createField : function (form, i, ip) {
-		        					d.relationFormField(form, i, ip, false, d.Contributor.title, d.RelationTypeEnum.WORKS_FOR, nf.WORKS_FOR, "Contributor", "IN");
-		        				},
-		        				setEntityValue : function (form, i, entity, ip) {
-		        					d.setEntityValue(form.clazz, i, ip, entity, nf.WORKS_FOR, "Contributor", "IN");
-		        				}
-		        			}, 
-		        			{
-		        				label : "COMPANY",
-		        				type : "custom",
-		        				field : nf.COMPANY_COMPANY,
-		        				createField : function (form, i, ip) {
-		        					d.relationFormField(form, i, ip, false, d.Company.title, d.RelationTypeEnum.COMPANY_COMPANY, nf.COMPANY_COMPANY, "Company", "BOTH");
-		        				},
-		        				setEntityValue : function (form, i, entity, ip) {
-		        					d.setEntityValue(form.clazz, i, ip, entity, nf.COMPANY_COMPANY, "Company", "BOTH");
-		        				}
-		        			}
-		        			];
+		self.form.fields = [
+			d.fields.code,
+			d.fields.name,
+			{
+				label: "URL",
+				type: "text",
+				field: nf.URL
+			}, {
+				label: "LOGO",
+				type: "custom",
+				field: nf.LOGO,
+				createField: function (form, i, ip) {
+					// create a 'dropzone.js' image upload 
+					var img = document.createElement("img");
+					jq(img).appendTo(ip).dropzone({
+						url: "/company/upload",
+						thumbnailHeight: "130px",
+						clickable: true,
+						acceptedFiles: "image/*",
+						maxFilesize: 2,
+						init: function () {
+							this.on("success", function (file, response) {
+								form.entity[nf.LOGO] = response.result;
+								jq(img).attr("src", "company/logo/" + form.entity[nf.LOGO])
+									.attr("alt", form.entity[nf.NAME])
+									.attr("height", "40px")
+									.css("width", "")
+									.css("height", "");
+							});
+							this.on("complete", function (file, response) {
+								console.log(response);
+							});
+							this.on("error", function (response, error, xhr) {
+								console.log(response);
+							});
+						}
+					})
+						.css("width", "100%")
+						.css("height", "30px");
+				},
+				setEntityValue: function (form, i, entity, ip) {
+					jq(ip).attr("nodeid", entity[nf.NODEID]);
+					if (entity[nf.LOGO] && entity[nf.LOGO].length > 0) {
+						// show assigned image
+						var btn = document.createElement("input"), img = jq(ip).find("img");
+						jq(img).attr("src", "company/logo/" + entity[nf.LOGO])
+							.attr("alt", entity[nf.NAME])
+							.attr("height", "40px")
+							.css("width", "")
+							.css("height", "");
+						// add 'remove image' button:
+						jq(btn).appendTo(ip)
+							.attr("type", "button")
+							.css("color", "red")
+							.attr("value", "✗")
+							.attr("title", i18n.g("BSDD_REMOVE"))
+							.addClass("std-button")
+							.click(function () {
+								entity[nf.LOGO] = null;
+								jq(img).attr("src", "company/logo/nd.png");
+							});
+					}
+				}
+			},
+			{
+				label: "CLAZZ_CONTRIBUTOR",
+				type: "custom",
+				field: nf.WORKS_FOR,
+				createField: function (form, i, ip) {
+					d.relationFormField(form, i, ip, false, d.Contributor.title, d.RelationTypeEnum.WORKS_FOR, nf.WORKS_FOR, "Contributor", "IN");
+				},
+				setEntityValue: function (form, i, entity, ip) {
+					d.setEntityValue(form.clazz, i, ip, entity, nf.WORKS_FOR, "Contributor", "IN");
+				}
+			},
+			{
+				label: "COMPANY",
+				type: "custom",
+				field: nf.COMPANY_COMPANY,
+				createField: function (form, i, ip) {
+					d.relationFormField(form, i, ip, false, d.Company.title, d.RelationTypeEnum.COMPANY_COMPANY, nf.COMPANY_COMPANY, "Company", "BOTH");
+				},
+				setEntityValue: function (form, i, entity, ip) {
+					d.setEntityValue(form.clazz, i, ip, entity, nf.COMPANY_COMPANY, "Company", "BOTH");
+				}
+			}
+		];
 		self.form.create(null, self, self);
 
 		self.table = Object.create(net.spectroom.js.table);
-		self.table.filters = [			
-		    { add : f.text, 
-		    	f : f.filterByCodeAndName
-		    },
-		    { add : f.mark,
-		    	f : function (node, filter, opt) {
-         			if (db.isMarked(node[nf.NODEID])) {
-         				return false;
-         			}
-         			if (!fmr(node[nf.WORKS_FOR], "IN")) {
-         				return false;
-         			}
-         			if (!fmr(node[nf.EQUALS], "BOTH")) {
-         				return false;
-         			}
-         			if (!fmr(node[nf.COMPANY_COMPANY], "BOTH")) {
-         				return false;
-         			}
-         			return true;
-	            }
-		    }
+		self.table.filters = [
+			{
+				add: f.text,
+				f: f.filterByCodeAndName
+			},
+			{
+				add: f.mark,
+				f: function (node, filter, opt) {
+					if (db.isMarked(node[nf.NODEID])) {
+						return false;
+					}
+					if (!fmr(node[nf.WORKS_FOR], "IN")) {
+						return false;
+					}
+					if (!fmr(node[nf.EQUALS], "BOTH")) {
+						return false;
+					}
+					if (!fmr(node[nf.COMPANY_COMPANY], "BOTH")) {
+						return false;
+					}
+					return true;
+				}
+			}
 		];
-		self.table.dataCallback = function(row) {
+		self.table.dataCallback = function (row) {
 			return d.get(self.arr[row]);
 		};
 		self.table.edit = true;
 		self.table.add = true;
 		self.table.idCol = nf.NODEID;
 		self.table.cols = [{
-			label : "CODE",
-			field : nf.CODE,
-			type : "text",
-			maxlen : 32,
-			sort : true
+			label: "CODE",
+			field: nf.CODE,
+			type: "text",
+			maxlen: 32,
+			sort: true
 		},
 		{
-			label : "NAME",
-			field : nf.NAME,
-			type : "custom",
-			createCell : function (tr, td, row, col) {
+			label: "NAME",
+			field: nf.NAME,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				var v = self.table.dataCallback(row),
 					name = d.Company.getNameOf(v, td);
 				jq(td).html(net.spectroom.js.shrinkText(name, 32, td));
 				d.setFreebimItemClasses(v, td);
 			},
-			cl : "freebim-item Company",
-			sortValue : function (row) {
+			cl: "freebim-item Company",
+			sortValue: function (row) {
 				var v = self.table.dataCallback(row);
 				return d.Company.getNameOf(v);
 			},
-			sort : true
+			sort: true
 		}, {
-			label : "LOGO",
-			field : nf.LOGO,
-			type : "custom",
-			createCell : function (tr, td, row, col) {
+			label: "LOGO",
+			field: nf.LOGO,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				var entity = self.table.dataCallback(row), img = document.createElement("img");
 				jq(img).appendTo(td)
 					.attr("src", "company/logo/" + entity[nf.LOGO])
@@ -3460,28 +3461,28 @@ at.freebim.db.domain.Company = {
 					.css("width", "")
 					.css("height", "");
 			},
-			sort : false
+			sort: false
 		},
 		{
-			label : "URL",
-			field : nf.URL,
-			type : "text",
-			maxlen : 32,
-			sort : true
+			label: "URL",
+			field: nf.URL,
+			type: "text",
+			maxlen: 32,
+			sort: true
 		},
 		{
-			label : "CLAZZ_CONTRIBUTOR",
-			field : nf.WORKS_FOR,
-			type : "custom",
-			createCell : function(tr, td, row, col) {
+			label: "CLAZZ_CONTRIBUTOR",
+			field: nf.WORKS_FOR,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				self.showRelations(td, row, nf.WORKS_FOR, "IN", "Contributor");
 			},
-			sort : true,
-			sortValue : function(row) {
-				var v = self.table.dataCallback(row); 
+			sort: true,
+			sortValue: function (row) {
+				var v = self.table.dataCallback(row);
 				if (v) {
 					return self.relevantRelCount(v, nf.WORKS_FOR, "Contributor");
-				} 
+				}
 				return 0;
 			}
 		}];
@@ -3489,10 +3490,10 @@ at.freebim.db.domain.Company = {
 		self.base.postInit(self, true);
 		self.table.initialSort = 2;
 	},
-	getAbbrOf : function(entity, elem) {
+	getAbbrOf: function (entity, elem) {
 		return self.getNameOf(entity, elem);
 	},
-	getNameOf : function(entity, elem) {
+	getNameOf: function (entity, elem) {
 		if (entity) {
 			return entity[at.freebim.db.domain.NodeFields.NAME];
 		} else {
@@ -3503,114 +3504,115 @@ at.freebim.db.domain.Company = {
 }; // at.freebim.db.domain.Company
 
 at.freebim.db.domain.MessageNode = {
-		className : "MessageNode",
-	i18n : "CLAZZ_MESSAGENODE",
-	title : net.spectroom.js.i18n.g("CLAZZ_MESSAGENODE"), // "MessageNode",
-	arr : null,
+	className: "MessageNode",
+	i18n: "CLAZZ_MESSAGENODE",
+	title: net.spectroom.js.i18n.g("CLAZZ_MESSAGENODE"), // "MessageNode",
+	arr: null,
 
-	init : function() {
+	init: function () {
 		var db = at.freebim.db, d = db.domain, nf = d.NodeFields, rf = d.RelationFields, f = d.filters, self = d.MessageNode, i18n = net.spectroom.js.i18n;
 		if (self.initialized) {
 			return;
 		}
 		self.relations = [rf.make(nf.USERNAME, d.RelationTypeEnum.MESSAGE_SEEN, "MessageSeen", "OUT"),
-						  rf.make(nf.LASTNAME, d.RelationTypeEnum.MESSAGE_CLOSED, "MessageClosed", "OUT")];
+		rf.make(nf.LASTNAME, d.RelationTypeEnum.MESSAGE_CLOSED, "MessageClosed", "OUT")];
 		self.base = Object.create(d.BaseNode);
 		self.base.init(self, "messages");
 		self.canDelete = function (entity) {
 			return true;
 		};
 		self.form = Object.create(net.spectroom.js.form);
-		self.form.fields = [ 
-			d.fields.nodeId, 
+		self.form.fields = [
+			d.fields.nodeId,
 			d.fields.validFrom,
 			d.fields.validTo, {
-				label : "TITLE",
-				type : "text",
-				field : nf.TITLE
+				label: "TITLE",
+				type: "text",
+				field: nf.TITLE
 			}, {
-				label : "MESSAGE",
-				type : "markdown",
-				field : nf.NAME
+				label: "MESSAGE",
+				type: "markdown",
+				field: nf.NAME
 			}, {
-				label : "MESSAGE_INTL",
-				type : "markdown",
-				field : nf.NAME_EN
+				label: "MESSAGE_INTL",
+				type: "markdown",
+				field: nf.NAME_EN
 			}, {
-				label : "MESSAGE_TYPE",
-				type : "select",
-				field : nf.TYPE,
-				values : ["HAPPY", "INFO", "WARNING"],
-				dataValue : function (v) { return v; },
-				data : function (v) { return v; }
+				label: "MESSAGE_TYPE",
+				type: "select",
+				field: nf.TYPE,
+				values: ["HAPPY", "INFO", "WARNING"],
+				dataValue: function (v) { return v; },
+				data: function (v) { return v; }
 			}, {
-				label : "SHOW_FROM",
-				type : "datetime",
-				field : nf.SHOW_FROM,
-				callBack : function (v) {
+				label: "SHOW_FROM",
+				type: "datetime",
+				field: nf.SHOW_FROM,
+				callBack: function (v) {
 					return ((v) ? v * 1 + at.freebim.db.delta : new Date().getTime());
-				}, 
-				value : function (v) {
+				},
+				value: function (v) {
 					v = ((v) ? v * 1 : new Date().getTime())
 					return v - at.freebim.db.delta;
 				}
 			}, {
-				label : "SHOW_UNTIL",
-				type : "datetime",
-				field : nf.SHOW_UNTIL,
-				callBack : function (v) {
+				label: "SHOW_UNTIL",
+				type: "datetime",
+				field: nf.SHOW_UNTIL,
+				callBack: function (v) {
 					return ((v) ? v * 1 + at.freebim.db.delta : new Date().getTime());
-				}, 
-				value : function (v) {
+				},
+				value: function (v) {
 					v = ((v) ? v * 1 : new Date().getTime())
 					return v - at.freebim.db.delta;
 				}
 			}, {
-				label : "PERMISSIONS", // "Berechtigungen",
-				type : "checkboxgroup",
-				field : nf.ROLES,
-				values : [ {
-					label : "PERMISSION_ANONYMOUS",
-					value : "ROLE_ANONYMOUS"
+				label: "PERMISSIONS", // "Berechtigungen",
+				type: "checkboxgroup",
+				field: nf.ROLES,
+				values: [{
+					label: "PERMISSION_ANONYMOUS",
+					value: "ROLE_ANONYMOUS"
 				}, {
-					label : "PERMISSION_GUEST", // "Gast",
-					value : "ROLE_GUEST"
+					label: "PERMISSION_GUEST", // "Gast",
+					value: "ROLE_GUEST"
 				}, {
-					label : "PERMISSION_EDIT", // "Schreibrecht",
-					value : "ROLE_EDIT"
+					label: "PERMISSION_EDIT", // "Schreibrecht",
+					value: "ROLE_EDIT"
 				}, {
-					label : "PERMISSION_USERMANAGER", // "Benutzerverwalter",
-					value : "ROLE_USERMANAGER"
+					label: "PERMISSION_USERMANAGER", // "Benutzerverwalter",
+					value: "ROLE_USERMANAGER"
 				}, {
-					label : "PERMISSION_WS_READ", // "Webservice (lesen)",
-					value : "ROLE_WEBSERVICE_READ"
+					label: "PERMISSION_WS_READ", // "Webservice (lesen)",
+					value: "ROLE_WEBSERVICE_READ"
 				}, {
-					label : "PERMISSION_WS_WRITE", // "Webservice (schreiben)",
-					value : "ROLE_WEBSERVICE_WRITE"
+					label: "PERMISSION_WS_WRITE", // "Webservice (schreiben)",
+					value: "ROLE_WEBSERVICE_WRITE"
 				}, {
-					label : "PERMISSION_ADMINISTRATOR", // "Administrator",
-					value : "ROLE_ADMIN"
-				} ]
+					label: "PERMISSION_ADMINISTRATOR", // "Administrator",
+					value: "ROLE_ADMIN"
+				}]
 			}
-			];
+		];
 		self.form.create(null, self, self);
 
 		self.table = Object.create(net.spectroom.js.table);
 		self.table.filters = [
-		{ add : f.text, 
-			f : function (node, filter, opt) {
-				if (opt) {
-					return (!node || node[nf.NAME] != filter);
+			{
+				add: f.text,
+				f: function (node, filter, opt) {
+					if (opt) {
+						return (!node || node[nf.NAME] != filter);
+					}
+					filter = ((filter.toLowerCase) ? filter.toLowerCase() : filter);
+					var src = ((node) ? ((node[nf.NAME]) ? node[nf.NAME] : "") : "");
+					if (src && src.toLowerCase) {
+						src = src.toLowerCase();
+						return (src.indexOf(filter) < 0);
+					}
 				}
-				filter = ((filter.toLowerCase) ? filter.toLowerCase() : filter);
-				var src = ((node) ? ((node[nf.NAME]) ? node[nf.NAME] : "") : "");
-				if (src && src.toLowerCase) {
-					src = src.toLowerCase();
-					return (src.indexOf(filter) < 0);
-				}
-			}
-		}];
-		self.table.dataCallback = function(row) {
+			}];
+		self.table.dataCallback = function (row) {
 			return d.get(self.arr[row]);
 		};
 		self.table.edit = true;
@@ -3618,166 +3620,166 @@ at.freebim.db.domain.MessageNode = {
 		self.table.idCol = nf.ID;
 		self.table.cols = [
 			{
-				label : "TITLE",
-				type : "custom",
-				field : nf.TITLE,
-				createCell : function (tr, td, row, col) {
+				label: "TITLE",
+				type: "custom",
+				field: nf.TITLE,
+				createCell: function (tr, td, row, col) {
 					var v = self.table.dataCallback(row);
 					jq(td).attr("maxLength", "32");
 					d.renderNode(v, td);
 					td.title = "";
 					jq(td).tooltip({
-						open: function(event, ui) {
+						open: function (event, ui) {
 							// remove all other tooltips!
-						    jq(ui.tooltip).siblings(".ui-tooltip").remove();
+							jq(ui.tooltip).siblings(".ui-tooltip").remove();
 						},
-						content: function(callback) {
+						content: function (callback) {
 							callback(v[nf.NAME]);
 						}
 					});
 				},
-				cl : "freebim-item MessageNode",
-				sort : true
+				cl: "freebim-item MessageNode",
+				sort: true
 			}, {
-				label : "SHOW_FROM",
-				field : nf.SHOW_FROM,
-				type : "custom",
-				createCell : function (tr, td, row, col) {
+				label: "SHOW_FROM",
+				field: nf.SHOW_FROM,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
 					var v = self.table.dataCallback(row),
-					txt = "";
+						txt = "";
 					v = ((v && v[nf.SHOW_FROM]) ? v[nf.SHOW_FROM] : at.freebim.db.time.now() - at.freebim.db.delta)
 					txt = at.freebim.db.time.formatISO(v);
 					jq(td).append(txt);
 				},
-				sort : true
+				sort: true
 			}, {
-				label : "SHOW_UNTIL",
-				field : nf.SHOW_UNTIL,
-				type : "custom",
-				createCell : function (tr, td, row, col) {
+				label: "SHOW_UNTIL",
+				field: nf.SHOW_UNTIL,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
 					var v = self.table.dataCallback(row),
-					txt = "";
+						txt = "";
 					v = ((v && v[nf.SHOW_UNTIL]) ? v[nf.SHOW_UNTIL] : at.freebim.db.time.now() - at.freebim.db.delta)
 					txt = at.freebim.db.time.formatISO(v);
 					jq(td).append(txt);
 				},
-				sort : true
+				sort: true
 			},
 			{
-				label : "MESSAGE_SEEN",
-				field : nf.USERNAME,
-				type : "custom",
-				createCell : function(tr, td, row, col) {
+				label: "MESSAGE_SEEN",
+				field: nf.USERNAME,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
 					self.showRelations(td, row, nf.USERNAME, "OUT", "FreebimUser");
 				},
-				cl : "FreebimUser",
-				sort : true,
-				sortValue : function(row) {
-					var v = self.table.dataCallback(row); 
+				cl: "FreebimUser",
+				sort: true,
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
 					if (v) {
 						return self.relevantRelCount(v, nf.USERNAME, "FreebimUser");
-					} 
+					}
 					return 0;
 				},
-				csv : false
+				csv: false
 			},
 			{
-				label : "MESSAGE_READ",
-				field : nf.LASTNAME,
-				type : "custom",
-				createCell : function(tr, td, row, col) {
+				label: "MESSAGE_READ",
+				field: nf.LASTNAME,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
 					self.showRelations(td, row, nf.LASTNAME, "OUT", "FreebimUser");
 				},
-				cl : "FreebimUser",
-				sort : true,
-				sortValue : function(row) {
-					var v = self.table.dataCallback(row); 
+				cl: "FreebimUser",
+				sort: true,
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
 					if (v) {
 						return self.relevantRelCount(v, nf.LASTNAME, "FreebimUser");
-					} 
+					}
 					return 0;
 				},
-				csv : false
+				csv: false
 			},
 			{
-				label : "PERMISSION_ANONYMOUS",
-				field : nf.ROLES,
-				type : "callback",
-				data : function(v, td) {
+				label: "PERMISSION_ANONYMOUS",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
 					return ((v.indexOf("ROLE_ANONYMOUS") >= 0) ? "✔︎" : " ");
 				},
-				sort : true,
-				cl : "permission"
+				sort: true,
+				cl: "permission"
 			},
 			{
-				label : "PERMISSION_GUEST",
-				field : nf.ROLES,
-				type : "callback",
-				data : function(v, td) {
+				label: "PERMISSION_GUEST",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
 					return ((v.indexOf("ROLE_GUEST") >= 0) ? "✔︎" : " ");
 				},
-				sort : true,
-				cl : "permission"
+				sort: true,
+				cl: "permission"
 			},
 			{
-				label : "PERMISSION_ADMIN", // "Admin",
-				field : nf.ROLES,
-				type : "callback",
-				data : function(v, td) {
+				label: "PERMISSION_ADMIN", // "Admin",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
 					return ((v.indexOf("ROLE_ADMIN") >= 0) ? "✔︎" : " ");
 				},
-				sort : true,
-				cl : "permission"
+				sort: true,
+				cl: "permission"
 			},
 			{
-				label : "PERMISSION_EDIT",
-				field : nf.ROLES,
-				type : "callback",
-				data : function(v, td) {
+				label: "PERMISSION_EDIT",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
 					return ((v.indexOf("ROLE_EDIT") >= 0) ? "✔︎" : " ");
 				},
-				sort : true,
-				cl : "permission"
+				sort: true,
+				cl: "permission"
 			},
 			{
-				label : "PERMISSION_USERMANAGER",
-				field : nf.ROLES,
-				type : "callback",
-				data : function(v, td) {
+				label: "PERMISSION_USERMANAGER",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
 					return ((v.indexOf("ROLE_USERMANAGER") >= 0) ? "✔︎" : " ");
 				},
-				sort : true,
-				cl : "permission"
+				sort: true,
+				cl: "permission"
 			},
 			{
-				label : "PERMISSION_WS_READ",
-				field : nf.ROLES,
-				type : "callback",
-				data : function(v, td) {
+				label: "PERMISSION_WS_READ",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
 					return ((v.indexOf("ROLE_WEBSERVICE_READ") >= 0) ? "✔︎" : " ");
 				},
-				sort : true,
-				cl : "permission"
+				sort: true,
+				cl: "permission"
 			},
 			{
-				label : "PERMISSION_WS_WRITE",
-				field : nf.ROLES,
-				type : "callback",
-				data : function(v, td) {
+				label: "PERMISSION_WS_WRITE",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
 					return ((v.indexOf("ROLE_WEBSERVICE_WRITE") >= 0) ? "✔︎" : " ");
 				},
-				sort : true,
-				cl : "permission"
+				sort: true,
+				cl: "permission"
 			}
-			];
+		];
 
 		self.sortfield = nf.NAME;
 		self.base.postInit(self, true);
 	},
-	getAbbrOf : function(entity, elem) {
+	getAbbrOf: function (entity, elem) {
 		return self.getNameOf(entity, elem);
 	},
-	getNameOf : function(entity, elem) {
+	getNameOf: function (entity, elem) {
 		if (entity) {
 			return entity[at.freebim.db.domain.NodeFields.TITLE];
 		} else {
@@ -3788,12 +3790,12 @@ at.freebim.db.domain.MessageNode = {
 }; // at.freebim.db.domain.MessageNode
 
 at.freebim.db.domain.FreebimUser = {
-	className : "FreebimUser",
-	i18n : "CLAZZ_USER",
-	title : net.spectroom.js.i18n.g("CLAZZ_USER"), // "Benutzer",
-	arr : null,
+	className: "FreebimUser",
+	i18n: "CLAZZ_USER",
+	title: net.spectroom.js.i18n.g("CLAZZ_USER"), // "Benutzer",
+	arr: null,
 
-	init : function() {
+	init: function () {
 		var db = at.freebim.db, d = db.domain, nf = d.NodeFields, f = d.filters, self = d.FreebimUser, i18n = net.spectroom.js.i18n;
 		if (self.initialized) {
 			return;
@@ -3805,39 +3807,39 @@ at.freebim.db.domain.FreebimUser = {
 		d.Contributor.init();
 
 		self.form = Object.create(net.spectroom.js.form);
-		self.form.afterEntitySet = function(entity) {
+		self.form.afterEntitySet = function (entity) {
 			self.form.pwdChanged = false;
 		};
 		self.form.beforeSave = function (entity, okFn) {
 			if (self.form.pwdChanged) {
 				var dlg = net.spectroom.js.newDiv();
 				jq(dlg).dialog({
-					title : i18n.g("DLG_TITLE_FREEBIM_PWD_REP"), // "freeBIM - Passwort wiederholen",
-					modal : true,
-					open : function () {
+					title: i18n.g("DLG_TITLE_FREEBIM_PWD_REP"), // "freeBIM - Passwort wiederholen",
+					modal: true,
+					open: function () {
 						jq(dlg).append("<table><tbody><tr><td><label for='pwd'>" + i18n.get("DLG_PASSWORD") + ":</label></td><td><input class='pwd' name='pwd' type='password' /></td></tr></tbody>");
 					},
-					buttons : [{
-						text : i18n.getButton("DLG_BTN_CANCEL"), // "Abbrechen",
-						click : function() {
+					buttons: [{
+						text: i18n.getButton("DLG_BTN_CANCEL"), // "Abbrechen",
+						click: function () {
 							jq(dlg).dialog("close");
 							okFn(false);
 						}
 					}, {
-						text : i18n.getButton("DLG_BTN_OK"), // "Ok",
-						click : function (form, suffix) {
-						    
-						    var pwd = jq("#" + dlg.id + " .pwd").val();
-						    if (pwd == entity[nf.PASSWORD]) {
-						    	okFn(true);
-						    } else {
-						    	jq(document).trigger("alert", [{
-									title: "DLG_TITLE_FREEBIM_ERROR", 
+						text: i18n.getButton("DLG_BTN_OK"), // "Ok",
+						click: function (form, suffix) {
+
+							var pwd = jq("#" + dlg.id + " .pwd").val();
+							if (pwd == entity[nf.PASSWORD]) {
+								okFn(true);
+							} else {
+								jq(document).trigger("alert", [{
+									title: "DLG_TITLE_FREEBIM_ERROR",
 									content: i18n.get("PWD_REP_ERROR"),
-									okFn : function (val) { okFn(false); }
+									okFn: function (val) { okFn(false); }
 								}]);
-						    }
-						    jq(dlg).dialog("close");
+							}
+							jq(dlg).dialog("close");
 						}
 					}]
 				}).prev().attr("i18n_dlg", "DLG_TITLE_FREEBIM_PWD_REP");
@@ -3845,18 +3847,18 @@ at.freebim.db.domain.FreebimUser = {
 				okFn(true);
 			}
 		};
-		self.form.fields = [ 
-			d.fields.nodeId, 
+		self.form.fields = [
+			d.fields.nodeId,
 			d.fields.validFrom,
 			d.fields.validTo, {
-				label : "DLG_USERNAME", // "Benutzername",
-				type : "text",
-				field : nf.USERNAME
+				label: "DLG_USERNAME", // "Benutzername",
+				type: "text",
+				field: nf.USERNAME
 			}, {
-				label : "DLG_PASSWORD", // "Passwort",
-				type : "password",
-				field : nf.PASSWORD,
-				onChange : function () {
+				label: "DLG_PASSWORD", // "Passwort",
+				type: "password",
+				field: nf.PASSWORD,
+				onChange: function () {
 					if (!self.form.entity[nf.NODEID]) {
 						var val = jq(this).val();
 						if (val && val.length >= 32) {
@@ -3866,158 +3868,159 @@ at.freebim.db.domain.FreebimUser = {
 					self.form.pwdChanged = true;
 				}
 			}, {
-				label : "ASSIGNED_CONTRIBUTOR", // "zugeordneter Bearbeiter",
-				type : "select",
-				field : nf.CONTRIBUTOR_ID,
-				callBack : function (v) { return v; }, // v is nodeId of contributor
-				values : d.Contributor.getNodes, 	/* all nodes of type Contributor */
-				data : d.Contributor.getName, 		/* what's shown in the option's text */
-				dataValue : d.Contributor.getId, 	/* the option's value */
-				value : function (v) { return v; }
+				label: "ASSIGNED_CONTRIBUTOR", // "zugeordneter Bearbeiter",
+				type: "select",
+				field: nf.CONTRIBUTOR_ID,
+				callBack: function (v) { return v; }, // v is nodeId of contributor
+				values: d.Contributor.getNodes, 	/* all nodes of type Contributor */
+				data: d.Contributor.getName, 		/* what's shown in the option's text */
+				dataValue: d.Contributor.getId, 	/* the option's value */
+				value: function (v) { return v; }
 			}, {
-				label : "PERMISSIONS", // "Berechtigungen",
-				type : "checkboxgroup",
-				field : nf.ROLES,
-				values : [ {
-					label : "PERMISSION_GUEST", // "Gast",
-					value : "ROLE_GUEST"
+				label: "PERMISSIONS", // "Berechtigungen",
+				type: "checkboxgroup",
+				field: nf.ROLES,
+				values: [{
+					label: "PERMISSION_GUEST", // "Gast",
+					value: "ROLE_GUEST"
 				}, {
-					label : "PERMISSION_EDIT", // "Schreibrecht",
-					value : "ROLE_EDIT"
+					label: "PERMISSION_EDIT", // "Schreibrecht",
+					value: "ROLE_EDIT"
 				}, {
-					label : "PERMISSION_USERMANAGER", // "Benutzerverwalter",
-					value : "ROLE_USERMANAGER"
+					label: "PERMISSION_USERMANAGER", // "Benutzerverwalter",
+					value: "ROLE_USERMANAGER"
 				}, {
-					label : "PERMISSION_WS_READ", // "Webservice (lesen)",
-					value : "ROLE_WEBSERVICE_READ"
+					label: "PERMISSION_WS_READ", // "Webservice (lesen)",
+					value: "ROLE_WEBSERVICE_READ"
 				}, {
-					label : "PERMISSION_WS_WRITE", // "Webservice (schreiben)",
-					value : "ROLE_WEBSERVICE_WRITE"
+					label: "PERMISSION_WS_WRITE", // "Webservice (schreiben)",
+					value: "ROLE_WEBSERVICE_WRITE"
 				}, {
-					label : "PERMISSION_ADMINISTRATOR", // "Administrator",
-					value : "ROLE_ADMIN"
-				} ]
-			} 
+					label: "PERMISSION_ADMINISTRATOR", // "Administrator",
+					value: "ROLE_ADMIN"
+				}]
+			}
 		];
 		self.form.create(null, self, self);
 
 		self.table = Object.create(net.spectroom.js.table);
 		self.table.filters = [
-		{ add : f.text, 
-			f : function (node, filter, opt) {
-				if (opt) {
-					return (!node || node[nf.USERNAME] != filter);
+			{
+				add: f.text,
+				f: function (node, filter, opt) {
+					if (opt) {
+						return (!node || node[nf.USERNAME] != filter);
+					}
+					filter = ((filter.toLowerCase) ? filter.toLowerCase() : filter);
+					var src = ((node) ? ((node[nf.USERNAME]) ? node[nf.USERNAME] : "") : "");
+					if (src && src.toLowerCase) {
+						src = src.toLowerCase();
+						return (src.indexOf(filter) < 0);
+					}
 				}
-				filter = ((filter.toLowerCase) ? filter.toLowerCase() : filter);
-				var src = ((node) ? ((node[nf.USERNAME]) ? node[nf.USERNAME] : "") : "");
-				if (src && src.toLowerCase) {
-					src = src.toLowerCase();
-					return (src.indexOf(filter) < 0);
-				}
-			}
-		}];
-		self.table.dataCallback = function(row) {
+			}];
+		self.table.dataCallback = function (row) {
 			return d.get(self.arr[row]);
 		};
 		self.table.edit = true;
 		self.table.add = true;
 		self.table.idCol = nf.NODEID;
 		self.table.cols = [
-				{
-					label : "DLG_USERNAME",
-					field : nf.USERNAME,
-					type : "custom",
-					createCell : function (tr, td, row, col) {
-						var v = self.table.dataCallback(row);
-						d.renderNode(v, td);
-					},
-					cl : "freebim-item FreebimUser",
-					sortValue : function (row) {
-						var v = self.table.dataCallback(row);
-						return d.FreebimUser.getNameOf(v);
-					},
-					sort : true
+			{
+				label: "DLG_USERNAME",
+				field: nf.USERNAME,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					var v = self.table.dataCallback(row);
+					d.renderNode(v, td);
 				},
-				{
-					label : "PERMISSION_GUEST",
-					field : nf.ROLES,
-					type : "callback",
-					data : function(v, td) {
-						return ((v.indexOf("ROLE_GUEST") >= 0) ? "✔︎" : " ");
-					},
-					sort : true,
-					cl : "permission"
+				cl: "freebim-item FreebimUser",
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					return d.FreebimUser.getNameOf(v);
 				},
-				{
-					label : "PERMISSION_ADMIN", // "Admin",
-					field : nf.ROLES,
-					type : "callback",
-					data : function(v, td) {
-						return ((v.indexOf("ROLE_ADMIN") >= 0) ? "✔︎" : " ");
-					},
-					sort : true,
-					cl : "permission"
+				sort: true
+			},
+			{
+				label: "PERMISSION_GUEST",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
+					return ((v.indexOf("ROLE_GUEST") >= 0) ? "✔︎" : " ");
 				},
-				{
-					label : "PERMISSION_EDIT",
-					field : nf.ROLES,
-					type : "callback",
-					data : function(v, td) {
-						return ((v.indexOf("ROLE_EDIT") >= 0) ? "✔︎" : " ");
-					},
-					sort : true,
-					cl : "permission"
+				sort: true,
+				cl: "permission"
+			},
+			{
+				label: "PERMISSION_ADMIN", // "Admin",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
+					return ((v.indexOf("ROLE_ADMIN") >= 0) ? "✔︎" : " ");
 				},
-				{
-					label : "PERMISSION_USERMANAGER",
-					field : nf.ROLES,
-					type : "callback",
-					data : function(v, td) {
-						return ((v.indexOf("ROLE_USERMANAGER") >= 0) ? "✔︎" : " ");
-					},
-					sort : true,
-					cl : "permission"
+				sort: true,
+				cl: "permission"
+			},
+			{
+				label: "PERMISSION_EDIT",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
+					return ((v.indexOf("ROLE_EDIT") >= 0) ? "✔︎" : " ");
 				},
-				{
-					label : "PERMISSION_WS_READ",
-					field : nf.ROLES,
-					type : "callback",
-					data : function(v, td) {
-						return ((v.indexOf("ROLE_WEBSERVICE_READ") >= 0) ? "✔︎" : " ");
-					},
-					sort : true,
-					cl : "permission"
+				sort: true,
+				cl: "permission"
+			},
+			{
+				label: "PERMISSION_USERMANAGER",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
+					return ((v.indexOf("ROLE_USERMANAGER") >= 0) ? "✔︎" : " ");
 				},
-				{
-					label : "PERMISSION_WS_WRITE",
-					field : nf.ROLES,
-					type : "callback",
-					data : function(v, td) {
-						return ((v.indexOf("ROLE_WEBSERVICE_WRITE") >= 0) ? "✔︎" : " ");
-					},
-					sort : true,
-					cl : "permission"
+				sort: true,
+				cl: "permission"
+			},
+			{
+				label: "PERMISSION_WS_READ",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
+					return ((v.indexOf("ROLE_WEBSERVICE_READ") >= 0) ? "✔︎" : " ");
 				},
-				{
-					label : "CLAZZ_CONTRIBUTOR", // "Bearbeiter",
-					field : nf.CONTRIBUTOR_ID,
-					type : "callback",
-					data : d.Contributor.tdWithAbbr,	
-					sort : true,
-					sortValue : function (row) {
-						var v = self.table.dataCallback(row);
-						return d.Contributor.getAbbrOf(d.get(v[nf.CONTRIBUTOR_ID]));
-					},
-					cl : "freebim-item Contributor"
-				} ];
+				sort: true,
+				cl: "permission"
+			},
+			{
+				label: "PERMISSION_WS_WRITE",
+				field: nf.ROLES,
+				type: "callback",
+				data: function (v, td) {
+					return ((v.indexOf("ROLE_WEBSERVICE_WRITE") >= 0) ? "✔︎" : " ");
+				},
+				sort: true,
+				cl: "permission"
+			},
+			{
+				label: "CLAZZ_CONTRIBUTOR", // "Bearbeiter",
+				field: nf.CONTRIBUTOR_ID,
+				type: "callback",
+				data: d.Contributor.tdWithAbbr,
+				sort: true,
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					return d.Contributor.getAbbrOf(d.get(v[nf.CONTRIBUTOR_ID]));
+				},
+				cl: "freebim-item Contributor"
+			}];
 
 		self.sortfield = nf.USERNAME;
 		self.base.postInit(self, true);
 	},
-	getAbbrOf : function(entity, elem) {
+	getAbbrOf: function (entity, elem) {
 		return self.getNameOf(entity, elem);
 	},
-	getNameOf : function(entity, elem) {
+	getNameOf: function (entity, elem) {
 		if (entity) {
 			return entity[at.freebim.db.domain.NodeFields.USERNAME];
 		} else {
@@ -4028,25 +4031,25 @@ at.freebim.db.domain.FreebimUser = {
 }; // at.freebim.db.domain.FreebimUser
 
 at.freebim.db.domain.Measure = {
-	className : "Measure",
-	i18n : "CLAZZ_MEASURE",
-	title : net.spectroom.js.i18n.g("CLAZZ_MEASURE"), // "Bemessung",
-	arr : null,
-	isContributed : true,
+	className: "Measure",
+	i18n: "CLAZZ_MEASURE",
+	title: net.spectroom.js.i18n.g("CLAZZ_MEASURE"), // "Bemessung",
+	arr: null,
+	isContributed: true,
 
-	init : function() {
+	init: function () {
 		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, f = d.filters, self = d.Measure, i18n = net.spectroom.js.i18n;
 		if (self.initialized) {
 			return;
 		}
-		self.relations =  [rf.make(nf.UNIT, d.RelationTypeEnum.OF_UNIT, "OfUnit", "OUT"),
-		                   rf.make(nf.DATATYPE, d.RelationTypeEnum.OF_DATATYPE, "OfDataType", "OUT"),
-		                   rf.make(nf.HAS_VALUE, d.RelationTypeEnum.HAS_VALUE, "HasValue", "OUT"),
-		                   rf.make(nf.PARAMS, d.RelationTypeEnum.HAS_MEASURE, "HasMeasure", "IN")];
-		
+		self.relations = [rf.make(nf.UNIT, d.RelationTypeEnum.OF_UNIT, "OfUnit", "OUT"),
+		rf.make(nf.DATATYPE, d.RelationTypeEnum.OF_DATATYPE, "OfDataType", "OUT"),
+		rf.make(nf.HAS_VALUE, d.RelationTypeEnum.HAS_VALUE, "HasValue", "OUT"),
+		rf.make(nf.PARAMS, d.RelationTypeEnum.HAS_MEASURE, "HasMeasure", "IN")];
+
 		self.base = Object.create(d.BaseNode);
 		self.base.init(self, "measure");
-	
+
 		d.Unit.init();
 		d.DataType.init();
 		d.ValueList.init();
@@ -4054,36 +4057,36 @@ at.freebim.db.domain.Measure = {
 
 		self.form = Object.create(net.spectroom.js.form);
 		self.form.fields = [
-			d.fields.nodeId, 
+			d.fields.nodeId,
 			d.fields.validFrom,
-			d.fields.validTo, 
+			d.fields.validTo,
 			d.fields.name,
-			d.fields.nameEn, 
-			d.fields.desc, 
+			d.fields.nameEn,
+			d.fields.desc,
 			d.fields.descEn, {
-				label : "PREFIX",
-				type : "text",
-				field : nf.PREFIX
+				label: "PREFIX",
+				type: "text",
+				field: nf.PREFIX
 			}, {
-				label : "CLAZZ_UNIT",
-				type : "select",
-				field : nf.UNIT,
-				callBack : function(val) { // val is an array of OfUnit relations
+				label: "CLAZZ_UNIT",
+				type: "select",
+				field: nf.UNIT,
+				callBack: function (val) { // val is an array of OfUnit relations
 					if (val && jq.isArray(val)) {
 						var i, n = val.length, e;
-						for (i=0; i<n; i++) {
+						for (i = 0; i < n; i++) {
 							e = d.get(val[i][rf.TO_NODE]);
 							if (db.time.validNode(e)) {
 								return val[i][rf.TO_NODE];
 							}
 						}
-					} 
+					}
 				},
-				cl : "Unit",
-				values : d.Unit.getNodes,
-				data : d.Unit.getName,
-				dataValue : d.Unit.getId,
-				value : function(nodeId, val) {
+				cl: "Unit",
+				values: d.Unit.getNodes,
+				data: d.Unit.getName,
+				dataValue: d.Unit.getId,
+				value: function (nodeId, val) {
 					if (val && jq.isArray(val) && val.length > 0) {
 						val[0][rf.TO_NODE] = nodeId;
 						return val;
@@ -4095,28 +4098,28 @@ at.freebim.db.domain.Measure = {
 						rel[rf.TO_NODE] = nodeId;
 						val = [rel];
 						return val;
-					} 
-				} 
+					}
+				}
 			}, {
-				label : "CLAZZ_DATATYPE",
-				type : "select",
-				field : nf.DATATYPE,
-				callBack : function(val) { // val is an array of OfDataType relations
+				label: "CLAZZ_DATATYPE",
+				type: "select",
+				field: nf.DATATYPE,
+				callBack: function (val) { // val is an array of OfDataType relations
 					if (val && jq.isArray(val)) {
 						var i, n = val.length, e;
-						for (i=0; i<n; i++) {
+						for (i = 0; i < n; i++) {
 							e = d.get(val[i][rf.TO_NODE]);
 							if (db.time.validNode(e)) {
 								return val[i][rf.TO_NODE];
 							}
 						}
-					} 
+					}
 				},
-				cl : "DataType",
-				values : d.DataType.getNodes,
-				data : d.DataType.getName,
-				dataValue : d.DataType.getId,
-				value : function(nodeId, val) {
+				cl: "DataType",
+				values: d.DataType.getNodes,
+				data: d.DataType.getName,
+				dataValue: d.DataType.getId,
+				value: function (nodeId, val) {
 					if (val && jq.isArray(val) && val.length > 0) {
 						val[0][rf.TO_NODE] = nodeId;
 						return val;
@@ -4128,29 +4131,29 @@ at.freebim.db.domain.Measure = {
 						rel[rf.TO_NODE] = nodeId;
 						val = [rel];
 						return val;
-					} 
-				} 
+					}
+				}
 			}, {
-				label : "CLAZZ_VALUELIST",
-				type : "custom",
-				field : nf.HAS_VALUE,
-				createField : function (form, i, ip) {
+				label: "CLAZZ_VALUELIST",
+				type: "custom",
+				field: nf.HAS_VALUE,
+				createField: function (form, i, ip) {
 					var orderable = false,
-					relAdded = function (rel, okFn) { 
-						// rel is the just created relation
-						d.rel.HasValue.init();
-						jq(d.rel.HasValue).trigger("editComponent", [{rel: rel, okFn: okFn}]);
-					};
+						relAdded = function (rel, okFn) {
+							// rel is the just created relation
+							d.rel.HasValue.init();
+							jq(d.rel.HasValue).trigger("editComponent", [{ rel: rel, okFn: okFn }]);
+						};
 					d.relationFormField(form, i, ip, orderable, d.ValueList.title, d.RelationTypeEnum.HAS_VALUE, nf.HAS_VALUE, "ValueList", "OUT", relAdded);
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					var relClicked = function (rel) {
 						var okFn = function () {
 							form.setEntityValue(i, entity, ip);
 						};
 						d.rel.HasValue.init();
-						jq(d.rel.HasValue).trigger("editComponent", [{rel: rel, okFn: okFn}]);
-	
+						jq(d.rel.HasValue).trigger("editComponent", [{ rel: rel, okFn: okFn }]);
+
 					}, relInfo = function (el, rel) {
 						var okFn = function (c) {
 							var sub = document.createElement("sub");
@@ -4159,192 +4162,197 @@ at.freebim.db.domain.Measure = {
 							jq(sub).removeClass("freebim-contextmenu");
 						};
 						d.rel.HasValue.init();
-						jq(d.rel.HasValue).trigger("componentFromRel", [{rel: rel, okFn: okFn}]);
+						jq(d.rel.HasValue).trigger("componentFromRel", [{ rel: rel, okFn: okFn }]);
 					};
 					d.setEntityValue(form.clazz, i, ip, entity, nf.HAS_VALUE, "ValueList", "OUT", relInfo, relClicked);
 				}
-			}, 
+			},
 			d.fields.docs,
 			d.fields.bsDD
 		];
 		self.form.create(null, self, self);
-	
+
 		self.table = Object.create(net.spectroom.js.table);
 		self.table.add = true;
 		self.table.edit = true;
 		self.table.filters = [
-			{ add : f.text, 
-				f : f.filterByName
+			{
+				add: f.text,
+				f: f.filterByName
 			},
-			{ add : f.mark,
-				f : function (node, filter, opt) {
+			{
+				add: f.mark,
+				f: function (node, filter, opt) {
 					var fmr = f.filterMarkedRelated;
-	    			if (db.isMarked(node[nf.NODEID])) {
-	    				return false;
-	    			}
-	    			if (!fmr(node[nf.UNIT], "OUT")) {
-	    				return false;
-	    			}
-	    			if (!fmr(node[nf.DATATYPE], "OUT")) {
-	    				return false;
-	    			}
-	    			if (!fmr(node[nf.HAS_VALUE], "OUT")) {
-	    				return false;
-	    			}
-	    			if (!fmr(node[nf.DOCUMENTED], "OUT")) {
-	    				return false;
-	    			}
-	    			if (!fmr(node[nf.PARAMS], "IN")) {
-	    				return false;
-	    			}
-	    			if (!fmr(node[nf.EQUALS], "BOTH")) {
-	    				return false;
-	    			}
-	    			return true;
+					if (db.isMarked(node[nf.NODEID])) {
+						return false;
+					}
+					if (!fmr(node[nf.UNIT], "OUT")) {
+						return false;
+					}
+					if (!fmr(node[nf.DATATYPE], "OUT")) {
+						return false;
+					}
+					if (!fmr(node[nf.HAS_VALUE], "OUT")) {
+						return false;
+					}
+					if (!fmr(node[nf.DOCUMENTED], "OUT")) {
+						return false;
+					}
+					if (!fmr(node[nf.PARAMS], "IN")) {
+						return false;
+					}
+					if (!fmr(node[nf.EQUALS], "BOTH")) {
+						return false;
+					}
+					return true;
 				}
 			},
-			{ add : f.lib,
-				f : f.filterByLib
+			{
+				add: f.lib,
+				f: f.filterByLib
 			},
-			{ add : f.bsdd, 
-				f : undefined
-			}, 
-			{ add : f.bsddLoaded, 
-				f : undefined
+			{
+				add: f.bsdd,
+				f: undefined
+			},
+			{
+				add: f.bsddLoaded,
+				f: undefined
 			}
 		];
-		self.table.dataCallback = function(row) {
+		self.table.dataCallback = function (row) {
 			return d.get(self.arr[row]);
 		};
 		self.table.idCol = nf.NODEID;
 		self.table.csv = "prefix" + self.table.csvDelim
-						+ "freeBIM-ID" + self.table.csvDelim
-						+ "name-de" + self.table.csvDelim
-						+ "name-en" + self.table.csvDelim
-						+ "description-de" + self.table.csvDelim
-						+ "description-en" + self.table.csvDelim
-						+ "bsDD-GUID" + self.table.csvDelim;
-		self.table.cols = [ {
-			label : "PREFIX",
-			field : nf.PREFIX,
-			type : "text",
-			maxlen : 32,
-			sort : true
-		},{
-			label : "NAME",
-			field : nf.NAME,
-			type : "custom",
-			createCell : function (tr, td, row, col) {
+			+ "freeBIM-ID" + self.table.csvDelim
+			+ "name-de" + self.table.csvDelim
+			+ "name-en" + self.table.csvDelim
+			+ "description-de" + self.table.csvDelim
+			+ "description-en" + self.table.csvDelim
+			+ "bsDD-GUID" + self.table.csvDelim;
+		self.table.cols = [{
+			label: "PREFIX",
+			field: nf.PREFIX,
+			type: "text",
+			maxlen: 32,
+			sort: true
+		}, {
+			label: "NAME",
+			field: nf.NAME,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				var v = self.table.dataCallback(row);
 				jq(td).attr("maxLength", "32");
 				d.renderNode(v, td);
 			},
-			cl : "freebim-item Measure",
-			sortValue : function (row) {
+			cl: "freebim-item Measure",
+			sortValue: function (row) {
 				var v = self.table.dataCallback(row);
 				return d.Measure.getNameOf(v);
 			},
-			sort : true,
-			csv : function (row, col) {
+			sort: true,
+			csv: function (row, col) {
 				var v = self.table.dataCallback(row);
 				return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]) + d.csv(v[nf.NAME_EN]);
 			}
 		}, {
-			label : "DESCRIPTION",
-			field : nf.DESC,
-			type : "custom",
-			createCell : function (tr, td, row, col) {
-				var nodeId = self.arr[row], 
-				node = d.get(nodeId),
-				desc = d.Measure.getDescOf(node);
+			label: "DESCRIPTION",
+			field: nf.DESC,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
+				var nodeId = self.arr[row],
+					node = d.get(nodeId),
+					desc = d.Measure.getDescOf(node);
 				jq(td).html(net.spectroom.js.shrinkText(desc, 64, td)).addClass("freebim-desc").attr("nodeid", node[nf.NODEID]);
 			},
-			sortValue : function (row) {
+			sortValue: function (row) {
 				var v = self.table.dataCallback(row);
 				return d.Measure.getDescOf(v);
 			},
-			sort : true,
-			csv : function (row, col) {
+			sort: true,
+			csv: function (row, col) {
 				var v = self.table.dataCallback(row);
 				return d.csv(v[nf.DESC]) + d.csv(v[nf.DESC_EN]) + d.csv(v[nf.BSDD_GUID]);
 			}
 		},
 		{
-			label : "CLAZZ_UNIT",
-			field : nf.UNIT,
-			type : "custom",
-			createCell : function(tr, td, row, col) {
+			label: "CLAZZ_UNIT",
+			field: nf.UNIT,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				var v = self.table.dataCallback(row); // v is a Measure
 				jq(td).empty();
 				if (v && v[nf.UNIT] && v[nf.UNIT].length > 0) { // v[nf.UNIT] is an array of OfUnit relations
-					self.fetchEntries("div", v, nf.UNIT, "Unit", "OUT", function(unit) {
+					self.fetchEntries("div", v, nf.UNIT, "Unit", "OUT", function (unit) {
 						jq(td).empty();
 						var j;
-						for (j=0; j<unit.length; j++) {
+						for (j = 0; j < unit.length; j++) {
 							td.appendChild(unit[j]);
 						}
 						jq(self.table).trigger("cellChanged", [{}]);
 					});
 				}
 			},
-			sort : false,
-			csv : false
+			sort: false,
+			csv: false
 		},
 		{
-			label : "CLAZZ_DATATYPE",
-			field : nf.DATATYPE,
-			type : "custom",
-			createCell : function(tr, td, row, col) {
+			label: "CLAZZ_DATATYPE",
+			field: nf.DATATYPE,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				var v = self.table.dataCallback(row); // v is a Measure
 				jq(td).empty();
 				if (v && v[nf.DATATYPE] && v[nf.DATATYPE].length > 0) { // v[nf.DATATYPE] is an array of OfDataType relations
-					self.fetchEntries("div", v, nf.DATATYPE, "DataType", "OUT", function(dataType) {
+					self.fetchEntries("div", v, nf.DATATYPE, "DataType", "OUT", function (dataType) {
 						jq(td).empty();
 						var j;
-						for (j=0; j<dataType.length; j++) {
+						for (j = 0; j < dataType.length; j++) {
 							td.appendChild(dataType[j]);
 						}
 						jq(self.table).trigger("cellChanged", [{}]);
 					});
 				}
 			},
-			sort : false,
-			csv : false
+			sort: false,
+			csv: false
 		},
 		{
-			label : "CLAZZ_VALUELIST",
-			field : nf.HAS_VALUE,
-			type : "custom",
-			createCell : function(tr, td, row, col) {
+			label: "CLAZZ_VALUELIST",
+			field: nf.HAS_VALUE,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				self.showRelations(td, row, nf.HAS_VALUE, "IN", "ValueList");
 			},
-			sort : true,
-			sortValue : function(row) {
-				var v = self.table.dataCallback(row); 
+			sort: true,
+			sortValue: function (row) {
+				var v = self.table.dataCallback(row);
 				if (v) {
 					return self.relevantRelCount(v, nf.HAS_VALUE, "ValueList");
-				} 
+				}
 				return 0;
 			},
-			csv : false
+			csv: false
 		},
 		{
-			label : "CLAZZ_PARAMETER",
-			field : nf.PARAMS,
-			type : "custom",
-			createCell : function(tr, td, row, col) {
+			label: "CLAZZ_PARAMETER",
+			field: nf.PARAMS,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				self.showRelations(td, row, nf.PARAMS, "IN", "Parameter");
 			},
-			cl : "Parameter",
-			sort : true,
-			sortValue : function(row) {
-				var v = self.table.dataCallback(row); 
+			cl: "Parameter",
+			sort: true,
+			sortValue: function (row) {
+				var v = self.table.dataCallback(row);
 				if (v) {
 					return self.relevantRelCount(v, nf.PARAMS, "Parameter");
-				} 
+				}
 				return 0;
 			},
-			csv : false
+			csv: false
 		}
 		];
 		self.base.postInit(self);
@@ -4353,36 +4361,36 @@ at.freebim.db.domain.Measure = {
 }; // at.freebim.db.domain.Measure 
 
 at.freebim.db.domain.DataType = {
-	className : "DataType",
-	i18n : "CLAZZ_DATATYPE",
-	title : net.spectroom.js.i18n.g("CLAZZ_DATATYPE"), // "Datentyp",
-	arr : null,
-	isContributed : true,
-	aux : true,
+	className: "DataType",
+	i18n: "CLAZZ_DATATYPE",
+	title: net.spectroom.js.i18n.g("CLAZZ_DATATYPE"), // "Datentyp",
+	arr: null,
+	isContributed: true,
+	aux: true,
 
-	init : function() {
+	init: function () {
 		var d = at.freebim.db.domain, rf = d.RelationFields, nf = d.NodeFields, self = d.DataType;
 		if (self.initialized) {
 			return;
 		}
-		self.relations =  [rf.make(nf.MEASURES, d.RelationTypeEnum.OF_DATATYPE, "OfDataType", "IN")];
-		
+		self.relations = [rf.make(nf.MEASURES, d.RelationTypeEnum.OF_DATATYPE, "OfDataType", "IN")];
+
 		self.base = Object.create(d.BaseNode);
 		self.base.init(self, "datatype");
 
 		self.form = Object.create(net.spectroom.js.form);
-		self.form.fields = [ 
-			d.fields.nodeId, 
+		self.form.fields = [
+			d.fields.nodeId,
 			d.fields.validFrom,
-			d.fields.validTo, 
-			d.fields.name, 
-			d.fields.nameEn, 
-			d.fields.desc, 
+			d.fields.validTo,
+			d.fields.name,
+			d.fields.nameEn,
+			d.fields.desc,
 			d.fields.descEn,
 			{
-				label : "REG_EXPR",
-				type : "text",
-				field : nf.REGEXPR
+				label: "REG_EXPR",
+				type: "text",
+				field: nf.REGEXPR
 			},
 			d.fields.docs,
 			d.fields.bsDD
@@ -4392,41 +4400,41 @@ at.freebim.db.domain.DataType = {
 		self.table = Object.create(net.spectroom.js.table);
 		self.table.add = true;
 		self.table.edit = true;
-		self.table.dataCallback = function(row) {
+		self.table.dataCallback = function (row) {
 			return d.get(self.arr[row]);
 		};
 		self.table.idCol = nf.NODEID;
 		self.table.csv = "freeBIM-ID" + self.table.csvDelim
-						+ "name-de" + self.table.csvDelim
-						+ "name-en" + self.table.csvDelim
-						+ "description-de" + self.table.csvDelim
-						+ "description-en" + self.table.csvDelim;
-		self.table.cols = [ {
-			label : "NAME",
-			field : nf.NAME,
-			type : "custom",
-			createCell : function (tr, td, row, col) {
+			+ "name-de" + self.table.csvDelim
+			+ "name-en" + self.table.csvDelim
+			+ "description-de" + self.table.csvDelim
+			+ "description-en" + self.table.csvDelim;
+		self.table.cols = [{
+			label: "NAME",
+			field: nf.NAME,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				var v = self.table.dataCallback(row);
 				jq(td).attr("maxLength", "32");
 				d.renderNode(v, td);
 			},
-			cl : "freebim-item DataType",
-			sortValue : function (row) {
+			cl: "freebim-item DataType",
+			sortValue: function (row) {
 				var v = self.table.dataCallback(row);
 				return v[nf.NAME];
 			},
-			sort : true,
-			csv : function (row, col) {
+			sort: true,
+			csv: function (row, col) {
 				var v = self.table.dataCallback(row);
 				return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]) + d.csv(v[nf.NAME_EN]);
 			}
 		}, {
-			label : "DESCRIPTION",
-			field : nf.DESC,
-			type : "text",
-			maxlen : 32,
-			sort : true,
-			csv : function (row, col) {
+			label: "DESCRIPTION",
+			field: nf.DESC,
+			type: "text",
+			maxlen: 32,
+			sort: true,
+			csv: function (row, col) {
 				var v = self.table.dataCallback(row);
 				return d.csv(v[nf.DESC]) + d.csv(v[nf.DESC_EN]);
 			}
@@ -4435,58 +4443,58 @@ at.freebim.db.domain.DataType = {
 			field: nf.REGEXPR,
 			type: "text",
 			sort: true,
-			csv : false
+			csv: false
 		}, {
-			label : "REFERENCED",
-			field : nf.MEASURES,
-			type : "custom",
-			createCell : function(tr, td, row, col) {
+			label: "REFERENCED",
+			field: nf.MEASURES,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				self.showRelations(td, row, nf.MEASURES, "IN", "Measure");
 			},
-			sort : true,
-			sortValue : function(row) {
-				var v = self.table.dataCallback(row); 
+			sort: true,
+			sortValue: function (row) {
+				var v = self.table.dataCallback(row);
 				if (v) {
 					return self.relevantRelCount(v, nf.MEASURES, "Measure");
 				}
 				return 0;
 			},
-			csv : false
-		} ];
+			csv: false
+		}];
 		self.base.postInit(self, true);
 
 	}
 }; // DataType
 
 at.freebim.db.domain.Discipline = {
-	className : "Discipline",
-	i18n : "CLAZZ_DISCIPLINE",
-	title : net.spectroom.js.i18n.g("CLAZZ_DISCIPLINE"), // "Disziplin",
-	arr : null,
-	isContributed : true,
-	aux : true,
+	className: "Discipline",
+	i18n: "CLAZZ_DISCIPLINE",
+	title: net.spectroom.js.i18n.g("CLAZZ_DISCIPLINE"), // "Disziplin",
+	arr: null,
+	isContributed: true,
+	aux: true,
 
-	init : function() {
+	init: function () {
 		var d = at.freebim.db.domain, rf = d.RelationFields, nf = d.NodeFields, self = d.Discipline;
 		if (self.initialized) {
 			return;
 		}
 		self.relations = [rf.make(nf.PARAMETER, d.RelationTypeEnum.OF_DISCIPLINE, "OfDiscipline", "IN")];
-		
+
 		self.base = Object.create(d.BaseNode);
 		self.base.init(self, "discipline");
 
 		self.form = Object.create(net.spectroom.js.form);
 		self.form.fields = [
-			d.fields.nodeId, 
+			d.fields.nodeId,
 			d.fields.validFrom,
 			d.fields.validTo,
-			d.fields.code, 
-			d.fields.name, 
-			d.fields.nameEn, 
-			d.fields.desc, 
-			d.fields.descEn, 
-			d.fields.docs, 
+			d.fields.code,
+			d.fields.name,
+			d.fields.nameEn,
+			d.fields.desc,
+			d.fields.descEn,
+			d.fields.docs,
 			d.fields.bsDD
 		];
 		self.form.create(null, self, self);
@@ -4494,91 +4502,91 @@ at.freebim.db.domain.Discipline = {
 		self.table = Object.create(net.spectroom.js.table);
 		self.table.add = true;
 		self.table.edit = true;
-		self.table.dataCallback = function(row) {
+		self.table.dataCallback = function (row) {
 			return d.get(self.arr[row]);
 		};
 		self.table.idCol = nf.NODEID;
 		self.table.csv = "code" + self.table.csvDelim
-						+ "freeBIM-ID" + self.table.csvDelim
-						+ "name-de" + self.table.csvDelim
-						+ "name-en" + self.table.csvDelim
-						+ "description-de" + self.table.csvDelim
-						+ "description-en" + self.table.csvDelim;
-		self.table.cols = [ 
+			+ "freeBIM-ID" + self.table.csvDelim
+			+ "name-de" + self.table.csvDelim
+			+ "name-en" + self.table.csvDelim
+			+ "description-de" + self.table.csvDelim
+			+ "description-en" + self.table.csvDelim;
+		self.table.cols = [
 			d.columns.code, {
-			label : "NAME",
-			field : nf.NAME,
-			type : "custom",
-			createCell : function (tr, td, row, col) {
-				var v = self.table.dataCallback(row)
-				jq(td).attr("maxLength", "32");
-				d.renderNode(v, td);
-			},
-			cl : "freebim-item Discipline",
-			sortValue : function (row) {
-				var v = self.table.dataCallback(row);
-				return v[nf.NAME];
-			},
-			sort : true,
-			csv : function (row, col) {
-				var v = self.table.dataCallback(row);
-				return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]) + d.csv(v[nf.NAME_EN]);
-			}
-		}, {
-			label : "DESCRIPTION",
-			field : nf.DESC,
-			type : "text",
-			maxlen : 32,
-			sort : true,
-			csv : function (row, col) {
-				var v = self.table.dataCallback(row);
-				return d.csv(v[nf.DESC]) + d.csv(v[nf.DESC_EN]) ;
-			}
-		}, {
-			label : "REFERENCED",
-			field : nf.PARAMETER,
-			type : "custom",
-			createCell : function(tr, td, row, col) {
-				self.showRelations(td, row, nf.PARAMETER, "IN", "Parameter");
-			},
-			sort : true,
-			sortValue : function(row) {
-				var v = self.table.dataCallback(row); 
-				if (v) {
-					return self.relevantRelCount(v, nf.PARAMETER, "Parameter");
-				} 
-				return 0;
-			},
-			csv : false
-		} ];
+				label: "NAME",
+				field: nf.NAME,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					var v = self.table.dataCallback(row)
+					jq(td).attr("maxLength", "32");
+					d.renderNode(v, td);
+				},
+				cl: "freebim-item Discipline",
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					return v[nf.NAME];
+				},
+				sort: true,
+				csv: function (row, col) {
+					var v = self.table.dataCallback(row);
+					return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]) + d.csv(v[nf.NAME_EN]);
+				}
+			}, {
+				label: "DESCRIPTION",
+				field: nf.DESC,
+				type: "text",
+				maxlen: 32,
+				sort: true,
+				csv: function (row, col) {
+					var v = self.table.dataCallback(row);
+					return d.csv(v[nf.DESC]) + d.csv(v[nf.DESC_EN]);
+				}
+			}, {
+				label: "REFERENCED",
+				field: nf.PARAMETER,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					self.showRelations(td, row, nf.PARAMETER, "IN", "Parameter");
+				},
+				sort: true,
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					if (v) {
+						return self.relevantRelCount(v, nf.PARAMETER, "Parameter");
+					}
+					return 0;
+				},
+				csv: false
+			}];
 		self.base.postInit(self, true);
 
 	}
 }; // at.freebim.db.domain.Discipline
 
 at.freebim.db.domain.Document = {
-	className : "Document",
-	i18n : "CLAZZ_DOCUMENT",
-	title : net.spectroom.js.i18n.g("CLAZZ_DOCUMENT"), // "Dokument",
-	arr : null,
-	aux : true,
+	className: "Document",
+	i18n: "CLAZZ_DOCUMENT",
+	title: net.spectroom.js.i18n.g("CLAZZ_DOCUMENT"), // "Dokument",
+	arr: null,
+	aux: true,
 
-	init : function() {
+	init: function () {
 		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, f = d.filters, self = d.Document;
 		if (self.initialized) {
 			return;
 		}
-		self.relations =  [rf.make(nf.NODES, d.RelationTypeEnum.DOCUMENTED_IN, "DocumentedIn", "IN")];
-		
+		self.relations = [rf.make(nf.NODES, d.RelationTypeEnum.DOCUMENTED_IN, "DocumentedIn", "IN")];
+
 		self.base = Object.create(d.BaseNode);
 		self.base.init(self, "document");
 
 		self.form = Object.create(net.spectroom.js.form);
-		self.form.fields = [ 
-			d.fields.nodeId, 
+		self.form.fields = [
+			d.fields.nodeId,
 			d.fields.validFrom,
-			d.fields.validTo, 
-			d.fields.name, 
+			d.fields.validTo,
+			d.fields.name,
 			d.fields.desc,
 			d.fields.descEn,
 			d.fields.bsDD
@@ -4589,51 +4597,56 @@ at.freebim.db.domain.Document = {
 		self.table.add = true;
 		self.table.edit = true;
 		self.table.filters = [
-			{ add : f.text, 
-				f : f.filterByName
-			}, 
-			{ add : f.mark,
-				f : function (node, filter, opt) {
-	    			if (db.isMarked(node[nf.NODEID])) {
-	    				return false;
-	    			}
-	    			if (!f.filterMarkedRelated(node[nf.NODES], "IN")) {
-	    				return false;
-	    			}
-	    			return true;
+			{
+				add: f.text,
+				f: f.filterByName
+			},
+			{
+				add: f.mark,
+				f: function (node, filter, opt) {
+					if (db.isMarked(node[nf.NODEID])) {
+						return false;
+					}
+					if (!f.filterMarkedRelated(node[nf.NODES], "IN")) {
+						return false;
+					}
+					return true;
 				}
 			},
-			{ add : f.lib,
-				f : f.filterByLib
+			{
+				add: f.lib,
+				f: f.filterByLib
 			},
-			{ add : f.bsdd, 
-				f : undefined
-			}, 
-			{ add : f.bsddLoaded, 
-				f : undefined
+			{
+				add: f.bsdd,
+				f: undefined
+			},
+			{
+				add: f.bsddLoaded,
+				f: undefined
 			}
 		];
-		
-		self.table.dataCallback = function(row) {
+
+		self.table.dataCallback = function (row) {
 			return d.get(self.arr[row]);
 		};
 		self.table.idCol = nf.NODEID;
 		self.table.csv = "freeBIM-ID" + self.table.csvDelim
-						+ "name" + self.table.csvDelim
-						+ "description-de" + self.table.csvDelim
-						+ "description-en" + self.table.csvDelim;
-		self.table.cols = [ {
-			label : "NAME",
-			field : nf.NAME,
-			type : "custom",
-			cl : "freebim-item Document",
-			createCell : function(tr, td, row, col) {
+			+ "name" + self.table.csvDelim
+			+ "description-de" + self.table.csvDelim
+			+ "description-en" + self.table.csvDelim;
+		self.table.cols = [{
+			label: "NAME",
+			field: nf.NAME,
+			type: "custom",
+			cl: "freebim-item Document",
+			createCell: function (tr, td, row, col) {
 				var v = self.table.dataCallback(row); // v is a Document
 				if (v) {
 					jq(td).attr("maxLength", "32");
 					d.renderNode(v, td);
 					var name = v[nf.NAME];
-					if (name.indexOf("http") == 0) {
+					if (name != null && name.indexOf("http") == 0) {
 						// it seems to be a link ...
 						var a = document.createElement("a");
 						a.href = v[nf.NAME];
@@ -4642,31 +4655,31 @@ at.freebim.db.domain.Document = {
 					}
 				}
 			},
-			sort : true,
-			csv : function (row, col) {
+			sort: true,
+			csv: function (row, col) {
 				var v = self.table.dataCallback(row);
 				return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]);
 			}
 		}, {
-			label : "DESCRIPTION",
-			field : nf.DESC,
-			type : "text",
-			maxlen : 32,
-			sort : true,
-			csv : function (row, col) {
+			label: "DESCRIPTION",
+			field: nf.DESC,
+			type: "text",
+			maxlen: 32,
+			sort: true,
+			csv: function (row, col) {
 				var v = self.table.dataCallback(row);
 				return d.csv(v[nf.DESC]) + d.csv(v[nf.DESC_EN]);
 			}
 		},
 		{
-			label : "REFERENCED",
-			field : nf.NODES,
-			type : "custom",
-			createCell : function(tr, td, row, col) {
+			label: "REFERENCED",
+			field: nf.NODES,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				self.showRelations(td, row, nf.NODES, "IN", undefined);
 			},
-			sort : true,
-			sortValue : function(row) {
+			sort: true,
+			sortValue: function (row) {
 				var v = self.table.dataCallback(row); // v is a Document
 				if (v) {
 					return self.relevantRelCount(v, nf.NODES, undefined);
@@ -4674,22 +4687,22 @@ at.freebim.db.domain.Document = {
 					return 0;
 				}
 			},
-			csv : false
-		} ];
+			csv: false
+		}];
 		self.base.postInit(self, true);
 
 	}
 }; // at.freebim.db.domain.Document
 
 at.freebim.db.domain.Library = {
-	className : "Library",
-	i18n : "CLAZZ_LIBRARY",
-	title : net.spectroom.js.i18n.g("CLAZZ_LIBRARY"), // "Bibliothek",
-	arr : null,
-	isContributed : true,
-	isHierarchical : true,
-	
-	getNameOf : function (entity, elem) {
+	className: "Library",
+	i18n: "CLAZZ_LIBRARY",
+	title: net.spectroom.js.i18n.g("CLAZZ_LIBRARY"), // "Bibliothek",
+	arr: null,
+	isContributed: true,
+	isHierarchical: true,
+
+	getNameOf: function (entity, elem) {
 		var nf = at.freebim.db.domain.NodeFields;
 		if (entity) {
 			if (elem) {
@@ -4699,66 +4712,66 @@ at.freebim.db.domain.Library = {
 		}
 		return "";
 	},
-	getDescOf : function (entity) {
+	getDescOf: function (entity) {
 		var nf = at.freebim.db.domain.NodeFields;
 		return ((entity && entity[nf.DESC]) ? entity[nf.DESC] : "");
 	},
 
-	init : function() {
+	init: function () {
 		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, self = d.Library;
 		if (self.initialized) {
 			return;
 		}
-		self.relations =  [rf.make(nf.RESPONSIBLE, d.RelationTypeEnum.RESPONSIBLE, "Responsible", "IN")];
+		self.relations = [rf.make(nf.RESPONSIBLE, d.RelationTypeEnum.RESPONSIBLE, "Responsible", "IN")];
 
 		self.base = Object.create(d.BaseNode);
 		self.base.init(self, "libraries");
-		
+
 		self.form = Object.create(net.spectroom.js.form);
-		self.form.fields = [ 
-			d.fields.nodeId, 
+		self.form.fields = [
+			d.fields.nodeId,
 			d.fields.validFrom,
-			d.fields.validTo, 
+			d.fields.validTo,
 			d.fields.name, {
-				label : "URL",
-				type : "text",
-				field : nf.URL
-			}, 
+				label: "URL",
+				type: "text",
+				field: nf.URL
+			},
 			d.fields.desc, {
-				label : "IFD_LANGUAGE",
-				type : "text",
-				field : nf.LANGUAGE
+				label: "IFD_LANGUAGE",
+				type: "text",
+				field: nf.LANGUAGE
 			}, {
-				label : "RESPONSIBLE_CONTRIBUTORS",
-				type : "custom",
-				field : nf.RESPONSIBLE,
-				createField : function (form, i, ip) {
+				label: "RESPONSIBLE_CONTRIBUTORS",
+				type: "custom",
+				field: nf.RESPONSIBLE,
+				createField: function (form, i, ip) {
 					var orderable = false;
 					d.relationFormField(form, i, ip, orderable, d.Contributor.title, d.RelationTypeEnum.RESPONSIBLE, nf.RESPONSIBLE, "Contributor", "IN");
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					d.setEntityValue(form.clazz, i, ip, entity, nf.RESPONSIBLE, "Contributor", "IN");
 				}
 			}, {
-				label : "ASSIGNED_COMPONENTS",
-				type : "custom",
-				field : nf.CHILDS,
-				createField : function (form, i, ip) {
+				label: "ASSIGNED_COMPONENTS",
+				type: "custom",
+				field: nf.CHILDS,
+				createField: function (form, i, ip) {
 					var orderable = true;
 					d.relationFormField(form, i, ip, orderable, d.Component.title, d.RelationTypeEnum.PARENT_OF, nf.CHILDS, "Component", "OUT");
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					d.setEntityValue(form.clazz, i, ip, entity, nf.CHILDS, "Component", "OUT");
 				}
-			}, 
+			},
 			{
-				label : "ASSIGNED_TO",
-				type : "custom",
-				field : nf.PARENTS,
-				createField : function (form, i, ip) {
-					
+				label: "ASSIGNED_TO",
+				type: "custom",
+				field: nf.PARENTS,
+				createField: function (form, i, ip) {
+
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					var bbnId = d.bbnId, div = document.createElement("div");
 					jq(ip).append(div);
 					if (entity) {
@@ -4773,10 +4786,10 @@ at.freebim.db.domain.Library = {
 						}
 						d.getOrLoad(bbnId, d.BigBangNode.className, function (bbn) {
 							d.renderNode(bbn, div);
-						});				
+						});
 					}
 				}
-			}, 
+			},
 			d.fields.docs
 		];
 		self.form.create(null, self, self);
@@ -4784,251 +4797,251 @@ at.freebim.db.domain.Library = {
 		self.table = Object.create(net.spectroom.js.table);
 		self.table.add = true;
 		self.table.edit = true;
-		self.table.dataCallback = function(row) {
+		self.table.dataCallback = function (row) {
 			return d.get(self.arr[row]);
 		};
 		self.table.idCol = nf.NODEID;
 		self.table.csv = "freeBIM-ID" + self.table.csvDelim
-						+ "name" + self.table.csvDelim
-						+ "description" + self.table.csvDelim
-						+ "URL" + self.table.csvDelim
-						+ "language" + self.table.csvDelim;
+			+ "name" + self.table.csvDelim
+			+ "description" + self.table.csvDelim
+			+ "URL" + self.table.csvDelim
+			+ "language" + self.table.csvDelim;
 		self.table.cols = [
-				{
-					label : "NAME",
-					field : nf.NAME,
-					type : "custom",
-					createCell : function (tr, td, row, col) {
-						var v = self.table.dataCallback(row);
-						jq(td).attr("maxLength", 32);
-						d.renderNode(v, td);
-					},
-					cl : "freebim-item Library",
-					sortValue : function (row) {
-						var v = self.table.dataCallback(row);
-						return d.Library.getNameOf(v);
-					},
-					sort : true,
-					csv : function (row, col) {
-						var v = self.table.dataCallback(row);
-						return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]);
+			{
+				label: "NAME",
+				field: nf.NAME,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					var v = self.table.dataCallback(row);
+					jq(td).attr("maxLength", 32);
+					d.renderNode(v, td);
+				},
+				cl: "freebim-item Library",
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					return d.Library.getNameOf(v);
+				},
+				sort: true,
+				csv: function (row, col) {
+					var v = self.table.dataCallback(row);
+					return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]);
+				}
+			},
+			{
+				label: "DESCRIPTION",
+				field: nf.DESC,
+				type: "text",
+				maxlen: 32,
+				sort: true,
+				csv: function (row, col) {
+					var v = self.table.dataCallback(row);
+					return d.csv(v[nf.DESC]);
+				}
+			},
+			{
+				label: "URL",
+				field: nf.URL,
+				type: "text",
+				maxlen: 32,
+				sort: true,
+				csv: function (row, col) {
+					var v = self.table.dataCallback(row);
+					return d.csv(v[nf.URL]);
+				}
+			}, {
+				label: "IFD_LANGUAGE",
+				field: nf.LANGUAGE,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					var v = self.table.dataCallback(row),
+						lc;
+					if (v && v[nf.LANGUAGE]) {
+						lc = v[nf.LANGUAGE].substr(v[nf.LANGUAGE].length - 2, 2).toUpperCase();
+						jq(td).html("<img title='" + v[nf.LANGUAGE] + "' alt='" + v[nf.LANGUAGE] + "' width='16px' src='/resources/flags/64/" + lc + ".png'>");
 					}
 				},
-				{
-					label : "DESCRIPTION",
-					field : nf.DESC,
-					type : "text",
-					maxlen : 32,
-					sort : true,
-					csv : function (row, col) {
-						var v = self.table.dataCallback(row);
-						return d.csv(v[nf.DESC]);
-					}
+				csv: function (row, col) {
+					var v = self.table.dataCallback(row);
+					return d.csv(v[nf.LANGUAGE]);
+				}
+			},
+			{
+				label: "UPDATED",
+				field: nf.TIMESTAMP,
+				type: "callback",
+				data: function (v, td) {
+					var date = db.time.formatISO(v);
+					return date;
 				},
-				{
-					label : "URL",
-					field : nf.URL,
-					type : "text",
-					maxlen : 32,
-					sort : true,
-					csv : function (row, col) {
-						var v = self.table.dataCallback(row);
-						return d.csv(v[nf.URL]);
-					}
-				} , {
-					label : "IFD_LANGUAGE",
-					field : nf.LANGUAGE,
-					type : "custom",
-					createCell : function (tr, td, row, col) {
-						var v = self.table.dataCallback(row),
-							lc;
-						if (v && v[nf.LANGUAGE]) {
-							lc = v[nf.LANGUAGE].substr(v[nf.LANGUAGE].length - 2, 2).toUpperCase();
-							jq(td).html("<img title='" + v[nf.LANGUAGE] + "' alt='" + v[nf.LANGUAGE] + "' width='16px' src='/resources/flags/64/" + lc + ".png'>");
-						}
-					},
-					csv : function (row, col) {
-						var v = self.table.dataCallback(row);
-						return d.csv(v[nf.LANGUAGE]);
-					}
-				},
-				{
-					label : "UPDATED",
-					field : nf.TIMESTAMP,
-					type : "callback",
-					data : function(v, td) {
-						var date = db.time.formatISO(v);
-						return date;
-					},
-					sort : true,
-					csv: false
-				}];
+				sort: true,
+				csv: false
+			}];
 		self.base.postInit(self, true);
 	}
 }; // at.freebim.db.domain.Library
 
 at.freebim.db.domain.Phase = {
-	className : "Phase",
-	i18n : "CLAZZ_PHASE",
-	title : net.spectroom.js.i18n.g("CLAZZ_PHASE"), // "Projektphase",
-	arr : null,
-	isContributed : true,
-	aux : true,
+	className: "Phase",
+	i18n: "CLAZZ_PHASE",
+	title: net.spectroom.js.i18n.g("CLAZZ_PHASE"), // "Projektphase",
+	arr: null,
+	isContributed: true,
+	aux: true,
 
-	init : function() {
+	init: function () {
 		var d = at.freebim.db.domain, nf = d.NodeFields, self = d.Phase;
 		if (self.initialized) {
 			return;
 		}
-		self.relations =  [];
-		
+		self.relations = [];
+
 		self.base = Object.create(d.BaseNode);
 		self.base.init(self, "phase");
 
 		self.form = Object.create(net.spectroom.js.form);
 		self.form.fields = [
-			d.fields.nodeId, 
+			d.fields.nodeId,
 			d.fields.validFrom,
 			d.fields.validTo,
 			d.fields.code, {
-				label : "COLOR_VALUE",
-				type : "text",
-				field : nf.HEX_COLOR
-			}, 
-			d.fields.name, 
-			d.fields.nameEn, 
-			d.fields.desc, 
-			d.fields.descEn, 
-			d.fields.docs, 
+				label: "COLOR_VALUE",
+				type: "text",
+				field: nf.HEX_COLOR
+			},
+			d.fields.name,
+			d.fields.nameEn,
+			d.fields.desc,
+			d.fields.descEn,
+			d.fields.docs,
 			d.fields.bsDD
 		];
 
 		self.form.create(null, self, self);
 
 		self.table = Object.create(net.spectroom.js.table);
-		self.table.dataCallback = function(row) {
+		self.table.dataCallback = function (row) {
 			return d.get(self.arr[row]);
 		};
 		self.table.add = true;
 		self.table.edit = true;
 		self.table.idCol = nf.NODEID;
 		self.table.csv = "freeBIM-ID" + self.table.csvDelim
-						+ "code" + self.table.csvDelim
-						+ "name-de" + self.table.csvDelim
-						+ "name-en" + self.table.csvDelim
-						+ "description-de" + self.table.csvDelim
-						+ "description-en" + self.table.csvDelim
-						+ "color" + self.table.csvDelim;
-		self.table.cols = [ {
-			label : "CODE",
-			field : nf.CODE,
-			type : "custom",
-			createCell : function (tr, td, row, col) {
+			+ "code" + self.table.csvDelim
+			+ "name-de" + self.table.csvDelim
+			+ "name-en" + self.table.csvDelim
+			+ "description-de" + self.table.csvDelim
+			+ "description-en" + self.table.csvDelim
+			+ "color" + self.table.csvDelim;
+		self.table.cols = [{
+			label: "CODE",
+			field: nf.CODE,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				var v = self.table.dataCallback(row);
 				jq(td).attr("abbr", "1");
 				d.renderNode(v, td);
 			},
-			cl : "freebim-item Phase",
-			sortValue : function (row) {
+			cl: "freebim-item Phase",
+			sortValue: function (row) {
 				var v = self.table.dataCallback(row);
 				return v[nf.CODE];
 			},
-			sort : true,
-			csv : function (row, col) {
+			sort: true,
+			csv: function (row, col) {
 				var v = self.table.dataCallback(row);
-				return  d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.CODE]);
+				return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.CODE]);
 			}
 		}, {
-			label : "NAME",
-			field : nf.NAME,
-			type : "text",
-			maxlen : 32,
-			sort : true,
-			csv : function (row, col) {
+			label: "NAME",
+			field: nf.NAME,
+			type: "text",
+			maxlen: 32,
+			sort: true,
+			csv: function (row, col) {
 				var v = self.table.dataCallback(row);
 				return d.csv(v[nf.NAME]) + d.csv(v[nf.NAME_EN]);
 			}
 		}, {
-			label : "DESCRIPTION",
-			field : nf.DESC,
-			type : "text",
-			maxlen : 32,
-			sort : true,
-			csv : function (row, col) {
+			label: "DESCRIPTION",
+			field: nf.DESC,
+			type: "text",
+			maxlen: 32,
+			sort: true,
+			csv: function (row, col) {
 				var v = self.table.dataCallback(row);
 				return d.csv(v[nf.DESC]) + d.csv(v[nf.DESC_EN]);
 			}
 		}, {
-			label : "COLOR_VALUE",
-			field : nf.HEX_COLOR,
-			type : "callback",
-			data : function(v, tr, td, row, col) {
+			label: "COLOR_VALUE",
+			field: nf.HEX_COLOR,
+			type: "callback",
+			data: function (v, tr, td, row, col) {
 				jq(td).css("background-color", "#" + v);
 				return v;
 			},
-			sort : true,
-			csv : function (row, col) {
+			sort: true,
+			csv: function (row, col) {
 				var v = self.table.dataCallback(row);
 				return d.csv(v[nf.HEX_COLOR]);
 			}
-		} ];
+		}];
 		self.sortfield = nf.CODE;
 		self.base.postInit(self, true);
 	}
 }; // at.freebim.db.domain.Phase
 
 at.freebim.db.domain.Unit = {
-	className : "Unit",
-	i18n : "CLAZZ_UNIT",
-	title : net.spectroom.js.i18n.g("CLAZZ_UNIT"), // "Einheit",
-	arr : null,
-	isContributed : true,
-	aux : true,
+	className: "Unit",
+	i18n: "CLAZZ_UNIT",
+	title: net.spectroom.js.i18n.g("CLAZZ_UNIT"), // "Einheit",
+	arr: null,
+	isContributed: true,
+	aux: true,
 
-	init : function() {
+	init: function () {
 		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, self = d.Unit, f = d.filters;
 		if (self.initialized) {
 			return;
 		}
-		self.relations =  [rf.make(nf.UNIT_CONVERSION, d.RelationTypeEnum.UNIT_CONVERSION, "UnitConversion", "BOTH"),
-		                   rf.make(nf.MEASURES, d.RelationTypeEnum.OF_UNIT, "OfUnit", "IN")];
-		
+		self.relations = [rf.make(nf.UNIT_CONVERSION, d.RelationTypeEnum.UNIT_CONVERSION, "UnitConversion", "BOTH"),
+		rf.make(nf.MEASURES, d.RelationTypeEnum.OF_UNIT, "OfUnit", "IN")];
+
 		self.base = Object.create(d.BaseNode);
 		self.base.init(self, "unit");
 
 		self.form = Object.create(net.spectroom.js.form);
 
-		self.form.fields = [ 
+		self.form.fields = [
 			d.fields.nodeId,
 			d.fields.validFrom,
 			d.fields.validTo, {
-				label : "CODE",
-				type : "text",
-				field : nf.CODE
-			}, 
+				label: "CODE",
+				type: "text",
+				field: nf.CODE
+			},
 			d.fields.name,
 			d.fields.nameEn,
-			d.fields.desc, 
+			d.fields.desc,
 			d.fields.descEn, {
-				label : "CONVERSIONS",
-				type : "custom",
-				field : nf.UNIT_CONVERSION,
-				createField : function (form, i, ip) {
+				label: "CONVERSIONS",
+				type: "custom",
+				field: nf.UNIT_CONVERSION,
+				createField: function (form, i, ip) {
 					var orderable = false;
-					relAdded = function (rel, okFn) { 
+					relAdded = function (rel, okFn) {
 						// rel is the just created relation
 						d.rel.UnitConversion.init();
-						jq(d.rel.Equals).trigger("at.freebim.db.domain.rel.UnitConversion.edit", [{rel: rel, okFn: okFn}]);
+						jq(d.rel.Equals).trigger("at.freebim.db.domain.rel.UnitConversion.edit", [{ rel: rel, okFn: okFn }]);
 					};
 					d.relationFormField(form, i, ip, orderable, self.title, d.RelationTypeEnum.UNIT_CONVERSION, nf.UNIT_CONVERSION, self.className, "BOTH", relAdded);
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					var relClicked = function (rel) {
 						var okFn = function () {
 							form.setEntityValue(i, entity, ip);
 						};
 						d.rel.UnitConversion.init();
-						jq(d.rel.UnitConversion).trigger("at.freebim.db.domain.rel.UnitConversion.edit", [{rel: rel, okFn: okFn}]);
+						jq(d.rel.UnitConversion).trigger("at.freebim.db.domain.rel.UnitConversion.edit", [{ rel: rel, okFn: okFn }]);
 
 					}, relInfo = function (el, rel) {
 						var okFn = function (txt) {
@@ -5037,7 +5050,7 @@ at.freebim.db.domain.Unit = {
 							jq(sub).appendTo(el);
 						};
 						d.rel.UnitConversion.init();
-						jq(d.rel.UnitConversion).trigger("unitConversionRel", [{rel: rel, okFn: okFn, unit: entity}]);
+						jq(d.rel.UnitConversion).trigger("unitConversionRel", [{ rel: rel, okFn: okFn, unit: entity }]);
 					};
 					d.setEntityValue(form.clazz, i, ip, entity, nf.UNIT_CONVERSION, self.className, "BOTH", relInfo, relClicked);
 				}
@@ -5053,170 +5066,174 @@ at.freebim.db.domain.Unit = {
 		self.table.add = true;
 		self.table.edit = true;
 		self.table.filters = [
-  			{ add : f.text, 
-  				f : f.filterByCodeAndName
-  			},
-  			{ add : f.mark,
-  				f : function (node, filter, opt) {
-         			if (db.isMarked(node[nf.NODEID])) {
-         				return false;
-         			}
-         			if (!fmr(node.m, "IN")) {
-         				return false;
-         			}
-         			if (!fmr(node[nf.UNIT_CONVERSION], "BOTH")) {
-         				return false;
-         			}
-         			return true;
-                }
-  			},
-  			{ add : f.bsdd, 
-  				f : undefined
-  			}, 
-  			{ add : f.bsddLoaded, 
-  				f : undefined
-  			}
-  		];
-		self.table.dataCallback = function(row) {
+			{
+				add: f.text,
+				f: f.filterByCodeAndName
+			},
+			{
+				add: f.mark,
+				f: function (node, filter, opt) {
+					if (db.isMarked(node[nf.NODEID])) {
+						return false;
+					}
+					if (!fmr(node.m, "IN")) {
+						return false;
+					}
+					if (!fmr(node[nf.UNIT_CONVERSION], "BOTH")) {
+						return false;
+					}
+					return true;
+				}
+			},
+			{
+				add: f.bsdd,
+				f: undefined
+			},
+			{
+				add: f.bsddLoaded,
+				f: undefined
+			}
+		];
+		self.table.dataCallback = function (row) {
 			return d.get(self.arr[row]);
 		};
 		self.table.csv = "code" + self.table.csvDelim
-						+ "freeBIM-ID" + self.table.csvDelim
-						+ "name-de" + self.table.csvDelim
-						+ "name-en" + self.table.csvDelim
-						+ "bsDD-GUID" + self.table.csvDelim
-						+ "description-de" + self.table.csvDelim
-						+ "description-en" + self.table.csvDelim;
+			+ "freeBIM-ID" + self.table.csvDelim
+			+ "name-de" + self.table.csvDelim
+			+ "name-en" + self.table.csvDelim
+			+ "bsDD-GUID" + self.table.csvDelim
+			+ "description-de" + self.table.csvDelim
+			+ "description-en" + self.table.csvDelim;
 		self.table.idCol = nf.NODEID;
-		self.table.cols = [ 
+		self.table.cols = [
 			d.columns.code, {
-			label : "NAME",
-			field : nf.NAME,
-			type : "custom",
-			createCell : function (tr, td, row, col) {
-				var v = self.table.dataCallback(row);
-				jq(td).attr("maxLength", 32)
-					.draggable(db.tree.dragOptions)
-					.droppable({
-						accept: ".freebim-item.Unit",
-						hoverClass: "drop-hover",
-						tolerance: "pointer",
-						drop: function(event, ui) {
-							var srcId = jq(ui.draggable).attr("nodeid"), // id of dragged Unit
-								targetId = jq(this).attr("nodeid"), // id of target Unit
-								targetUnit = d.get(targetId), // create new UnitConversion relation
-								r = {}, 
-								okFn = function (rel) {
-									d.addModifiedNode(srcId);
-									d.addModifiedNode(targetId);
-									if (!targetUnit[nf.UNIT_CONVERSION]) {
-										targetUnit[nf.UNIT_CONVERSION] = [];
-									}
-									targetUnit[nf.UNIT_CONVERSION].push(rel);
-									jq(document).trigger("_save", [{entity: targetUnit}]);
-								};
-							r[rf.TYPE] = d.RelationTypeEnum.UNIT_CONVERSION; 
-							r[rf.ID] = null;
-							r[rf.QUALITY] = 1;
-							r[rf.FROM_NODE] = srcId;
-							r[rf.TO_NODE] = targetId;
-							d.rel.UnitConversion.init();
-							jq(d.rel.UnitConversion).trigger("at.freebim.db.domain.rel.UnitConversion.edit", [{rel: r, okFn: okFn}]);
-						}
-					});
-				d.renderNode(v, td);
-			},
-			csv : function (row, col) {
-				var v = self.table.dataCallback(row);
-				return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]) + d.csv(v[nf.NAME_EN]) + d.csv(v[nf.BSDD_GUID]);
-			},
-			cl : "freebim-item Unit",
-			sort : true
-		}, {
-			label : "DESCRIPTION",
-			field : nf.DESC,
-			type : "text",
-			maxlen : 32,
-			csv : function (row, col) {
-				var v = self.table.dataCallback(row);
-				return d.csv(v[nf.DESC]) + d.csv(v[nf.DESC_EN]);
-			},
-			sort : true
-		}, {
-			label : "REFERENCED",
-			field : nf.MEASURES,
-			type : "custom",
-			createCell : function(tr, td, row, col) {
-				self.showRelations(td, row, nf.MEASURES, "IN", "Measure");
-			},
-			sort : true,
-			sortValue : function(row) {
-				var v = self.table.dataCallback(row); 
-				if (v) {
-					return self.relevantRelCount(v, nf.MEASURES, "Measure");
-				} 
-				return 0;
-			},
-			csv : false
-		}, {
-			label : "CONVERSIONS",
-			field : nf.UNIT_CONVERSION,
-			type : "custom",
-			createCell : function(tr, td, row, col) {
-				self.showRelations(td, row, nf.UNIT_CONVERSION, "BOTH", "Unit");
-			},
-			cl : "Unit",
-			sort : true,
-			sortValue : function(row) {
-				var v = self.table.dataCallback(row); // v is a Unit
-				if (v) {
-					return self.relevantRelCount(v, nf.UNIT_CONVERSION, "Unit");
-				} 
-				return 0;
-			},
-			csv : false
-		} ];
+				label: "NAME",
+				field: nf.NAME,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					var v = self.table.dataCallback(row);
+					jq(td).attr("maxLength", 32)
+						.draggable(db.tree.dragOptions)
+						.droppable({
+							accept: ".freebim-item.Unit",
+							hoverClass: "drop-hover",
+							tolerance: "pointer",
+							drop: function (event, ui) {
+								var srcId = jq(ui.draggable).attr("nodeid"), // id of dragged Unit
+									targetId = jq(this).attr("nodeid"), // id of target Unit
+									targetUnit = d.get(targetId), // create new UnitConversion relation
+									r = {},
+									okFn = function (rel) {
+										d.addModifiedNode(srcId);
+										d.addModifiedNode(targetId);
+										if (!targetUnit[nf.UNIT_CONVERSION]) {
+											targetUnit[nf.UNIT_CONVERSION] = [];
+										}
+										targetUnit[nf.UNIT_CONVERSION].push(rel);
+										jq(document).trigger("_save", [{ entity: targetUnit }]);
+									};
+								r[rf.TYPE] = d.RelationTypeEnum.UNIT_CONVERSION;
+								r[rf.ID] = null;
+								r[rf.QUALITY] = 1;
+								r[rf.FROM_NODE] = srcId;
+								r[rf.TO_NODE] = targetId;
+								d.rel.UnitConversion.init();
+								jq(d.rel.UnitConversion).trigger("at.freebim.db.domain.rel.UnitConversion.edit", [{ rel: r, okFn: okFn }]);
+							}
+						});
+					d.renderNode(v, td);
+				},
+				csv: function (row, col) {
+					var v = self.table.dataCallback(row);
+					return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]) + d.csv(v[nf.NAME_EN]) + d.csv(v[nf.BSDD_GUID]);
+				},
+				cl: "freebim-item Unit",
+				sort: true
+			}, {
+				label: "DESCRIPTION",
+				field: nf.DESC,
+				type: "text",
+				maxlen: 32,
+				csv: function (row, col) {
+					var v = self.table.dataCallback(row);
+					return d.csv(v[nf.DESC]) + d.csv(v[nf.DESC_EN]);
+				},
+				sort: true
+			}, {
+				label: "REFERENCED",
+				field: nf.MEASURES,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					self.showRelations(td, row, nf.MEASURES, "IN", "Measure");
+				},
+				sort: true,
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					if (v) {
+						return self.relevantRelCount(v, nf.MEASURES, "Measure");
+					}
+					return 0;
+				},
+				csv: false
+			}, {
+				label: "CONVERSIONS",
+				field: nf.UNIT_CONVERSION,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					self.showRelations(td, row, nf.UNIT_CONVERSION, "BOTH", "Unit");
+				},
+				cl: "Unit",
+				sort: true,
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row); // v is a Unit
+					if (v) {
+						return self.relevantRelCount(v, nf.UNIT_CONVERSION, "Unit");
+					}
+					return 0;
+				},
+				csv: false
+			}];
 		self.base.postInit(self, true);
 	}
 
 }; // at.freebim.db.domain.Unit
 
 at.freebim.db.domain.ValueListEntry = {
-	className : "ValueListEntry",
-	i18n : "CLAZZ_VALUELISTENTRY",
-	title : net.spectroom.js.i18n.g("CLAZZ_VALUELISTENTRY"), // "Wert",
-	arr : null,
-	isContributed : true,
+	className: "ValueListEntry",
+	i18n: "CLAZZ_VALUELISTENTRY",
+	title: net.spectroom.js.i18n.g("CLAZZ_VALUELISTENTRY"), // "Wert",
+	arr: null,
+	isContributed: true,
 
-	init : function() {
-		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, 
+	init: function () {
+		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields,
 			f = d.filters, self = d.ValueListEntry;
 		if (self.initialized) {
 			return;
 		}
-		self.relations =  [rf.make(nf.LISTS, d.RelationTypeEnum.HAS_ENTRY, "HasEntry", "IN")];
-		
+		self.relations = [rf.make(nf.LISTS, d.RelationTypeEnum.HAS_ENTRY, "HasEntry", "IN")];
+
 		self.base = Object.create(d.BaseNode);
 		self.base.init(self, "valuelistentry");
-		
+
 		d.ValueList.init();
 
 		self.form = Object.create(net.spectroom.js.form);
-		self.form.fields = [ 
-			d.fields.nodeId, 
-			d.fields.validFrom, 
+		self.form.fields = [
+			d.fields.nodeId,
+			d.fields.validFrom,
 			d.fields.validTo,
 			d.fields.name,
 			d.fields.nameEn,
-			d.fields.desc, 
-			d.fields.descEn, 
-			d.fields.state, 
+			d.fields.desc,
+			d.fields.descEn,
+			d.fields.state,
 			d.fields.statusComment, {
-				label : "COMMENT",
-				type : "text",
-				field : nf.COMMENT
-			}, 
-			d.fields.docs, 
+				label: "COMMENT",
+				type: "text",
+				field: nf.COMMENT
+			},
+			d.fields.docs,
 			d.fields.bsDD
 		];
 		self.form.create(null, self, self);
@@ -5225,15 +5242,17 @@ at.freebim.db.domain.ValueListEntry = {
 		self.table.add = true;
 		self.table.edit = true;
 		self.table.filters = [
-      		{ add : f.text, 
-      			f : f.filterByName
-      		},
-      		{ add : f.mark,
-      			f : function (node, filter, opt) {
-      				var fmr = f.filterMarkedRelated;
-  	    			if (db.isMarked(node[nf.NODEID])) {
-  	    				return false;
-  	    			}
+			{
+				add: f.text,
+				f: f.filterByName
+			},
+			{
+				add: f.mark,
+				f: function (node, filter, opt) {
+					var fmr = f.filterMarkedRelated;
+					if (db.isMarked(node[nf.NODEID])) {
+						return false;
+					}
 					if (!fmr(node[nf.LISTS], "IN")) {
 						return false;
 					}
@@ -5245,275 +5264,283 @@ at.freebim.db.domain.ValueListEntry = {
 					}
 					return true;
 				}
-      		},
-      		{ add : f.lib,
-				f : f.filterByLib
 			},
-			{ add : f.bsdd, 
-				f : undefined
-			}, 
-			{ add : f.bsddLoaded, 
-				f : undefined
+			{
+				add: f.lib,
+				f: f.filterByLib
+			},
+			{
+				add: f.bsdd,
+				f: undefined
+			},
+			{
+				add: f.bsddLoaded,
+				f: undefined
 			}
-      	];
-		
-		self.table.dataCallback = function(row) {
+		];
+
+		self.table.dataCallback = function (row) {
 			return d.get(self.arr[row]);
 		};
 		self.table.idCol = nf.NODEID;
 		self.table.csv = "freeBIM-ID" + self.table.csvDelim
-						+ "name-de" + self.table.csvDelim
-						+ "name-en" + self.table.csvDelim
-						+ "description-de" + self.table.csvDelim
-						+ "description-en" + self.table.csvDelim
-						+ "comment" + self.table.csvDelim
-						+ "status" + self.table.csvDelim;
-		self.table.cols = [ {
-			label : "NAME",
-			field : nf.NAME,
-			type : "custom",
-			createCell : function (tr, td, row, col) {
+			+ "name-de" + self.table.csvDelim
+			+ "name-en" + self.table.csvDelim
+			+ "description-de" + self.table.csvDelim
+			+ "description-en" + self.table.csvDelim
+			+ "comment" + self.table.csvDelim
+			+ "status" + self.table.csvDelim;
+		self.table.cols = [{
+			label: "NAME",
+			field: nf.NAME,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				var v = self.table.dataCallback(row);
 				jq(td).attr("maxLength", "32");
 				d.renderNode(v, td);
 			},
-			cl : "freebim-item ValueListEntry",
-			sortValue : function (row) {
+			cl: "freebim-item ValueListEntry",
+			sortValue: function (row) {
 				var v = self.table.dataCallback(row);
 				return d.ValueListEntry.getNameOf(v);
 			},
-			sort : true,
-			csv : function (row, col) {
+			sort: true,
+			csv: function (row, col) {
 				var v = self.table.dataCallback(row);
 				return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]) + d.csv(v[nf.NAME_EN]);
 			}
 		}, {
-			label : "DESCRIPTION",
-			field : nf.DESC,
-			type : "custom",
-			createCell : function (tr, td, row, col) {
-				var nodeId = self.arr[row], 
-				node = d.get(nodeId),
-				desc = d.ValueListEntry.getDescOf(node);
+			label: "DESCRIPTION",
+			field: nf.DESC,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
+				var nodeId = self.arr[row],
+					node = d.get(nodeId),
+					desc = d.ValueListEntry.getDescOf(node);
 				jq(td).html(net.spectroom.js.shrinkText(desc, 64, td)).addClass("freebim-desc").attr("nodeid", node[nf.NODEID]);
 			},
-			sortValue : function (row) {
+			sortValue: function (row) {
 				var v = self.table.dataCallback(row);
 				return d.ValueListEntry.getDescOf(v);
 			},
-			sort : true,
-			csv : function (row, col) {
+			sort: true,
+			csv: function (row, col) {
 				var v = self.table.dataCallback(row);
 				return d.csv(v[nf.DESC]) + d.csv(v[nf.DESC_EN]);
 			}
 		}, {
-			label : "COMMENT",
-			field : nf.COMMENT,
-			type : "text",
-			maxlen : 32,
-			sort : true
-		}, 
+			label: "COMMENT",
+			field: nf.COMMENT,
+			type: "text",
+			maxlen: 32,
+			sort: true
+		},
 		d.columns.state,
 		{
-			label : "TAB_VALUELISTS",
-			field : nf.LISTS,
-			type : "custom",
-			createCell : function(tr, td, row, col) {
+			label: "TAB_VALUELISTS",
+			field: nf.LISTS,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				self.showRelations(td, row, nf.LISTS, "IN", "ValueList");
 			},
-			cl : "ValueList",
-			sort : true,
-			sortValue : function(row) {
-				var v = self.table.dataCallback(row); 
+			cl: "ValueList",
+			sort: true,
+			sortValue: function (row) {
+				var v = self.table.dataCallback(row);
 				if (v) {
 					return self.relevantRelCount(v, nf.LISTS, "ValueList");
-				} 
+				}
 				return 0;
 			},
-			csv : false
-		} ];
+			csv: false
+		}];
 		self.base.postInit(self);
 	}
 
 }; // at.freebim.db.domain.ValueListEntry
 
 at.freebim.db.domain.ValueList = {
-	className : "ValueList",
-	i18n : "CLAZZ_VALUELIST",
-	title : net.spectroom.js.i18n.g("CLAZZ_VALUELIST"), // "Werteliste",
-	arr : null,
-	isContributed : true,
+	className: "ValueList",
+	i18n: "CLAZZ_VALUELIST",
+	title: net.spectroom.js.i18n.g("CLAZZ_VALUELIST"), // "Werteliste",
+	arr: null,
+	isContributed: true,
 
-	init : function() {
+	init: function () {
 		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, f = d.filters, self = d.ValueList;
 		if (self.initialized) {
 			return;
 		}
-		self.relations =  [rf.make(nf.HAS_ENTRY, d.RelationTypeEnum.HAS_ENTRY, "HasEntry", "OUT"),
-		                   rf.make(nf.MEASURES, d.RelationTypeEnum.HAS_VALUE, "HasValue", "IN")];
+		self.relations = [rf.make(nf.HAS_ENTRY, d.RelationTypeEnum.HAS_ENTRY, "HasEntry", "OUT"),
+		rf.make(nf.MEASURES, d.RelationTypeEnum.HAS_VALUE, "HasValue", "IN")];
 
 		self.base = Object.create(d.BaseNode);
 		self.base.init(self, "valuelist");
-		
+
 		d.ValueListEntry.init();
 
 		self.form = Object.create(net.spectroom.js.form);
 		d.ValueList.form.fields = [
-				d.fields.nodeId,
-				d.fields.validFrom,
-				d.fields.validTo,
-				d.fields.name,
-				d.fields.nameEn,
-				d.fields.bsDD,
-				{
-					label : "TAB_VALUELISTENTRIES",
-					type : "custom",
-					field : nf.HAS_ENTRY,
-					createField : function (form, i, ip) {
-						var orderable = true;
-						d.relationFormField(form, i, ip, orderable, d.ValueListEntry.title, d.RelationTypeEnum.HAS_ENTRY, nf.HAS_ENTRY, "ValueListEntry");
-					},
-					setEntityValue : function (form, i, entity, ip) {
-						d.setEntityValue(form.clazz, i, ip, entity, nf.HAS_ENTRY, "ValueListEntry", "OUT");
-					}
+			d.fields.nodeId,
+			d.fields.validFrom,
+			d.fields.validTo,
+			d.fields.name,
+			d.fields.nameEn,
+			d.fields.bsDD,
+			{
+				label: "TAB_VALUELISTENTRIES",
+				type: "custom",
+				field: nf.HAS_ENTRY,
+				createField: function (form, i, ip) {
+					var orderable = true;
+					d.relationFormField(form, i, ip, orderable, d.ValueListEntry.title, d.RelationTypeEnum.HAS_ENTRY, nf.HAS_ENTRY, "ValueListEntry");
 				},
-				d.fields.state,
-				d.fields.statusComment, 
-				d.fields.docs 
-			];
+				setEntityValue: function (form, i, entity, ip) {
+					d.setEntityValue(form.clazz, i, ip, entity, nf.HAS_ENTRY, "ValueListEntry", "OUT");
+				}
+			},
+			d.fields.state,
+			d.fields.statusComment,
+			d.fields.docs
+		];
 		self.form.create(null, self, self);
 
 		self.table = Object.create(net.spectroom.js.table);
 		self.table.add = true;
 		self.table.edit = true;
 		self.table.filters = [
-      		{ add : f.text, 
-      			f : f.filterByName
-      		}, { add : f.mark,
-      			f : function (node, filter, opt) {
-      				var fmr = f.filterMarkedRelated;
-      	    			if (db.isMarked(node[nf.NODEID])) {
-      	    				return false;
-      	    			}		
-						if (!fmr(node[nf.HAS_ENTRY], "OUT")) {
-							return false;
-						}
-						if (!fmr(node[nf.MEASURES], "IN")) {
-							return false;
-						}
-						if (!fmr(node[nf.DOCUMENTED], "OUT")) {
-							return false;
-						}
-						if (!fmr(node[nf.EQUALS], "BOTH")) {
-							return false;
-						}
-						return true;
-      			}
-      		},
-      		{ add : f.lib,
-				f : f.filterByLib
+			{
+				add: f.text,
+				f: f.filterByName
+			}, {
+				add: f.mark,
+				f: function (node, filter, opt) {
+					var fmr = f.filterMarkedRelated;
+					if (db.isMarked(node[nf.NODEID])) {
+						return false;
+					}
+					if (!fmr(node[nf.HAS_ENTRY], "OUT")) {
+						return false;
+					}
+					if (!fmr(node[nf.MEASURES], "IN")) {
+						return false;
+					}
+					if (!fmr(node[nf.DOCUMENTED], "OUT")) {
+						return false;
+					}
+					if (!fmr(node[nf.EQUALS], "BOTH")) {
+						return false;
+					}
+					return true;
+				}
 			},
-			{ add : f.bsdd, 
-				f : undefined
-			}, 
-			{ add : f.bsddLoaded, 
-				f : undefined
+			{
+				add: f.lib,
+				f: f.filterByLib
+			},
+			{
+				add: f.bsdd,
+				f: undefined
+			},
+			{
+				add: f.bsddLoaded,
+				f: undefined
 			}
-      	];
-		self.table.dataCallback = function(row) {
+		];
+		self.table.dataCallback = function (row) {
 			return d.get(self.arr[row]);
 		};
 		self.table.idCol = nf.NODEID;
 		self.table.csv = "freeBIM-ID" + self.table.csvDelim
-						+ "name-de" + self.table.csvDelim
-						+ "name-en" + self.table.csvDelim
-						+ "status" + self.table.csvDelim
-						+ "comment" + self.table.csvDelim;
+			+ "name-de" + self.table.csvDelim
+			+ "name-en" + self.table.csvDelim
+			+ "status" + self.table.csvDelim
+			+ "comment" + self.table.csvDelim;
 		self.table.cols = [
-				{
-					label : "NAME",
-					field : nf.NAME,
-					type : "custom",
-					createCell : function (tr, td, row, col) {
-						var v = self.table.dataCallback(row);
-						jq(td).attr("maxLength", "32");
-						d.renderNode(v, td);
-					},
-					cl : "freebim-item ValueList",
-					sortValue : function (row) {
-						var v = self.table.dataCallback(row);
-						return d.ValueList.getNameOf(v);
-					},
-					sort : true,
-					csv : function (row, col) {
-						var v = self.table.dataCallback(row);
-						return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]) + d.csv(v[nf.NAME_EN]);
-					}
+			{
+				label: "NAME",
+				field: nf.NAME,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					var v = self.table.dataCallback(row);
+					jq(td).attr("maxLength", "32");
+					d.renderNode(v, td);
 				},
-				{
-					label : "TAB_VALUELISTENTRIES",
-					field : nf.HAS_ENTRY,
-					type : "custom",
-					createCell : function(tr, td, row, col) {
-						self.showRelations(td, row, nf.HAS_ENTRY, "OUT", "ValueListEntry");
-					},
-					cl : "ValueListEntry",
-					sort : true,
-					sortValue : function(row) {
-						var v = self.table.dataCallback(row); 
-						if (v) {
-							return self.relevantRelCount(v, nf.HAS_ENTRY, "ValueListEntry");
-						} 
-						return 0;
-					},
-					csv : false
-				}, {
-					label : "TAB_MEASURES",
-					field : nf.MEASURES,
-					type : "custom",
-					createCell : function(tr, td, row, col) {
-						self.showRelations(td, row, nf.MEASURES, "IN", "Measure");
-					},
-					cl : "Measure",
-					sort : true,
-					sortValue : function(row) {
-						var v = self.table.dataCallback(row); 
-						if (v) {
-							return self.relevantRelCount(v, nf.MEASURES, "Measure");
-						} 
-						return 0;
-					},
-					csv : false
-				}, 
-				d.columns.state,
-				{
-					label : "STATUS_COMMENT",
-					field : nf.STATUS_COMMENT,
-					type : "text",
-					sort : false
+				cl: "freebim-item ValueList",
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					return d.ValueList.getNameOf(v);
+				},
+				sort: true,
+				csv: function (row, col) {
+					var v = self.table.dataCallback(row);
+					return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]) + d.csv(v[nf.NAME_EN]);
 				}
-				];
+			},
+			{
+				label: "TAB_VALUELISTENTRIES",
+				field: nf.HAS_ENTRY,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					self.showRelations(td, row, nf.HAS_ENTRY, "OUT", "ValueListEntry");
+				},
+				cl: "ValueListEntry",
+				sort: true,
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					if (v) {
+						return self.relevantRelCount(v, nf.HAS_ENTRY, "ValueListEntry");
+					}
+					return 0;
+				},
+				csv: false
+			}, {
+				label: "TAB_MEASURES",
+				field: nf.MEASURES,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					self.showRelations(td, row, nf.MEASURES, "IN", "Measure");
+				},
+				cl: "Measure",
+				sort: true,
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					if (v) {
+						return self.relevantRelCount(v, nf.MEASURES, "Measure");
+					}
+					return 0;
+				},
+				csv: false
+			},
+			d.columns.state,
+			{
+				label: "STATUS_COMMENT",
+				field: nf.STATUS_COMMENT,
+				type: "text",
+				sort: false
+			}
+		];
 		self.base.postInit(self);
-		
+
 	}
 }; // at.freebim.db.domain.ValueList
 
 at.freebim.db.domain.Parameter = {
-	className : "Parameter",
-	i18n : "CLAZZ_PARAMETER",
-	title : net.spectroom.js.i18n.g("CLAZZ_PARAMETER"), // "Parameter",
-	arr : null,
-	isContributed : true,
+	className: "Parameter",
+	i18n: "CLAZZ_PARAMETER",
+	title: net.spectroom.js.i18n.g("CLAZZ_PARAMETER"), // "Parameter",
+	arr: null,
+	isContributed: true,
 
-	init : function() {
+	init: function () {
 		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, f = d.filters, self = d.Parameter, i18n = net.spectroom.js.i18n;
 		if (self.initialized) {
 			return;
 		}
-		self.relations =  [rf.make(nf.DISCIPLINE, d.RelationTypeEnum.OF_DISCIPLINE, "OfDiscipline", "OUT"),
-		                   rf.make(nf.HP, d.RelationTypeEnum.HAS_PARAMETER, "HasParameter", "IN"),
-		                   rf.make(nf.PSETS, d.RelationTypeEnum.CONTAINS_PARAMETER, "ContainsParameter", "IN"),
-		                   rf.make(nf.MEASURES, d.RelationTypeEnum.HAS_MEASURE, "HasMeasure", "OUT")];
+		self.relations = [rf.make(nf.DISCIPLINE, d.RelationTypeEnum.OF_DISCIPLINE, "OfDiscipline", "OUT"),
+		rf.make(nf.HP, d.RelationTypeEnum.HAS_PARAMETER, "HasParameter", "IN"),
+		rf.make(nf.PSETS, d.RelationTypeEnum.CONTAINS_PARAMETER, "ContainsParameter", "IN"),
+		rf.make(nf.MEASURES, d.RelationTypeEnum.HAS_MEASURE, "HasMeasure", "OUT")];
 
 		self.base = Object.create(d.BaseNode);
 		self.base.init(self, "param");
@@ -5533,55 +5560,55 @@ at.freebim.db.domain.Parameter = {
 			d.fields.desc,
 			d.fields.descEn,
 			{
-				label : "DEFAULT",
-				type : "text",
-				field : nf.DEFAULT
+				label: "DEFAULT",
+				type: "text",
+				field: nf.DEFAULT
 			},
 			{
-				label : "CLAZZ_DISCIPLINE",
-				type : "custom",
-				field : nf.DISCIPLINE,
-				createField : function (form, i, ip) {
+				label: "CLAZZ_DISCIPLINE",
+				type: "custom",
+				field: nf.DISCIPLINE,
+				createField: function (form, i, ip) {
 					var orderable = false;
 					d.relationFormField(form, i, ip, orderable, d.Discipline.title, d.RelationTypeEnum.OF_DISCIPLINE, nf.DISCIPLINE, "Discipline");
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					d.setEntityValue(form.clazz, i, ip, entity, nf.DISCIPLINE, "Discipline", "OUT");
 				}
 			},
 			{
-				label : "TAB_MEASURES",
-				type : "custom",
-				field : nf.MEASURES,
-				createField : function (form, i, ip) {
+				label: "TAB_MEASURES",
+				type: "custom",
+				field: nf.MEASURES,
+				createField: function (form, i, ip) {
 					var orderable = true;
 					d.relationFormField(form, i, ip, orderable, d.Measure.title, d.RelationTypeEnum.HAS_MEASURE, nf.MEASURES, "Measure");
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					d.setEntityValue(form.clazz, i, ip, entity, nf.MEASURES, "Measure", "OUT");
 				}
 			},
 			{
-				label : "ASSIGNED_TO",
-				type : "custom",
-				field : nf.HP,
-				createField : function (form, i, ip) {
+				label: "ASSIGNED_TO",
+				type: "custom",
+				field: nf.HP,
+				createField: function (form, i, ip) {
 					var orderable = false,
-					relAdded = function (rel, okFn) { 
-						// rel is the just created relation
-						d.rel.HasParameter.init();
-						jq(d.rel.HasParameter).trigger("editPhase", [{rel: rel, okFn: okFn}]);
-					};
+						relAdded = function (rel, okFn) {
+							// rel is the just created relation
+							d.rel.HasParameter.init();
+							jq(d.rel.HasParameter).trigger("editPhase", [{ rel: rel, okFn: okFn }]);
+						};
 					d.relationFormField(form, i, ip, orderable, d.Component.title, d.RelationTypeEnum.HAS_PARAMETER, nf.HP, "Component", "IN", relAdded);
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					var relClicked = function (rel) {
 						var okFn = function () {
 							form.setEntityValue(i, entity, ip);
 						};
 						d.rel.HasParameter.init();
-						jq(d.rel.HasParameter).trigger("editPhase", [{rel: rel, okFn: okFn}]);
-	
+						jq(d.rel.HasParameter).trigger("editPhase", [{ rel: rel, okFn: okFn }]);
+
 					}, relInfo = function (el, rel) {
 						var okFn = function (ph) {
 							var sub = document.createElement("sub");
@@ -5590,33 +5617,33 @@ at.freebim.db.domain.Parameter = {
 							jq(sub).removeClass("freebim-contextmenu");
 						};
 						d.rel.HasParameter.init();
-						jq(d.rel.HasParameter).trigger("phaseFromRel", [{rel: rel, okFn: okFn}]);
+						jq(d.rel.HasParameter).trigger("phaseFromRel", [{ rel: rel, okFn: okFn }]);
 					};
 					d.setEntityValue(form.clazz, i, ip, entity, nf.HP, "Component", "IN", relInfo, relClicked);
 				}
 			},
 			{
-				label : "IN_PARAMETER_SET",
-				type : "custom",
-				field : nf.PSETS,
-				createField : function (form, i, ip) {
+				label: "IN_PARAMETER_SET",
+				type: "custom",
+				field: nf.PSETS,
+				createField: function (form, i, ip) {
 					var orderable = true;
 					d.relationFormField(form, i, ip, orderable, d.Measure.title, d.RelationTypeEnum.CONTAINS_PARAMETER, nf.PSETS, "ParameterSet", "IN");
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					d.setEntityValue(form.clazz, i, ip, entity, nf.PSETS, "ParameterSet", "IN");
 				}
 			},
 			{
-				label : "CLAZZ_PARAMETERTYPE",
-				type : "select",
-				field : nf.PARAM_TYPE,
-				values : d.ParameterType.values,
-				data : d.ParameterType.data,
-				dataValue : d.ParameterType.dataValue
-			}, 
+				label: "CLAZZ_PARAMETERTYPE",
+				type: "select",
+				field: nf.PARAM_TYPE,
+				values: d.ParameterType.values,
+				data: d.ParameterType.data,
+				dataValue: d.ParameterType.dataValue
+			},
 			d.fields.state,
-			d.fields.statusComment, 
+			d.fields.statusComment,
 			d.fields.docs,
 			d.fields.bsDD
 		];
@@ -5627,14 +5654,16 @@ at.freebim.db.domain.Parameter = {
 		self.table.add = true;
 		self.table.edit = true;
 		self.table.filters = [
-	  		{ add : f.text, 
-	  			f : f.filterByCodeAndName
-	  		}, { add : f.mark,
-	  			f : function (node, filter, opt) {
-	  				var fmr = f.filterMarkedRelated, comps = node[nf.HP];
-  	    			if (db.isMarked(node[nf.NODEID])) {
-  	    				return false;
-  	    			}
+			{
+				add: f.text,
+				f: f.filterByCodeAndName
+			}, {
+				add: f.mark,
+				f: function (node, filter, opt) {
+					var fmr = f.filterMarkedRelated, comps = node[nf.HP];
+					if (db.isMarked(node[nf.NODEID])) {
+						return false;
+					}
 					if (!fmr(node[nf.DISCIPLINE], "OUT")) {
 						return false;
 					}
@@ -5656,7 +5685,7 @@ at.freebim.db.domain.Parameter = {
 					if (comps && comps.length > 0) {
 						d.rel.HasParameter.init();
 						var ph, r, i, n = comps.length;
-						for (i=0; i<n; i++) {
+						for (i = 0; i < n; i++) {
 							r = comps[i];
 							ph = d.rel.HasParameter.phaseForUuid(r[rf.PHASE]);
 							if (ph && db.isMarked(ph[nf.NODEID])) {
@@ -5666,134 +5695,137 @@ at.freebim.db.domain.Parameter = {
 					}
 					return true;
 				}
-	  		},
-	  		{ add : f.lib,
-				f : f.filterByLib
 			},
-			{ add : f.bsdd, 
-				f : undefined
-			}, 
-			{ add : f.bsddLoaded, 
-				f : undefined
+			{
+				add: f.lib,
+				f: f.filterByLib
+			},
+			{
+				add: f.bsdd,
+				f: undefined
+			},
+			{
+				add: f.bsddLoaded,
+				f: undefined
 			}
-	  	];
-		self.table.dataCallback = function(row) {
+		];
+		self.table.dataCallback = function (row) {
 			return d.get(self.arr[row]);
 		};
 		self.table.idCol = nf.NODEID;
 		self.table.csv = "code" + self.table.csvDelim
-						+ "freeBIM-ID" + self.table.csvDelim
-						+ "name-de" + self.table.csvDelim
-						+ "name-en" + self.table.csvDelim
-						+ "description-de" + self.table.csvDelim
-						+ "description-en" + self.table.csvDelim
-						+ "bsDD-GUID" + self.table.csvDelim
-						+ "type" + self.table.csvDelim
-						+ "status" + self.table.csvDelim;
+			+ "freeBIM-ID" + self.table.csvDelim
+			+ "name-de" + self.table.csvDelim
+			+ "name-en" + self.table.csvDelim
+			+ "description-de" + self.table.csvDelim
+			+ "description-en" + self.table.csvDelim
+			+ "bsDD-GUID" + self.table.csvDelim
+			+ "type" + self.table.csvDelim
+			+ "status" + self.table.csvDelim;
 		self.table.cols = [
-				d.columns.code,
-				{
-					label : "NAME",
-					field : nf.NAME,
-					type : "custom",
-					createCell : function (tr, td, row, col) {
-						var v = self.table.dataCallback(row);
-						jq(td).attr("maxLength", "32");
-						d.renderNode(v, td);
-					},
-					cl : "freebim-item Parameter",
-					sortValue : function (row) {
-						var v = self.table.dataCallback(row);
-						return d.Parameter.getNameOf(v);
-					},
-					sort : true,
-					csv : function (row, col) {
-						var v = self.table.dataCallback(row);
-						return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]) + d.csv(v[nf.NAME_EN]);
-					}
+			d.columns.code,
+			{
+				label: "NAME",
+				field: nf.NAME,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					var v = self.table.dataCallback(row);
+					jq(td).attr("maxLength", "32");
+					d.renderNode(v, td);
 				},
-				{
-					label : "DESCRIPTION",
-					field : nf.DESC,
-					type : "custom",
-					createCell : function (tr, td, row, col) {
-						var nodeId = self.arr[row], 
+				cl: "freebim-item Parameter",
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					return d.Parameter.getNameOf(v);
+				},
+				sort: true,
+				csv: function (row, col) {
+					var v = self.table.dataCallback(row);
+					return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]) + d.csv(v[nf.NAME_EN]);
+				}
+			},
+			{
+				label: "DESCRIPTION",
+				field: nf.DESC,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					var nodeId = self.arr[row],
 						node = d.get(nodeId),
 						desc = d.Parameter.getDescOf(node);
-						jq(td).html(net.spectroom.js.shrinkText(desc, 32, td)).addClass("freebim-desc").attr("nodeid", node[nf.NODEID]);
-					},
-					sortValue : function (row) {
-						var v = self.table.dataCallback(row);
-						return d.Parameter.getDescOf(v);
-					},
-					sort : false,
-					csv : function (row, col) {
-						var v = self.table.dataCallback(row);
-						return d.csv(v[nf.DESC]) + d.csv(v[nf.DESC_EN]) + d.csv(v[nf.BSDD_GUID]);
+					jq(td).html(net.spectroom.js.shrinkText(desc, 32, td)).addClass("freebim-desc").attr("nodeid", node[nf.NODEID]);
+				},
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					return d.Parameter.getDescOf(v);
+				},
+				sort: false,
+				csv: function (row, col) {
+					var v = self.table.dataCallback(row);
+					return d.csv(v[nf.DESC]) + d.csv(v[nf.DESC_EN]) + d.csv(v[nf.BSDD_GUID]);
+				}
+			},
+			{
+				label: "CLAZZ_PARAMETERTYPE",
+				field: nf.PARAM_TYPE,
+				type: "callback",
+				data: d.ParameterType.data,
+				sort: true
+			},
+			{
+				label: "CLAZZ_DISCIPLINE",
+				field: nf.DISCIPLINE,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					var v = self.table.dataCallback(row); // v is a Parameter
+					if (v && v[nf.DISCIPLINE]) { // v[nf.DISCIPLINE] is an array of OfDiscipline relations
+						self.fetchEntries("div", v, nf.DISCIPLINE, "Discipline", "OUT", function (discipline) {
+							jq(td).empty();
+							var j;
+							for (j = 0; j < discipline.length; j++) {
+								td.appendChild(discipline[j]);
+							}
+						}, true);
 					}
 				},
-				{
-					label : "CLAZZ_PARAMETERTYPE",
-					field : nf.PARAM_TYPE,
-					type : "callback",
-					data : d.ParameterType.data,
-					sort : true
+				sort: true,
+				csv: false
+			},
+			{
+				label: "CLAZZ_MEASURE",
+				field: nf.MEASURES,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					self.showRelations(td, row, nf.MEASURES, "OUT", "Measure");
 				},
-				{
-					label : "CLAZZ_DISCIPLINE",
-					field : nf.DISCIPLINE,
-					type : "custom",
-					createCell : function(tr, td, row, col) {
-						var v = self.table.dataCallback(row); // v is a Parameter
-						if (v && v[nf.DISCIPLINE]) { // v[nf.DISCIPLINE] is an array of OfDiscipline relations
-							self.fetchEntries("div", v, nf.DISCIPLINE, "Discipline", "OUT", function(discipline) {
-								jq(td).empty();
-								var j;
-								for (j=0; j<discipline.length; j++) {
-									td.appendChild(discipline[j]);
-								}
-							}, true);
-						}
-					},
-					sort : true,
-					csv : false
+				cl: "Measure",
+				sort: true,
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					if (v) {
+						return self.relevantRelCount(v, nf.MEASURES, "Measure");
+					}
+					return 0;
 				},
-				{
-					label : "CLAZZ_MEASURE",
-					field : nf.MEASURES,
-					type : "custom",
-					createCell : function(tr, td, row, col) {
-						self.showRelations(td, row, nf.MEASURES, "OUT", "Measure");
-					},
-					cl : "Measure",
-					sort : true,
-					sortValue : function(row) {
-						var v = self.table.dataCallback(row); 
-						if (v) {
-							return self.relevantRelCount(v, nf.MEASURES, "Measure");
-						} 
-						return 0;
-					},
-					csv : false
-				}, {
-					label : "TAB_COMPONENTS",
-					field : nf.HP,
-					type : "custom",
-					createCell : function(tr, td, row, col) {
-						self.showRelations(td, row, nf.HP, "IN", "Component");
-					},
-					cl : "Component",
-					sort : true,
-					sortValue : function(row) {
-						var v = self.table.dataCallback(row); 
-						if (v) {
-							return self.relevantRelCount(v, nf.HP, "Component");
-						} 
-						return 0;
-					},
-					csv : false
+				csv: false
+			}, {
+				label: "TAB_COMPONENTS",
+				field: nf.HP,
+				type: "custom",
+				createCell: function (tr, td, row, col) {
+					self.showRelations(td, row, nf.HP, "IN", "Component");
 				},
-				d.columns.state
+				cl: "Component",
+				sort: true,
+				sortValue: function (row) {
+					var v = self.table.dataCallback(row);
+					if (v) {
+						return self.relevantRelCount(v, nf.HP, "Component");
+					}
+					return 0;
+				},
+				csv: false
+			},
+			d.columns.state
 		];
 		self.base.postInit(self);
 		self.table.initialSort = 2;
@@ -5802,58 +5834,58 @@ at.freebim.db.domain.Parameter = {
 };// at.freebim.db.domain.Parameter
 
 at.freebim.db.domain.ParameterSet = {
-	className : "ParameterSet",
-	i18n : "CLAZZ_PARAMETERSET",
-	title : net.spectroom.js.i18n.g("CLAZZ_PARAMETERSET"), // "Parameter-Set",
-	isContributed : true,
+	className: "ParameterSet",
+	i18n: "CLAZZ_PARAMETERSET",
+	title: net.spectroom.js.i18n.g("CLAZZ_PARAMETERSET"), // "Parameter-Set",
+	isContributed: true,
 
-	init : function() {
+	init: function () {
 		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, f = d.filters, self = d.ParameterSet;
 		if (self.initialized) {
 			return;
 		}
-		self.relations =  [rf.make(nf.PARAMS, d.RelationTypeEnum.CONTAINS_PARAMETER, "ContainsParameter", "OUT"),
-		                   rf.make(nf.OWNERS, d.RelationTypeEnum.HAS_PARAMETER_SET, "HasParameterSet", "IN")];
+		self.relations = [rf.make(nf.PARAMS, d.RelationTypeEnum.CONTAINS_PARAMETER, "ContainsParameter", "OUT"),
+		rf.make(nf.OWNERS, d.RelationTypeEnum.HAS_PARAMETER_SET, "HasParameterSet", "IN")];
 
 		self.base = Object.create(d.BaseNode);
 		self.base.init(self, "pset");
 
 		self.form = Object.create(net.spectroom.js.form);
-		self.form.fields = [ 
-			d.fields.nodeId, 
+		self.form.fields = [
+			d.fields.nodeId,
 			d.fields.validFrom,
 			d.fields.validTo,
-			d.fields.name, 
+			d.fields.name,
 			d.fields.nameEn, {
-				label : "CLAZZ_PARAMETERSETTYPE",
-				type : "select",
-				field : nf.TYPE,
-				values : d.ParameterSetType.values,
-				data : d.ParameterSetType.data,
-				dataValue : d.ParameterSetType.dataValue
-			}, 
-			d.fields.state, 
-			d.fields.statusComment, 
+				label: "CLAZZ_PARAMETERSETTYPE",
+				type: "select",
+				field: nf.TYPE,
+				values: d.ParameterSetType.values,
+				data: d.ParameterSetType.data,
+				dataValue: d.ParameterSetType.dataValue
+			},
+			d.fields.state,
+			d.fields.statusComment,
 			d.fields.docs, {
-				label : "ASSIGNED_PARAMETERS",
-				type : "custom",
-				field : nf.PARAMS,
-				createField : function (form, i, ip) {
+				label: "ASSIGNED_PARAMETERS",
+				type: "custom",
+				field: nf.PARAMS,
+				createField: function (form, i, ip) {
 					var orderable = true;
 					d.relationFormField(form, i, ip, orderable, d.Parameter.title, d.RelationTypeEnum.CONTAINS_PARAMETER, nf.PARAMS, "Parameter", "OUT");
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					d.setEntityValue(form.clazz, i, ip, entity, nf.PARAMS, "Parameter", "OUT");
 				}
 			}, {
-				label : "REFERENCED",
-				type : "custom",
-				field : nf.OWNERS,
-				createField : function (form, i, ip) {
+				label: "REFERENCED",
+				type: "custom",
+				field: nf.OWNERS,
+				createField: function (form, i, ip) {
 					var orderable = true;
 					d.relationFormField(form, i, ip, orderable, d.Component.title, d.RelationTypeEnum.HAS_PARAMETER_SET, nf.OWNERS, "Component", "IN");
 				},
-				setEntityValue : function (form, i, entity, ip) {
+				setEntityValue: function (form, i, entity, ip) {
 					d.setEntityValue(form.clazz, i, ip, entity, nf.OWNERS, "Component", "IN");
 				}
 			},
@@ -5865,88 +5897,89 @@ at.freebim.db.domain.ParameterSet = {
 		self.table.add = true;
 		self.table.edit = true;
 		self.table.filters = [
-	  		{ add : f.text, 
-	  			f : f.filterByName
-	  		}
-	  	];
-		self.table.dataCallback = function(row) {
+			{
+				add: f.text,
+				f: f.filterByName
+			}
+		];
+		self.table.dataCallback = function (row) {
 			return d.get(self.arr[row]);
 		};
 		self.table.idCol = nf.NODEID;
 		self.table.csv = "freeBIM-ID" + self.table.csvDelim
-						+ "name-de" + self.table.csvDelim
-						+ "name-en" + self.table.csvDelim
-						+ "bsDD-GUID" + self.table.csvDelim
-						+ "type" + self.table.csvDelim
-						+ "status" + self.table.csvDelim;
-		self.table.cols = [ {
-			label : "NAME",
-			field : nf.NAME,
-			type : "custom",
-			createCell : function (tr, td, row, col) {
+			+ "name-de" + self.table.csvDelim
+			+ "name-en" + self.table.csvDelim
+			+ "bsDD-GUID" + self.table.csvDelim
+			+ "type" + self.table.csvDelim
+			+ "status" + self.table.csvDelim;
+		self.table.cols = [{
+			label: "NAME",
+			field: nf.NAME,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				var v = self.table.dataCallback(row);
 				jq(td).attr("maxLength", "32");
 				d.renderNode(v, td);
 			},
-			cl : "freebim-item ParameterSet",
-			sortValue : function (row) {
+			cl: "freebim-item ParameterSet",
+			sortValue: function (row) {
 				var v = self.table.dataCallback(row);
 				return d.ParameterSet.getNameOf(v);
 			},
-			sort : true,
-			csv : function (row, col) {
+			sort: true,
+			csv: function (row, col) {
 				var v = self.table.dataCallback(row);
 				return d.csv(v[nf.FREEBIM_ID]) + d.csv(v[nf.NAME]);
 			}
 		}, {
-			label : "NAME_INTL",
-			field : nf.NAME_EN,
-			type : "text",
-			maxlen : 32,
-			sort : true,
-			csv : function (row, col) {
+			label: "NAME_INTL",
+			field: nf.NAME_EN,
+			type: "text",
+			maxlen: 32,
+			sort: true,
+			csv: function (row, col) {
 				var v = self.table.dataCallback(row);
 				return d.csv(v[nf.NAME_EN]) + d.csv(v[nf.BSDD_GUID]);
 			}
 		}, {
-			label : "CLAZZ_PARAMETERSETTYPE",
-			field : nf.TYPE,
-			type : "callback",
-			data : d.ParameterSetType.data,
-			sort : true
+			label: "CLAZZ_PARAMETERSETTYPE",
+			field: nf.TYPE,
+			type: "callback",
+			data: d.ParameterSetType.data,
+			sort: true
 		}, {
-			label : "CLAZZ_PARAMETER",
-			field : nf.PARAMS,
-			type : "custom",
-			createCell : function(tr, td, row, col) {
+			label: "CLAZZ_PARAMETER",
+			field: nf.PARAMS,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				self.showRelations(td, row, nf.PARAMS, "OUT", "Parameter");
 			},
-			cl : "Parameter",
-			sort : true,
-			sortValue : function(row) {
-				var v = self.table.dataCallback(row); 
+			cl: "Parameter",
+			sort: true,
+			sortValue: function (row) {
+				var v = self.table.dataCallback(row);
 				if (v) {
 					return self.relevantRelCount(v, nf.PARAMS, "Parameter");
-				} 
+				}
 				return 0;
 			},
-			csv : false
+			csv: false
 		}, {
-			label : "TAB_COMPONENTS",
-			field : nf.OWNERS,
-			type : "custom",
-			createCell : function(tr, td, row, col) {
+			label: "TAB_COMPONENTS",
+			field: nf.OWNERS,
+			type: "custom",
+			createCell: function (tr, td, row, col) {
 				self.showRelations(td, row, nf.OWNERS, "IN", "Component");
 			},
-			sort : true,
-			sortValue : function(row) {
-				var v = self.table.dataCallback(row); 
+			sort: true,
+			sortValue: function (row) {
+				var v = self.table.dataCallback(row);
 				if (v) {
 					return self.relevantRelCount(v, nf.OWNERS, "Component");
-				} 
+				}
 				return 0;
 			},
-			csv : false
+			csv: false
 		},
 		d.columns.state
 		];
@@ -5955,7 +5988,7 @@ at.freebim.db.domain.ParameterSet = {
 }; // at.freebim.db.domain.ParameterSet
 
 jq(document).ready(function () {
-	
+
 	at.freebim.db.domain.init();
 
 });

@@ -1,25 +1,23 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
 package at.freebim.db.domain.base;
 
-import org.neo4j.graphdb.Direction;
-import org.springframework.data.neo4j.annotation.Fetch;
-import org.springframework.data.neo4j.annotation.NodeEntity;
-import org.springframework.data.neo4j.annotation.RelatedToVia;
+import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 
 import at.freebim.db.domain.Contributor;
 import at.freebim.db.domain.Document;
@@ -28,17 +26,16 @@ import at.freebim.db.domain.rel.ContributedBy;
 import at.freebim.db.domain.rel.DocumentedIn;
 
 /**
- * This abstract class represents the base node for things regarding contributions.
- * It extends {@link UuidIdentifyable}. This node has the capability to connect {@link Contributor}s
- * and {@link Document}s.
- * 
+ * This abstract class represents the base node for things regarding
+ * contributions. It extends {@link UuidIdentifyable}. This node has the
+ * capability to connect {@link Contributor}s and {@link Document}s.
+ *
+ * @author rainer.breuss@uibk.ac.at
+ * @see org.neo4j.ogm.annotation.NodeEntity
  * @see at.freebim.db.domain.base.UuidIdentifyable
  * @see at.freebim.db.domain.rel.ContributedBy
  * @see at.freebim.db.domain.rel.DocumentedIn
  * @see at.freebim.db.domain.base.BaseNode
- * 
- * @author rainer.breuss@uibk.ac.at
- *
  */
 @NodeEntity
 @SuppressWarnings("serial")
@@ -46,15 +43,20 @@ public abstract class ContributedBaseNode extends UuidIdentifyable {
 
 	/**
 	 * The relations to the {@link Contributor}s.
+	 *
+	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
+	@Relationship(type = RelationType.CONTRIBUTED_BY, direction = Relationship.OUTGOING)
 	private Iterable<ContributedBy> contributor;
-	
-	
+
 	/**
 	 * The relations to the {@link Document}s.
+	 *
+	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
+	@Relationship(type = RelationType.DOCUMENTED_IN, direction = Relationship.OUTGOING)
 	private Iterable<DocumentedIn> docs;
-	
+
 	/**
 	 * Create new instance.
 	 */
@@ -63,29 +65,30 @@ public abstract class ContributedBaseNode extends UuidIdentifyable {
 	}
 
 	/**
-	 * Gets the  relations to the {@link Contributor}s.
-	 * 
+	 * Gets the relations to the {@link Contributor}s.
+	 *
 	 * @return the relations to the {@link Contributor}s
 	 */
-	@RelatedToVia(type = RelationType.CONTRIBUTED_BY, direction=Direction.OUTGOING)
-	@Fetch
 	public Iterable<ContributedBy> getContributor() {
-		return contributor;
+		return this.contributor;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((contributor == null) ? 0 : contributor.hashCode());
+		result = prime * result + ((contributor == null) ? 0 : contributor.hashCode());
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -105,8 +108,9 @@ public abstract class ContributedBaseNode extends UuidIdentifyable {
 		return true;
 	}
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.domain.base.LifetimeBaseNode#equalsData(java.lang.Object)
 	 */
 	@Override
@@ -122,13 +126,11 @@ public abstract class ContributedBaseNode extends UuidIdentifyable {
 
 	/**
 	 * Gets the relations to the {@link Document}s.
-	 * 
+	 *
 	 * @return the relations to the {@link Document}s
 	 */
-	@RelatedToVia(type = RelationType.DOCUMENTED_IN, direction=Direction.OUTGOING)
-	@Fetch
 	public Iterable<DocumentedIn> getDocs() {
-		return docs;
+		return this.docs;
 	}
 
 }

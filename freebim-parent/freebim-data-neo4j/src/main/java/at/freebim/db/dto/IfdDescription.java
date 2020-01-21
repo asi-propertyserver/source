@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package at.freebim.db.dto;
 
@@ -16,9 +16,9 @@ public class IfdDescription implements Serializable {
 	private String languageGuid;
 	private String description;
 	private String descriptionType;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public IfdDescription() {
 	}
@@ -64,6 +64,5 @@ public class IfdDescription implements Serializable {
 	public void setDescriptionType(String descriptionType) {
 		this.descriptionType = descriptionType;
 	}
-
 
 }

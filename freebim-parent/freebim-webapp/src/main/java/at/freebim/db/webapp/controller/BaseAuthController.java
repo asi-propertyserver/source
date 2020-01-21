@@ -35,6 +35,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,7 +43,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
+//import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
 import org.springframework.web.servlet.view.RedirectView;
 
 import at.freebim.db.domain.Contributor;
@@ -59,74 +60,98 @@ import at.freebim.db.webapp.session.SessionTracker;
 import at.freebim.db.webapp.session.SessionTracker.SessionAction;
 
 /**
- * The basic component of a controller adds the exception handling, 
- * the method to create a model, from the current authenticated user, and some
- * basic methods to track the modification of nodes. Additionally it already integrates 
- * some basic services that might be needed from controllers that extend this class.
+ * The basic component of a controller adds the exception handling, the method
+ * to create a model, from the current authenticated user, and some basic
+ * methods to track the modification of nodes. Additionally it already
+ * integrates some basic services that might be needed from controllers that
+ * extend this class.
  * 
  * @author rainer.breuss@uibk.ac.at
  *
  */
 @ControllerAdvice
 public class BaseAuthController {
-	
+
 	/**
 	 * The logger.
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(BaseAuthController.class);
 
 	/**
-	 * This service is used to update the app or get information about the current version.
+	 * Validity of the jwt token in milliseconds.
+	 */
+	@Value("${security.validity}")
+	private long validityInMilliseconds = 0;
+
+	/**
+	 * Validitry of the refresh token in milliseconds.
+	 */
+	@Value("${security.refresh.validity}")
+	private long validityRefreshTokenInMilliseconds = 0;
+
+	/**
+	 * This service is used to update the app or get information about the current
+	 * version.
 	 */
 	@Autowired
 	protected AppVersion appVersion;
-	
+
 	/**
 	 * This service handles the {@link FreebimUser}.
 	 */
 	@Autowired
 	protected FreebimUserService freebimUserService;
-	
+
 	/**
 	 * This service handles the {@link Contributor}.
 	 */
 	@Autowired
 	protected ContributorService contributorService;
-	
+
 	/**
 	 * This service is used to track changes in the current session.
 	 */
-	@Autowired 
+	@Autowired
 	protected SessionTracker sessionTracker;
-	
+
 	/**
 	 * This service handles the date.
 	 */
 	@Autowired
 	private DateService dateService;
-	
+
 	/**
 	 * The name of the guest.
 	 */
 	@Value("${guest.username}")
 	private String guestName;
-	
+
 	/**
 	 * The password of the guest.
 	 */
 	@Value("${guest.password}")
 	private String guestPassword;
+
+	@Value("${websocket.endpoint}")
+	private String websocketEndpoint;
 	
+	@Value("${websocket.clientprefix}")
+	private String websocketClientprefix;
+	
+	@Value("${websocket.serverprefix}")
+	private String websocketServerprefix;
+			
 	/**
 	 * Creates a new instance.
 	 */
 	public BaseAuthController() {
 		super();
 	}
-	
+
 	/**
-	 * This method handles exceptions of the type {@link HttpRequestMethodNotSupportedException}.
-	 * When this method is called you are being redirected to /.
+	 * This method handles exceptions of the type
+	 * {@link HttpRequestMethodNotSupportedException}. When this method is called
+	 * you are being redirected to /.
 	 * 
 	 * @param ex the exception
 	 * @return the view to which you will be redirected
@@ -137,26 +162,13 @@ public class BaseAuthController {
 	public RedirectView handleException1(HttpRequestMethodNotSupportedException ex) {
 		logger.info("handling HttpRequestMethodNotSupportedException, will return 'main-page' ...");
 		RedirectView redirectView = new RedirectView("/");
-	    return redirectView;
+		return redirectView;
 	}
-	
+
 	/**
-	 * This method handles exceptions of the type {@link NoSuchRequestHandlingMethodException}.
-	 * When this method is called you are being redirected to main-page.
-	 * 
-	 * @param ex the exception
-	 * @return the view to which you will be redirected
-	 */
-	@ExceptionHandler(NoSuchRequestHandlingMethodException.class)
-	public String handleException2(NoSuchRequestHandlingMethodException ex) {
-		logger.error("handling Exception: ", ex);
-		logger.info("handling NoSuchRequestHandlingMethodException, will return 'main-page' ...");
-	    return "main-page";
-	}
-	
-	/**
-	 * This method handles exceptions of the type {@link MissingServletRequestParameterException}.
-	 * When this method is called you are being redirected to /.
+	 * This method handles exceptions of the type
+	 * {@link MissingServletRequestParameterException}. When this method is called
+	 * you are being redirected to /.
 	 * 
 	 * @param ex the exception
 	 * @return the view to which you will be redirected
@@ -165,22 +177,39 @@ public class BaseAuthController {
 	public RedirectView handleException3(Exception ex) {
 		logger.error("handling Exception: ", ex);
 		RedirectView redirectView = new RedirectView("/");
-	    return redirectView;
+		return redirectView;
 	}
-	
+
 	/**
-	 * This method handles exceptions of the type {@link Exception}.
-	 * It is only called when there is no other suitable method that can handle the exception.
+	 * This method handles exceptions of the type
+	 * {@link MethodArgumentNotValidException}. When this method is called an error
+	 * will be set that indicates that the validation was not successful.
+	 * 
+	 * @param ex the exception
+	 * @return the response with the error message
+	 */
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public @ResponseBody AjaxResponse handleException4(Exception ex) {
+		logger.error("handling Exception: ", ex);
+		AjaxResponse resp = new AjaxResponse(null);
+		resp.setError("Validation Failed!");
+
+		return resp;
+	}
+
+	/**
+	 * This method handles exceptions of the type {@link Exception}. It is only
+	 * called when there is no other suitable method that can handle the exception.
 	 * When this method is called you are being redirected to main-page.
 	 * 
 	 * @param ex the exception
 	 * @return the view to which you will be redirected
 	 */
 	@ExceptionHandler(Exception.class)
-	public String handleException4(Exception ex) {
+	public String handleException5(Exception ex) {
 		logger.error("handling Exception: ", ex);
 		logger.info("handling Exception, will return 'main-page' ...");
-	    return "main-page";
+		return "main-page";
 	}
 
 	/**
@@ -191,10 +220,13 @@ public class BaseAuthController {
 	protected void setUserInfo(Model model) {
 
 		model.addAttribute("appVersion", appVersion.getAppVersion());
-		model.addAttribute("minified", ((appVersion.isRelease()) ? "/min" : "") );
+		model.addAttribute("minified", ((appVersion.isRelease()) ? "/min" : ""));
 		model.addAttribute("release", appVersion.isRelease());
 		model.addAttribute("appBuildTimestamp", appVersion.getBuildTime());
-		
+
+		model.addAttribute("tokenValidity", validityInMilliseconds);
+		model.addAttribute("refresh_token_validity", validityRefreshTokenInMilliseconds);
+
 		model.addAttribute("guest_name", this.guestName);
 		model.addAttribute("guest_password", this.guestPassword);
 
@@ -210,11 +242,15 @@ public class BaseAuthController {
 			model.addAttribute("appBuildTime", "?");
 		}
 		
+		model.addAttribute("wsendpoint", this.websocketEndpoint);
+		model.addAttribute("wsclientprefix", this.websocketClientprefix);
+		model.addAttribute("wsserverprefix", this.websocketServerprefix);
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			logger.debug("auth.name=[{}]", auth.getName());
 			model.addAttribute("username", auth.getName());
-	
+
 			FreebimUser user = this.freebimUserService.get(auth.getName());
 			if (user != null) {
 				Collection<Role> roles = user.getRoles();
@@ -229,19 +265,27 @@ public class BaseAuthController {
 					logger.debug("contributor=[{}]", c.getCode());
 					model.addAttribute("contributorId", c.getNodeId());
 					model.addAttribute("contributorCode", c.getCode());
-					model.addAttribute("contributorName", ((c.getTitle() != null) ? c.getTitle() + " " : "") + ((c.getFirstName() != null) ? c.getFirstName() + " " : "") + ((c.getLastName() != null) ? c.getLastName() : ""));
+					model.addAttribute("contributorName",
+							((c.getTitle() != null) ? c.getTitle() + " " : "")
+									+ ((c.getFirstName() != null) ? c.getFirstName() + " " : "")
+									+ ((c.getLastName() != null) ? c.getLastName() : ""));
 					model.addAttribute("contributorId", c.getNodeId());
-					model.addAttribute("contributorMayDelete", this.contributorService.test(c, new RoleContributor[]{RoleContributor.ROLE_DELETE}));
-					model.addAttribute("contributorMayViewExtensions", this.contributorService.test(c, new RoleContributor[]{RoleContributor.ROLE_VIEW_EXTENSIONS}));
-					model.addAttribute("contributorMaySetStatus", this.contributorService.test(c, new RoleContributor[]{RoleContributor.ROLE_SET_STATUS}));
-					model.addAttribute("contributorMaySetReleaseStatus", this.contributorService.test(c, new RoleContributor[]{RoleContributor.ROLE_SET_RELEASE_STATUS}));
-					model.addAttribute("contributorMayManageLibraries", this.contributorService.test(c, new RoleContributor[]{RoleContributor.ROLE_LIBRARY_REFERENCES}));
-					
+					model.addAttribute("contributorMayDelete",
+							this.contributorService.test(c, new RoleContributor[] { RoleContributor.ROLE_DELETE }));
+					model.addAttribute("contributorMayViewExtensions", this.contributorService.test(c,
+							new RoleContributor[] { RoleContributor.ROLE_VIEW_EXTENSIONS }));
+					model.addAttribute("contributorMaySetStatus",
+							this.contributorService.test(c, new RoleContributor[] { RoleContributor.ROLE_SET_STATUS }));
+					model.addAttribute("contributorMaySetReleaseStatus", this.contributorService.test(c,
+							new RoleContributor[] { RoleContributor.ROLE_SET_RELEASE_STATUS }));
+					model.addAttribute("contributorMayManageLibraries", this.contributorService.test(c,
+							new RoleContributor[] { RoleContributor.ROLE_LIBRARY_REFERENCES }));
+
 				}
 			}
 		}
 	}
-	
+
 	/**
 	 * Add the modified and saved nodes to the ajax response.
 	 * 
@@ -261,7 +305,8 @@ public class BaseAuthController {
 							ArrayList<NodeInfo> transmit = so.getInfos();
 							if (transmit != null && transmit.size() > 0) {
 								response.setSavedNodes(transmit);
-								logger.debug("transmitting {} NodeInfo for sessionId= {} .", transmit.size(), sessionId);
+								logger.debug("transmitting {} NodeInfo for sessionId= {} .", transmit.size(),
+										sessionId);
 							} else {
 								logger.debug("No NodeInfo for sessionId= {} .", sessionId);
 							}
@@ -273,10 +318,10 @@ public class BaseAuthController {
 			}
 		}
 	}
-	
+
 	/**
-	 * Add to the {@link SessionTracker} the id of the node and 
-	 * the action that has been performed ({@link SessionAction}).
+	 * Add to the {@link SessionTracker} the id of the node and the action that has
+	 * been performed ({@link SessionAction}).
 	 * 
 	 * @param nodeId the id of the node that has in any way been modified
 	 * @param action the action that has been performed on the node
@@ -288,19 +333,20 @@ public class BaseAuthController {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpSession session = attr.getRequest().getSession();
 		String sessionId = session.getId();
-		
+
 		NodeInfo info = new NodeInfo(action);
 		info.setNodeId(nodeId);
 		info.setTs(this.dateService.getMillis());
-		
+
 		this.sessionTracker.addInfo(info, sessionId);
 	}
 
 	/**
-	 * Add to the {@link SessionTracker} the id of the node and 
-	 * the action that has been performed ({@link SessionAction}).
+	 * Add to the {@link SessionTracker} the id of the node and the action that has
+	 * been performed ({@link SessionAction}).
 	 * 
-	 * @param node from this node the id will be taken and added to the {@link SessionTracker}.
+	 * @param node   from this node the id will be taken and added to the
+	 *               {@link SessionTracker}.
 	 * @param action
 	 */
 	protected void notifySessionInserted(BaseNode node, SessionAction action) {
@@ -310,12 +356,12 @@ public class BaseAuthController {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpSession session = attr.getRequest().getSession();
 		String sessionId = session.getId();
-		
+
 		NodeInfo info = new NodeInfo(action);
 		info.setNodeId(node.getNodeId());
 		info.setC(node.getClass().getSimpleName());
 		info.setTs(this.dateService.getMillis());
-		
+
 		this.sessionTracker.addInfo(info, sessionId);
 	}
 

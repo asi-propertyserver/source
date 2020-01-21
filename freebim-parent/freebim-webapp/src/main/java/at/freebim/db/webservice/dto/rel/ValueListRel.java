@@ -16,15 +16,16 @@
  *****************************************************************************/
 package at.freebim.db.webservice.dto.rel;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import at.freebim.db.webservice.DtoHelper;
 import at.freebim.db.webservice.dto.Component;
 import at.freebim.db.webservice.dto.Measure;
 import at.freebim.db.webservice.dto.ValueList;
 
 /**
- * DTO for a {@link Measure} to {@link ValueList} relation.
- * These relations might carry a {@link Component} information.
- * The class extends {@link Rel}.
+ * DTO for a {@link Measure} to {@link ValueList} relation. These relations
+ * might carry a {@link Component} information. The class extends {@link Rel}.
  * 
  * @see at.freebim.db.webservice.dto.Measure
  * @see at.freebim.db.webservice.dto.ValueList
@@ -42,10 +43,12 @@ public class ValueListRel extends Rel {
 
 	/**
 	 * Constructs a new instance.
-	 * @param uuid The freeBIM-ID of the related object.
+	 * 
+	 * @param uuid          The freeBIM-ID of the related object.
 	 * @param componentUuid The optional freeBIM-ID of the {@link Component}.
-	 * @param info The optional <code>info</code> field of the original relation object.
-	 * @param dtoHelper The helper.
+	 * @param info          The optional <code>info</code> field of the original
+	 *                      relation object.
+	 * @param dtoHelper     The helper.
 	 */
 	public ValueListRel(String uuid, String componentUuid, String info, DtoHelper dtoHelper) {
 		super(uuid, info, dtoHelper);
@@ -57,6 +60,7 @@ public class ValueListRel extends Rel {
 	 * 
 	 * @return The freeBIM-ID of the {@link Component}.
 	 */
+	@XmlElement
 	public String getComponent() {
 		return component;
 	}

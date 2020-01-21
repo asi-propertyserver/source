@@ -1,8 +1,8 @@
 @charset "utf-8";
 /* jsTable */
-table { 	
+table {
 	border-spacing: 0;
-	background-color: white; 
+	background-color: white;
 }
 
 div.jsTable-fthead {
@@ -17,6 +17,7 @@ div.jsTable-fthead {
 	z-index: 1;
 	border: none;
 }
+
 div.jsTable-data {
 	position: absolute;
 	top: 40px;
@@ -28,95 +29,119 @@ div.jsTable-data {
 	width: 100%;
 	height: 92%;
 	z-index: 0;
-} 
+}
+
 table.jsTable-data {
 	width: 100%;
 }
+
 .jsTable tr {
-/* 	border-top: solid 1px lightgray;
+	/* 	border-top: solid 1px lightgray;
 	border-left: solid 1px lightgray;
- */	background-image: url("/resources/tablerow20.png");
- 	background-repeat: repeat-x;
+ */
+	background-image: url("/resources/tablerow20.png");
+	background-repeat: repeat-x;
 }
+
 .jsTable tr:hover {
-/* 	border-top: solid 1px black;
+	/* 	border-top: solid 1px black;
 	border-bottom: solid 1px black;
  */
 	/* background-image: url("/resources/tablerow2.png"); */
 	background-color: white;
 	background-image: none;
 }
+
 .jsTable td {
-/* 	padding: 2px 8px; */
-/*  	border:	inherit; */
+	/* 	padding: 2px 8px; */
+	/*  	border:	inherit; */
 	white-space: nowrap;
 }
-.jsTable-sortable,
-.jsTableCell-clickable {
+
+.jsTable-sortable, .jsTableCell-clickable {
 	text-decoration: underline;
 	cursor: pointer;
 }
-.jsTable th,
-.jsTable-fthead th {
+
+.jsTable th, .jsTable-fthead th {
 	background-color: lightgray;
 	border: solid 1px lightgray;
 	padding: 2px 8px;
 	white-space: nowrap;
 }
-.jsTable-sortable th:hover,
-.jsTableCell-clickable td:hover {
+
+.jsTable-sortable th:hover, .jsTableCell-clickable td:hover {
 	color: blue;
 }
+
 .jsTable-editcolumn {
 	width: 20px;
-	background-color: lightgray; 
+	background-color: lightgray;
 	text-align: center;
 	color: rgb(199, 14, 130);
 }
-.jsTable-sortable.sort-desc:after { content: " ▽"; }
-.jsTable-sortable.sort-asc:after { content: " △"; }
+
+.jsTable-sortable.sort-desc:after {
+	content: " ▽";
+}
+
+.jsTable-sortable.sort-asc:after {
+	content: " △";
+}
+
 .jsTable th, .jsTable-fthead th {
 	font-weight: normal;
 }
+
 .jsTable-sortable {
 	white-space: nowrap;
 }
+
 .jsTable-sortable, .jsTableCell-clickable {
 	text-decoration: none;
 	cursor: pointer;
 	color: blue;
 }
+
 .jsTable-editcolumn, .jsTable-sortable, .jsTableCell-clickable {
 	border: solid 1px lightgray;
 }
-.jsTable-editcolumn:hover, .jsTable-sortable:hover, .jsTableCell-clickable:hover {
+
+.jsTable-editcolumn:hover, .jsTable-sortable:hover,
+	.jsTableCell-clickable:hover {
 	border: solid 1px black;
 }
+
 tr.jsTable-filtered {
-	display : none;
+	display: none;
 }
+
 tr.jsTableRow-selected {
 	background-image: url("/resources/tablerowSelected.png");
 }
+
 .filter {
 	float: left;
 }
+
 .counter {
 	float: right;
 	height: 16px;
-    line-height: 16px;
-    margin-left: 5px;
+	line-height: 16px;
+	margin-left: 5px;
 }
+
 .filter {
 	height: 30px;
 	line-height: 23px;
 }
+
 .csv_btn {
 	float: right;
-    font-size: 10px;
-    width: 16px;
-    height: 16px;
-    margin: 0;
-    padding: 0;
-    line-height: 10px;
+	font-size: 10px;
+	width: 16px;
+	height: 16px;
+	margin: 0;
+	padding: 0;
+	line-height: 10px;
 }

@@ -1,160 +1,298 @@
 @charset "utf-8";
+
 #graph {
 	width: 100%;
-	height: 100%;	
-  	background-color: rgb(250, 250, 250);
+	height: 100%;
+	background-color: rgb(250, 250, 250);
 }
 
 .overlay {
 	fill: white;
-    stroke: lightgray;
-    stroke-width: 0.5px;
- 	pointer-events: all;
+	stroke: lightgray;
+	stroke-width: 0.5px;
+	pointer-events: all;
 }
 
 .link {
-  fill: none;
-  stroke: #666;
-  stroke-width: 0.5px;
+	fill: none;
+	stroke: #666;
+	stroke-width: 0.5px;
 }
 
 .link.RT_PARENT_OF {
-  stroke: blue;
+	stroke: blue;
 }
+
 .link.RT_HAS_PARAMETER {
-  stroke: #ff68b3;
-  stroke-width: 0.2px;
+	stroke: #ff68b3;
+	stroke-width: 0.2px;
 }
+
 .link.RT_EQUALS {
-  stroke: black;
-  stroke-dasharray: 1,3;
+	stroke: black;
+	stroke-dasharray: 1, 3;
 }
 
 circle.fetched {
-  stroke: blue;
-  stroke-width: 1.0px;
+	stroke: blue;
+	stroke-width: 1.0px;
 }
 
 circle {
-  stroke: gray;
-  stroke-width: 0.5px;
+	stroke: gray;
+	stroke-width: 0.5px;
 }
 
-circle.BigBangNode { 
-  fill: yellow; 
-  stroke: black;
-  stroke-width: 2.0px;
+circle.BigBangNode {
+	fill: yellow;
+	stroke: black;
+	stroke-width: 2.0px;
 }
-circle.Component { fill:rgb(255, 211, 211); }
-circle.Material { fill:rgb(255, 229, 211); }
-circle.Document { fill:rgb(255, 246, 211); }
-circle.Measure { fill:rgb(246, 255, 211); }
-circle.Contributor { fill:rgb(229, 255, 211); }
-circle.Library { fill:rgb(211, 255, 211); }
-circle.ValueList { fill:rgb(211, 255, 229); }
-circle.ValueListEntry { fill:rgb(211, 255, 246); }
-circle.Phase { fill:rgb(211, 246, 255); }
-circle.DataType { fill:rgb(211, 229, 255); }
-circle.Discipline { fill:rgb(211, 211, 255); }
-circle.Parameter { fill:rgb(229, 211, 255); }
-circle.FreebimUser { fill:rgb(246, 211, 255); }
-circle.Unit { fill:rgb(255, 211, 246); }
 
-circle.Component:hover { stroke-width: 1.5px; stroke: black; fill:rgb(255, 211, 211); }
-circle.Material:hover { stroke-width: 1.5px; stroke: black; fill:rgb(255, 229, 211); }
-circle.Document:hover { stroke-width: 1.5px; stroke: black; fill:rgb(255, 246, 211); }
-circle.Measure:hover { stroke-width: 1.5px; stroke: black; fill:rgb(246, 255, 211); }
-circle.Contributor:hover { stroke-width: 1.5px; stroke: black; fill:rgb(229, 255, 211); }
-circle.Library:hover { stroke-width: 1.5px; stroke: black; fill:rgb(211, 255, 211); }
-circle.ValueList:hover { stroke-width: 1.5px; stroke: black; fill:rgb(211, 255, 229); }
-circle.ValueListEntry:hover { stroke-width: 1.5px; stroke: black; fill:rgb(211, 255, 246); }
-circle.Phase:hover { stroke-width: 1.5px; stroke: black; fill:rgb(211, 246, 255); }
-circle.DataType:hover { stroke-width: 1.5px; stroke: black; fill:rgb(211, 229, 255); }
-circle.Discipline:hover { stroke-width: 1.5px; stroke: black; fill:rgb(211, 211, 255); }
-circle.Parameter:hover { stroke-width: 1.5px; stroke: black; fill:rgb(229, 211, 255); }
-circle.FreebimUser:hover { stroke-width: 1.5px; stroke: black; fill:rgb(246, 211, 255); }
-circle.Unit:hover { stroke-width: 1.5px; stroke: black; fill:rgb(255, 211, 246); }
+circle.Component {
+	fill: rgb(255, 211, 211);
+}
 
+circle.Material {
+	fill: rgb(255, 229, 211);
+}
+
+circle.Document {
+	fill: rgb(255, 246, 211);
+}
+
+circle.Measure {
+	fill: rgb(246, 255, 211);
+}
+
+circle.Contributor {
+	fill: rgb(229, 255, 211);
+}
+
+circle.Library {
+	fill: rgb(211, 255, 211);
+}
+
+circle.ValueList {
+	fill: rgb(211, 255, 229);
+}
+
+circle.ValueListEntry {
+	fill: rgb(211, 255, 246);
+}
+
+circle.Phase {
+	fill: rgb(211, 246, 255);
+}
+
+circle.DataType {
+	fill: rgb(211, 229, 255);
+}
+
+circle.Discipline {
+	fill: rgb(211, 211, 255);
+}
+
+circle.Parameter {
+	fill: rgb(229, 211, 255);
+}
+
+circle.FreebimUser {
+	fill: rgb(246, 211, 255);
+}
+
+circle.Unit {
+	fill: rgb(255, 211, 246);
+}
+
+circle.Component:hover {
+	stroke-width: 1.5px;
+	stroke: black;
+	fill: rgb(255, 211, 211);
+}
+
+circle.Material:hover {
+	stroke-width: 1.5px;
+	stroke: black;
+	fill: rgb(255, 229, 211);
+}
+
+circle.Document:hover {
+	stroke-width: 1.5px;
+	stroke: black;
+	fill: rgb(255, 246, 211);
+}
+
+circle.Measure:hover {
+	stroke-width: 1.5px;
+	stroke: black;
+	fill: rgb(246, 255, 211);
+}
+
+circle.Contributor:hover {
+	stroke-width: 1.5px;
+	stroke: black;
+	fill: rgb(229, 255, 211);
+}
+
+circle.Library:hover {
+	stroke-width: 1.5px;
+	stroke: black;
+	fill: rgb(211, 255, 211);
+}
+
+circle.ValueList:hover {
+	stroke-width: 1.5px;
+	stroke: black;
+	fill: rgb(211, 255, 229);
+}
+
+circle.ValueListEntry:hover {
+	stroke-width: 1.5px;
+	stroke: black;
+	fill: rgb(211, 255, 246);
+}
+
+circle.Phase:hover {
+	stroke-width: 1.5px;
+	stroke: black;
+	fill: rgb(211, 246, 255);
+}
+
+circle.DataType:hover {
+	stroke-width: 1.5px;
+	stroke: black;
+	fill: rgb(211, 229, 255);
+}
+
+circle.Discipline:hover {
+	stroke-width: 1.5px;
+	stroke: black;
+	fill: rgb(211, 211, 255);
+}
+
+circle.Parameter:hover {
+	stroke-width: 1.5px;
+	stroke: black;
+	fill: rgb(229, 211, 255);
+}
+
+circle.FreebimUser:hover {
+	stroke-width: 1.5px;
+	stroke: black;
+	fill: rgb(246, 211, 255);
+}
+
+circle.Unit:hover {
+	stroke-width: 1.5px;
+	stroke: black;
+	fill: rgb(255, 211, 246);
+}
 
 text {
-  font: 10px sans-serif;
-  pointer-events: none;
-  fill: none;
-/*   text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+	font: 10px sans-serif;
+	pointer-events: none;
+	fill: none;
+	/*   text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
  */
 }
-text.label { stroke: black; stroke-width: 0.1; }
-text.label.Library, text.label.BigBangNode { fill: black; }
-text.label.Component { fill: #ff7f81; }
-text.label.Parameter { font-size: 0.75em; fill: #b47fff; }
+
+text.label {
+	stroke: black;
+	stroke-width: 0.1;
+}
+
+text.label.Library, text.label.BigBangNode {
+	fill: black;
+}
+
+text.label.Component {
+	fill: #ff7f81;
+}
+
+text.label.Parameter {
+	font-size: 0.75em;
+	fill: #b47fff;
+}
 
 circle.libref {
-	fill: rgba(200,200,200, 0.0);
+	fill: rgba(200, 200, 200, 0.0);
 	stroke: none;
 }
 
 circle.libref:hover {
 	stroke: none;
 }
+
 circle.libref.Library:hover {
 	fill: none;
 }
 
 circle.libref.lib-0 {
-	fill: rgba(255,0,0,0.02);
+	fill: rgba(255, 0, 0, 0.02);
 }
+
 circle.libref.lib-1 {
-	fill: rgba(0,255,0,0.02);
+	fill: rgba(0, 255, 0, 0.02);
 }
+
 circle.libref.lib-2 {
-	fill: rgba(0,0,255,0.02);
+	fill: rgba(0, 0, 255, 0.02);
 }
+
 circle.libref.lib-3 {
-	fill: rgba(255,0,255,0.02);
+	fill: rgba(255, 0, 255, 0.02);
 }
+
 circle.libref.lib-4 {
-	fill: rgba(255,255,0,0.02);
+	fill: rgba(255, 255, 0, 0.02);
 }
+
 circle.libref.lib-5 {
-	fill: rgba(0,255,255,0.02);
+	fill: rgba(0, 255, 255, 0.02);
 }
+
 #graph_load_options {
 	position: absolute;
 	top: 0;
 	left: 0;
 }
+
 #graph_view_options {
 	position: absolute;
 	top: 0;
 	right: 0;
 }
+
 .graph-load-option {
-  float: left;
-  margin: 0px;
-  clear: left;
+	float: left;
+	margin: 0px;
+	clear: left;
 }
+
 .graph-view-option {
-  float: right;
-  margin: 0px;
-  clear: right;
+	float: right;
+	margin: 0px;
+	clear: right;
 }
-path.link.RT_PARENT_OF.onpath,
-circle.node.Component.onpath {
+
+path.link.RT_PARENT_OF.onpath, circle.node.Component.onpath {
 	stroke-width: 2px;
 	stroke: magenta;
 }
-path.link.RT_HAS_PARAMETER.onpath,
-circle.node.Parameter.onpath {
+
+path.link.RT_HAS_PARAMETER.onpath, circle.node.Parameter.onpath {
 	stroke-width: 2px;
 	stroke: orange;
 }
+
 .svg-text text.onpath {
 	font-size: 3.0em;
 }
 
 path.marker {
-  fill: blue;
-  stroke: blue;
+	fill: blue;
+	stroke: blue;
 }
 
 /*

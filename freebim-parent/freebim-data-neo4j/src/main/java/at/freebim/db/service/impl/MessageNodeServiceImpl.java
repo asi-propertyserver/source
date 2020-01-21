@@ -1,16 +1,16 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
@@ -22,7 +22,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.neo4j.repository.GraphRepository;
+import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -40,20 +40,18 @@ import at.freebim.db.service.MessageNodeService;
 import at.freebim.db.service.RelationService;
 
 /**
- * The service for the node/class {@link MessageNode}.
- * This service extends {@link LifetimeBaseNodeServiceImpl} and
- * implements {@link MessageNodeService}.
- * 
+ * The service for the node/class {@link MessageNode}. This service extends
+ * {@link LifetimeBaseNodeServiceImpl} and implements
+ * {@link MessageNodeService}.
+ *
+ * @author rainer.breuss@uibk.ac.at
  * @see at.freebim.db.domain.MessageNode
  * @see at.freebim.db.service.impl.LifetimeBaseNodeServiceImpl
  * @see at.freebim.db.service.MessageNodeService
- * 
- * @author rainer.breuss@uibk.ac.at
- *
  */
 @Service
 public class MessageNodeServiceImpl extends LifetimeBaseNodeServiceImpl<MessageNode> implements MessageNodeService {
-	
+
 	/**
 	 * The logger.
 	 */
@@ -64,30 +62,38 @@ public class MessageNodeServiceImpl extends LifetimeBaseNodeServiceImpl<MessageN
 	 */
 	@Autowired
 	private DateService dateService;
-	
+
 	/**
 	 * The service that handles relations.
 	 */
 	@Autowired
 	private RelationService relationService;
-	
+
 	/**
 	 * The service that handles the {@link FreebimUser}.
 	 */
 	@Autowired
 	private FreebimUserService freebimUserService;
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.service.impl.LifetimeBaseNodeServiceImpl#setRepository(org.springframework.data.neo4j.repository.GraphRepository)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.service.impl.LifetimeBaseNodeServiceImpl#setRepository(org.
+	 * springframework.data.neo4j.repository.GraphRepository)
 	 */
 	@Override
 	@Autowired
-	public void setRepository(GraphRepository<MessageNode> r) {
+	public void setRepository(Neo4jRepository<MessageNode, Long> r) {
 		this.repository = r;
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.service.impl.LifetimeBaseNodeServiceImpl#getRelevantQuery(java.lang.StringBuilder, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.service.impl.LifetimeBaseNodeServiceImpl#getRelevantQuery(java.
+	 * lang.StringBuilder, java.lang.String)
 	 */
 	@Override
 	protected void getRelevantQuery(StringBuilder b, String returnStatement) {
@@ -96,33 +102,37 @@ public class MessageNodeServiceImpl extends LifetimeBaseNodeServiceImpl<MessageN
 		b.append(returnStatement);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.MessageNodeService#getCurrentMessages()
 	 */
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<MessageNode> getCurrentMessages() {
-		List<MessageNode> msgs = new ArrayList<MessageNode>();
+		List<MessageNode> msgs = new ArrayList<>();
 		FreebimUser user = null;
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		if (auth == null) {
 			logger.debug("getCurrentMessages for ROLE_ANONYMOUS");
 			msgs = ((MessageNodeRepository) this.repository).getMessagesForAnonymous(this.dateService.getMillis());
-		}
-		else {
+		} else {
 			logger.debug("getCurrentMessages for user=[{}]", auth.getName());
-			
+
 			user = this.freebimUserService.get(auth.getName());
 			if (user != null) {
-				msgs = ((MessageNodeRepository) this.repository).getMessagesFor(user.getNodeId(), this.dateService.getMillis());
+				msgs = ((MessageNodeRepository) this.repository).getMessagesFor(user.getNodeId(),
+						this.dateService.getMillis());
 			}
 		}
 		logger.debug("found [{}] messages for user [{}]", msgs.size(), ((user == null) ? "null" : user.getUsername()));
 		return msgs;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.MessageNodeService#setSeen(java.lang.Long)
 	 */
 	@Override
@@ -133,7 +143,7 @@ public class MessageNodeServiceImpl extends LifetimeBaseNodeServiceImpl<MessageN
 			FreebimUser user = this.freebimUserService.get(auth.getName());
 			if (user != null) {
 				logger.debug("auth.name=[{}]", auth.getName());
-				MessageNode msg = ((MessageNodeRepository) this.repository).findOne(messageId);
+				MessageNode msg = this.repository.findById(messageId).orElse(null);
 				if (msg != null) {
 					MessageSeen r = new MessageSeen();
 					r.setN1(msg);
@@ -146,7 +156,9 @@ public class MessageNodeServiceImpl extends LifetimeBaseNodeServiceImpl<MessageN
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.MessageNodeService#setClosed(java.lang.Long)
 	 */
 	@Override
@@ -159,7 +171,7 @@ public class MessageNodeServiceImpl extends LifetimeBaseNodeServiceImpl<MessageN
 				if (user.getRoles().contains(Role.ROLE_GUEST))
 					return;
 				logger.debug("auth.name=[{}]", auth.getName());
-				MessageNode msg = ((MessageNodeRepository) this.repository).findOne(messageId);
+				MessageNode msg = this.repository.findById(messageId).orElse(null);
 				if (msg != null) {
 					MessageClosed r = new MessageClosed();
 					r.setN1(msg);
@@ -171,7 +183,5 @@ public class MessageNodeServiceImpl extends LifetimeBaseNodeServiceImpl<MessageN
 			}
 		}
 	}
-
-
 
 }

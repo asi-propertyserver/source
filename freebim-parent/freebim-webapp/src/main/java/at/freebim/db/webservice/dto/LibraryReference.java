@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.webservice.dto;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import at.freebim.db.domain.base.UuidIdentifyable;
 import at.freebim.db.webservice.DtoHelper;
 
@@ -23,8 +25,8 @@ import at.freebim.db.webservice.DtoHelper;
  * DTO of a {@link Library} reference.<br>
  * This is a back link to an object in an external source (typically an external
  * database, but might be an Excel table also), referenced by a table name (
- * <code>refIdName</code>) and an ID (<code>refId</code>).
- * The class extends {@link Base}.
+ * <code>refIdName</code>) and an ID (<code>refId</code>). The class extends
+ * {@link Base}.
  * 
  * @see at.freebim.db.webservice.dto.Library
  * @see at.freebim.db.webservice.dto.Base
@@ -44,7 +46,8 @@ public class LibraryReference extends Base<UuidIdentifyable> {
 
 	/**
 	 * Creates a new instance.
-	 * @param ref The original node.
+	 * 
+	 * @param ref       The original node.
 	 * @param dtoHelper The helper.
 	 */
 	public LibraryReference(at.freebim.db.service.LibraryService.LibraryReference ref, DtoHelper dtoHelper) {
@@ -54,14 +57,17 @@ public class LibraryReference extends Base<UuidIdentifyable> {
 
 	/**
 	 * Get the refId.
+	 * 
 	 * @return The refId.
 	 */
+	@XmlElement
 	public String getRefId() {
 		return this.dtoHelper.getString(ref.refId);
 	}
 
 	/**
 	 * Set the refId.
+	 * 
 	 * @param refId The refId to set.
 	 */
 	public void setRefId(String refId) {

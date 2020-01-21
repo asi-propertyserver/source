@@ -16,16 +16,15 @@
  *****************************************************************************/
 package at.freebim.db.webapp.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.FreebimUser;
 import at.freebim.db.service.BaseNodeService;
 
-
 /**
- * The controller for the node/entity {@link FreebimUser}.
- * It extends {@link BaseController}.
+ * The controller for the node/entity {@link FreebimUser}. It extends
+ * {@link BaseController}.
  * 
  * @see at.freebim.db.domain.FreebimUser
  * @see at.freebim.db.webapp.controller.BaseController
@@ -33,18 +32,20 @@ import at.freebim.db.service.BaseNodeService;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController extends BaseController<FreebimUser> {
-	
-    /**
-     * Creates a new instance.
-     */
-    public UserController() {
+
+	/**
+	 * Creates a new instance.
+	 */
+	public UserController() {
 		super(FreebimUser.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override

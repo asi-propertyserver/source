@@ -16,11 +16,12 @@
  *****************************************************************************/
 package at.freebim.db.webservice.dto.rel;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import at.freebim.db.webservice.DtoHelper;
 
 /**
- * DTO for a relation with a time stamp.
- * The class extends {@link Rel}.
+ * DTO for a relation with a time stamp. The class extends {@link Rel}.
  * 
  * @see at.freebim.db.webservice.dto.rel.Rel
  * 
@@ -37,9 +38,10 @@ public class TimestampedRel extends Rel {
 	/**
 	 * Constructs a new instance.
 	 * 
-	 * @param uuid The freeBIM-ID of the related object.
-	 * @param isoTs The time stamp in ISO-8601 format. 
-	 * @param info The optional <code>info</code> field of the original relation object.
+	 * @param uuid      The freeBIM-ID of the related object.
+	 * @param isoTs     The time stamp in ISO-8601 format.
+	 * @param info      The optional <code>info</code> field of the original
+	 *                  relation object.
 	 * @param dtoHelper The helper.
 	 */
 	public TimestampedRel(String uuid, String isoTs, String info, DtoHelper dtoHelper) {
@@ -52,6 +54,7 @@ public class TimestampedRel extends Rel {
 	 * 
 	 * @return The time stamp in ISO-8601 format.
 	 */
+	@XmlElement
 	public String getTs() {
 		return ts;
 	}
@@ -65,5 +68,4 @@ public class TimestampedRel extends Rel {
 		this.ts = ts;
 	}
 
-	
 }

@@ -1,28 +1,27 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
 package at.freebim.db.domain;
 
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.neo4j.graphdb.Direction;
-import org.springframework.data.neo4j.annotation.Fetch;
-import org.springframework.data.neo4j.annotation.Indexed;
-import org.springframework.data.neo4j.annotation.NodeEntity;
-import org.springframework.data.neo4j.annotation.RelatedToVia;
+import org.neo4j.ogm.annotation.Index;
+import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import at.freebim.db.domain.base.BsddObject;
 import at.freebim.db.domain.base.Coded;
@@ -31,26 +30,24 @@ import at.freebim.db.domain.base.Described;
 import at.freebim.db.domain.base.Named;
 import at.freebim.db.domain.base.UUidIdentifyableVisitor;
 import at.freebim.db.domain.base.rel.RelationType;
-import at.freebim.db.domain.json.DisciplineDeserializer;
-import at.freebim.db.domain.json.DisciplineSerializer;
 import at.freebim.db.domain.rel.OfDiscipline;
+import at.freebim.db.json.DisciplineDeserializer;
+import at.freebim.db.json.DisciplineSerializer;
 import net.spectroom.neo4j.backup.annotation.NodeBackup;
 
-
 /**
- * The node for discipline.
- * It extends {@link ContributedBaseNode} and 
- * implements {@link Coded}, {@link Named}, {@link BsddObject} and {@link Described}
- * 
+ * The node for discipline. It extends {@link ContributedBaseNode} and
+ * implements {@link Coded}, {@link Named}, {@link BsddObject} and
+ * {@link Described}
+ *
+ * @author rainer.breuss@uibk.ac.at
+ * @see org.neo4j.ogm.annotation.NodeEntity
  * @see at.freebim.db.domain.base.ContributedBaseNode
  * @see at.freebim.db.domain.base.Coded
  * @see at.freebim.db.domain.base.Named
  * @see at.freebim.db.domain.base.BsddObject
  * @see at.freebim.db.domain.base.Described
- * 
- * 
- * @author rainer.breuss@uibk.ac.at
- * */
+ */
 @NodeBackup
 @NodeEntity
 @JsonSerialize(using = DisciplineSerializer.class)
@@ -61,110 +58,131 @@ public class Discipline extends ContributedBaseNode implements Coded, Named, Des
 
 	/**
 	 * The code.
-	 * 
+	 *
 	 * @see at.freebim.db.domain.base.Coded
+	 * @see org.neo4j.ogm.annotation.Index
 	 */
+	@Index
 	private String code;
-	
+
 	/**
 	 * The name.
-	 * 
+	 *
 	 * @see at.freebim.db.domain.base.Named
+	 * @see org.neo4j.ogm.annotation.Index
 	 */
+	@Index
 	private String name;
-	
+
 	/**
 	 * The english name.
 	 */
 	private String nameEn;
-	
+
 	/**
 	 * The description.
-	 * 
+	 *
 	 * @see at.freebim.db.domain.base.Described
 	 */
 	private String desc;
-	
+
 	/**
 	 * The english description.
 	 */
 	private String descEn;
-	
+
 	/**
 	 * The bsdd guid.
-	 * 
+	 *
 	 * @see at.freebim.db.domain.base.BsddObject
+	 * @see org.neo4j.ogm.annotation.Index
 	 */
+	@Index
 	private String bsddGuid;
-	
+
 	/**
 	 * The relations to the {@link Parameter}s.
+	 *
+	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
+	@Relationship(type = RelationType.OF_DISCIPLINE, direction = Relationship.INCOMING)
 	private Iterable<OfDiscipline> parameters;
 
-	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.domain.base.Coded#getCode()
 	 */
-	@Indexed
 	public String getCode() {
 		return code;
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.domain.base.Described#getDesc()
-	 */
-	public String getDesc() {
-		return desc;
-	}
-
-	/* (non-Javadoc)
-	 * @see at.freebim.db.domain.base.Named#getName()
-	 */
-	@Indexed
-	public String getName() {
-		return name;
-	}
-
-	
-	/**
-	 * Get the name in english.
-	 * 
-	 * @return the name in english
-	 */
-	public String getNameEn() {
-		return nameEn;
-	}
-
-
 	/**
 	 * Set the code.
-	 * 
+	 *
 	 * @param code the code to set
 	 */
 	public void setCode(String code) {
 		this.code = code;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see at.freebim.db.domain.base.Described#getDesc()
+	 */
+	public String getDesc() {
+		return desc;
+	}
+
 	/**
 	 * Set the description.
-	 * 
+	 *
 	 * @param desc the description to set
 	 */
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see at.freebim.db.domain.base.Named#getName()
+	 */
+	public String getName() {
+		return name;
+	}
+
 	/**
 	 * Set the name.
-	 * 
+	 *
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Get the name in english.
+	 *
+	 * @return the name in english
+	 */
+	public String getNameEn() {
+		return nameEn;
+	}
+
+	/**
+	 * Sets the english name,
+	 *
+	 * @param nameEn the english name to set
+	 */
+	public void setNameEn(String nameEn) {
+		this.nameEn = nameEn;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -180,7 +198,9 @@ public class Discipline extends ContributedBaseNode implements Coded, Named, Des
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -225,7 +245,9 @@ public class Discipline extends ContributedBaseNode implements Coded, Named, Des
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.domain.base.BaseNode#equalsData(java.lang.Object)
 	 */
 	@Override
@@ -262,10 +284,9 @@ public class Discipline extends ContributedBaseNode implements Coded, Named, Des
 		return true;
 	}
 
-
 	/**
 	 * Gets the description in english.
-	 * 
+	 *
 	 * @return the descEn
 	 */
 	public String getDescEn() {
@@ -273,17 +294,8 @@ public class Discipline extends ContributedBaseNode implements Coded, Named, Des
 	}
 
 	/**
-	 * Sets the english name,
-	 * 
-	 * @param nameEn the english name to set
-	 */
-	public void setNameEn(String nameEn) {
-		this.nameEn = nameEn;
-	}
-
-	/**
 	 * Set the english description.
-	 * 
+	 *
 	 * @param descEn the descEn to set
 	 */
 	public void setDescEn(String descEn) {
@@ -292,40 +304,40 @@ public class Discipline extends ContributedBaseNode implements Coded, Named, Des
 
 	/**
 	 * Gets the bsdd guid.
-	 * 
+	 *
 	 * @return the bsddGuid
 	 */
-	@Indexed
 	public String getBsddGuid() {
 		return bsddGuid;
 	}
 
 	/**
 	 * Sets the bsdd guid.
-	 * 
+	 *
 	 * @param bsddGuid the bsddGuid to set
 	 */
 	public void setBsddGuid(String bsddGuid) {
 		this.bsddGuid = bsddGuid;
 	}
 
-	
-	/* (non-Javadoc)
-	 * @see at.freebim.db.domain.base.UUidIdentifyableVistitable#accept(at.freebim.db.domain.base.UUidIdentifyableVisitor)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.domain.base.UUidIdentifyableVistitable#accept(at.freebim.db.
+	 * domain.base.UUidIdentifyableVisitor)
 	 */
 	@Override
 	public void accept(UUidIdentifyableVisitor visitor) {
 		if (visitor != null)
 			visitor.visit(this);
 	}
-	
+
 	/**
 	 * Gets the relations to the {@link Parameter}s.
-	 * 
+	 *
 	 * @return the relations to the {@link Parameter}s
 	 */
-	@RelatedToVia(type = RelationType.OF_DISCIPLINE, direction=Direction.INCOMING)
-	@Fetch
 	public Iterable<OfDiscipline> getParameters() {
 		return parameters;
 	}

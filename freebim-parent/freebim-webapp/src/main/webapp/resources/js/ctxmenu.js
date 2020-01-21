@@ -59,12 +59,12 @@ at.freebim.db.ctxMenu = {
 	        	c = db.contributor,
 	        	bsdd = false, bsddCl = false, edit = false, tnedit = false, status = true, list = (c != undefined && c.id != undefined),
 	        	i18n = net.spectroom.js.i18n;
-	        
+			
 	        if (!node && nodeId != undefined) {
 	        	db.post("/relations/get", { nodeId: nodeId }, "", function (response) {
 	        		d.listen(response.result);
 	            	at.freebim.db.ctxMenu.beforeOpen (event, ui);
-	        	});
+	        	}, null , null, "GET");
 	        	return;
 	        }
 	        
@@ -412,7 +412,7 @@ at.freebim.db.ctxMenu = {
 							},
 							function (error) {
 								doneFn();
-							});
+							}, null, "GET");
 	    		};
 
 	    		if (t) {

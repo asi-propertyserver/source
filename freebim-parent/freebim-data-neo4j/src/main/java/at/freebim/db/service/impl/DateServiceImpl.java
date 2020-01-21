@@ -1,16 +1,16 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
@@ -31,17 +31,15 @@ import org.springframework.stereotype.Service;
 import at.freebim.db.service.DateService;
 
 /**
- * The service for handling all things regarding the time and date.
- * It extends {@link DateService}.
- * 
- * @see at.freebim.db.service.DateService
- * 
- * @author rainer.breuss@uibk.ac.at
+ * The service for handling all things regarding the time and date. It extends
+ * {@link DateService}.
  *
+ * @author rainer.breuss@uibk.ac.at
+ * @see at.freebim.db.service.DateService
  */
 @Service
 public class DateServiceImpl implements DateService {
-	
+
 	/**
 	 * The logger.
 	 */
@@ -53,13 +51,15 @@ public class DateServiceImpl implements DateService {
 	/**
 	 * Initialize the private fields.
 	 */
-	@PostConstruct 
+	@PostConstruct
 	public void init() {
 		this.simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 		this.parserFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.DateService#getNow()
 	 */
 	@Override
@@ -70,7 +70,9 @@ public class DateServiceImpl implements DateService {
 		return res;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.DateService#getMillis()
 	 */
 	@Override
@@ -80,7 +82,9 @@ public class DateServiceImpl implements DateService {
 		return millis;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.service.DateService#getMillisFrom(java.lang.String)
 	 */
 	@Override
@@ -92,13 +96,14 @@ public class DateServiceImpl implements DateService {
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 		try {
 			cal.setTime(this.parserFormat.parse(dateTime));
-			Long millis = cal.getTimeInMillis();;
+			Long millis = cal.getTimeInMillis();
+
 			logger.debug("getMillis from [{}] returning {}", dateTime, millis);
 			return millis;
 		} catch (ParseException e) {
 			logger.error("Can't getMillis from [{}], returning 0L.", dateTime);
 		}
-		return 0L; 
+		return 0L;
 	}
-	
+
 }

@@ -196,7 +196,7 @@ at.freebim.db.imprint = {
 //			g.nodes.push({id: d.bbnId, n: "*", t: "BigBangNode"});
 //			g.nodeMap[d.bbnId] = g.nodes[0];
 //			
-			db.post("/company/graph", 
+			db.post("/company/graph",
 					{}, 
 					net.spectroom.js.i18n.g("LOADING_GRAPH"), 
 						function (response) {
@@ -204,7 +204,7 @@ at.freebim.db.imprint = {
 						}, 
 						function (e) {
 							db.logger.error("Error setting links for imprint graph: " + e.message);
-						});
+						}, null, "GET");
 		},
 		
 		start : function () {

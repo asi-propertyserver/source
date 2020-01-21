@@ -44,16 +44,16 @@ import at.freebim.db.webservice.dto.Base;
 public class DtoInstantiatorVisitor implements UUidIdentifyableVisitor {
 
 	/**
-	 * The current visited instance of a class that extends {@link UuidIdentifyable}.
+	 * The current visited instance of a class that extends
+	 * {@link UuidIdentifyable}.
 	 */
 	private Base<? extends UuidIdentifyable> instance;
-	
-	
+
 	/**
 	 * The DTO helper.
 	 */
 	private DtoHelper dtoHelper;
-	
+
 	/**
 	 * Create a new instance.
 	 * 
@@ -62,6 +62,7 @@ public class DtoInstantiatorVisitor implements UUidIdentifyableVisitor {
 	public DtoInstantiatorVisitor(DtoHelper dtoHelper) {
 		this.dtoHelper = dtoHelper;
 	}
+
 	/**
 	 * Get the current visited instance.
 	 * 
@@ -71,112 +72,168 @@ public class DtoInstantiatorVisitor implements UUidIdentifyableVisitor {
 		return instance;
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.DataType)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.
+	 * DataType)
 	 */
 	@Override
 	public void visit(DataType dataType) {
 		this.instance = new at.freebim.db.webservice.dto.DataType(dataType, this.dtoHelper);
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.Discipline)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.
+	 * Discipline)
 	 */
 	@Override
 	public void visit(Discipline discipline) {
 		this.instance = new at.freebim.db.webservice.dto.Discipline(discipline, this.dtoHelper);
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.Measure)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.
+	 * Measure)
 	 */
 	@Override
 	public void visit(Measure measure) {
 		this.instance = new at.freebim.db.webservice.dto.Measure(measure, this.dtoHelper, false);
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.Phase)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.
+	 * Phase)
 	 */
 	@Override
 	public void visit(Phase phase) {
 		this.instance = new at.freebim.db.webservice.dto.Phase(phase, this.dtoHelper);
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.Parameter)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.
+	 * Parameter)
 	 */
 	@Override
 	public void visit(Parameter parameter) {
 		this.instance = new at.freebim.db.webservice.dto.Parameter(parameter, this.dtoHelper, false);
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.Component)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.
+	 * Component)
 	 */
 	@Override
 	public void visit(Component component) {
 		this.instance = new at.freebim.db.webservice.dto.Component(component, null, this.dtoHelper);
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.Library)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.
+	 * Library)
 	 */
 	@Override
 	public void visit(Library library) {
 		this.instance = new at.freebim.db.webservice.dto.Library(library, this.dtoHelper);
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.ParameterSet)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.
+	 * ParameterSet)
 	 */
 	@Override
 	public void visit(ParameterSet parameterSet) {
 		this.instance = new at.freebim.db.webservice.dto.ParameterSet(parameterSet, this.dtoHelper);
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.ValueList)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.
+	 * ValueList)
 	 */
 	@Override
 	public void visit(ValueList valueList) {
 		this.instance = new at.freebim.db.webservice.dto.ValueList(valueList, this.dtoHelper, false);
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.Unit)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.
+	 * Unit)
 	 */
 	@Override
 	public void visit(Unit unit) {
 		this.instance = new at.freebim.db.webservice.dto.Unit(unit, this.dtoHelper);
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.ValueListEntry)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.webservice.UUidIdentifyableVisitor#visit(at.freebim.db.domain.
+	 * ValueListEntry)
 	 */
 	@Override
 	public void visit(ValueListEntry valueListEntry) {
 		this.instance = new at.freebim.db.webservice.dto.ValueListEntry(valueListEntry, this.dtoHelper);
 	}
 
-	/* (non-Javadoc)
-	 * @see at.freebim.db.domain.base.UUidIdentifyableVisitor#visit(at.freebim.db.domain.BigBangNode)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.domain.base.UUidIdentifyableVisitor#visit(at.freebim.db.domain.
+	 * BigBangNode)
 	 */
 	@Override
 	public void visit(BigBangNode bigBangNode) {
 		throw new RuntimeException("BigBangNode not implemented yet.");
 	}
-	
-	/* (non-Javadoc)
-	 * @see at.freebim.db.domain.base.UUidIdentifyableVisitor#visit(at.freebim.db.domain.Document)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.domain.base.UUidIdentifyableVisitor#visit(at.freebim.db.domain.
+	 * Document)
 	 */
 	@Override
 	public void visit(Document document) {
 		throw new RuntimeException("Document not implemented yet.");
 	}
-	
-	/* (non-Javadoc)
-	 * @see at.freebim.db.domain.base.UUidIdentifyableVisitor#visit(at.freebim.db.domain.SimpleNamedNode)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.domain.base.UUidIdentifyableVisitor#visit(at.freebim.db.domain.
+	 * SimpleNamedNode)
 	 */
 	@Override
 	public void visit(SimpleNamedNode simpleNamedNode) {

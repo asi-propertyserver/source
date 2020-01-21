@@ -1,16 +1,16 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
@@ -18,24 +18,24 @@ package at.freebim.db.domain.base.rel;
 
 import java.io.Serializable;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.neo4j.annotation.EndNode;
-import org.springframework.data.neo4j.annotation.GraphId;
-import org.springframework.data.neo4j.annotation.RelationshipEntity;
-import org.springframework.data.neo4j.annotation.RelationshipType;
-import org.springframework.data.neo4j.annotation.StartNode;
+import org.neo4j.ogm.annotation.EndNode;
+import org.neo4j.ogm.annotation.GeneratedValue;
+import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.RelationshipEntity;
+import org.neo4j.ogm.annotation.StartNode;
+import org.neo4j.ogm.annotation.Transient;
 
 import at.freebim.db.domain.base.NodeIdentifyable;
 
 /**
- * Abstract base class for all classes that represent relations in the neo4j database.
- * It implements {@link Serializable}.
- * 
- * @author rainer.breuss@uibk.ac.at
+ * Abstract base class for all classes that represent relations in the neo4j
+ * database. It implements {@link Serializable}.
  *
  * @param <FROM> Type that represents the start node of the relation.
- * @param <TO> Type that represents the end node of the relation.
+ * @param <TO>   Type that represents the end node of the relation.
+ * @author rainer.breuss@uibk.ac.at
+ * @see org.neo4j.ogm.annotation.RelationshipEntity
+ * @see at.freebim.db.domain.base.NodeIdentifyable
  */
 @RelationshipEntity
 public abstract class BaseRel<FROM extends NodeIdentifyable, TO extends NodeIdentifyable> implements Serializable {
@@ -43,56 +43,63 @@ public abstract class BaseRel<FROM extends NodeIdentifyable, TO extends NodeIden
 	private static final long serialVersionUID = -8079350053343203291L;
 
 	/**
-	 * The id in the database. Is unique but not consistent. 
-	 * For example when nodes get deleted the id can later be reused from a new created node.
+	 * The id in the database. Is unique but not consistent. For example when nodes
+	 * get deleted the id can later be reused from a new created node.
+	 *
+	 * @see org.neo4j.ogm.annotation.Id
+	 * @see org.neo4j.ogm.annotation.GeneratedValue
 	 */
-	@GraphId
 	@Id
-	private Long id;
-	
+	@GeneratedValue
+	protected Long id;
+
 	/**
 	 * The node from which the relation starts.
+	 *
+	 * @see org.neo4j.ogm.annotation.StartNode
 	 */
-	@StartNode 
+	@StartNode
 	private FROM n1;
-	
+
 	/**
 	 * The id of the node from which the relation starts.
+	 *
+	 * @see org.neo4j.ogm.annotation.Transient
 	 */
 	@Transient
 	private Long n1Id;
 
 	/**
 	 * The node to which the relation goes.
+	 *
+	 * @see org.neo4j.ogm.annotation.EndNode
 	 */
 	@EndNode
 	private TO n2;
-	
-	
+
 	/**
 	 * The id of the node to which the relation goes.
+	 *
+	 * @see org.neo4j.ogm.annotation.Transient
 	 */
 	@Transient
 	private Long n2Id;
-	
-	
+
 	/**
 	 * The type of the relationship.
 	 */
-	@RelationshipType 
 	private String type;
-	
+
 	/**
 	 * The time stamp of the starting point at which this relation is valid.
 	 */
 	private Long validFrom;
-	
+
 	/**
 	 * The time stamp of the ending point to which this relation is valid.
 	 */
 	private Long validTo;
-	
-	
+
 	/**
 	 * The info to the relation.
 	 */
@@ -100,86 +107,86 @@ public abstract class BaseRel<FROM extends NodeIdentifyable, TO extends NodeIden
 
 	/**
 	 * Set the type of the relation.
-	 * 
+	 *
 	 * @param type the type to set
 	 */
 	public BaseRel(String type) {
 		this.type = type;
 	}
-	
+
 	/**
 	 * Get the starting node of the relation.
-	 * 
+	 *
 	 * @return the starting node
-	 * */
+	 */
 	public FROM getN1() {
 		return n1;
 	}
-	
+
 	/**
 	 * Sets the starting node.
-	 * 
+	 *
 	 * @param n1 the starting node
-	 * */
+	 */
 	public void setN1(FROM n1) {
 		this.n1 = n1;
 	}
-	
+
 	/**
 	 * Get the ending point of the relation.
-	 * 
+	 *
 	 * @return the end node
-	 * */
+	 */
 	public TO getN2() {
 		return n2;
 	}
-	
-	
+
 	/**
 	 * Sets the end node.
-	 * 
+	 *
 	 * @param n2 the end node
-	 * */
+	 */
 	public void setN2(TO n2) {
 		this.n2 = n2;
 	}
-	
+
 	/**
 	 * Get the id.
-	 * 
+	 *
 	 * @return the id
-	 * */
+	 */
 	public Long getId() {
 		return id;
 	}
-	
+
 	/**
 	 * Set the id.
-	 * 
+	 *
 	 * @param id the id
-	 * */
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
 	/**
 	 * Get the type of the relation.
-	 *  
+	 *
 	 * @return the type
 	 */
 	public abstract String getType();
 
 	/**
 	 * Set the type.
-	 * 
+	 *
 	 * @param type the type to set
 	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -195,7 +202,9 @@ public abstract class BaseRel<FROM extends NodeIdentifyable, TO extends NodeIden
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -253,7 +262,7 @@ public abstract class BaseRel<FROM extends NodeIdentifyable, TO extends NodeIden
 
 	/**
 	 * Get the id of the node from which the relation starts.
-	 * 
+	 *
 	 * @return the n1Id
 	 */
 	public Long getN1Id() {
@@ -261,17 +270,8 @@ public abstract class BaseRel<FROM extends NodeIdentifyable, TO extends NodeIden
 	}
 
 	/**
-	 * Get the id of the node to which the relation goes.
-	 * 
-	 * @return the n2Id
-	 */
-	public Long getN2Id() {
-		return n2Id;
-	}
-
-	/**
 	 * Set the id of the node from which the relation starts.
-	 * 
+	 *
 	 * @param n1Id the id to set
 	 */
 	public void setN1Id(Long n1Id) {
@@ -279,8 +279,17 @@ public abstract class BaseRel<FROM extends NodeIdentifyable, TO extends NodeIden
 	}
 
 	/**
+	 * Get the id of the node to which the relation goes.
+	 *
+	 * @return the n2Id
+	 */
+	public Long getN2Id() {
+		return n2Id;
+	}
+
+	/**
 	 * Set the id of the node to which the relation goes.
-	 * 
+	 *
 	 * @param n2Id the Id to set
 	 */
 	public void setN2Id(Long n2Id) {
@@ -289,7 +298,7 @@ public abstract class BaseRel<FROM extends NodeIdentifyable, TO extends NodeIden
 
 	/**
 	 * Get the time stamp at which the relation is valid.
-	 * 
+	 *
 	 * @return the validFrom
 	 */
 	public Long getValidFrom() {
@@ -297,17 +306,8 @@ public abstract class BaseRel<FROM extends NodeIdentifyable, TO extends NodeIden
 	}
 
 	/**
-	 * Get the time stamp to which the relation is valid.
-	 * 
-	 * @return the validTo
-	 */
-	public Long getValidTo() {
-		return validTo;
-	}
-
-	/**
 	 * Set the time stamp from which the relation is valid.
-	 * 
+	 *
 	 * @param validFrom the validFrom to set
 	 */
 	public void setValidFrom(Long validFrom) {
@@ -315,8 +315,17 @@ public abstract class BaseRel<FROM extends NodeIdentifyable, TO extends NodeIden
 	}
 
 	/**
+	 * Get the time stamp to which the relation is valid.
+	 *
+	 * @return the validTo
+	 */
+	public Long getValidTo() {
+		return validTo;
+	}
+
+	/**
 	 * Set the time stamp to which the relation is valid.
-	 * 
+	 *
 	 * @param validTo the validTo to set
 	 */
 	public void setValidTo(Long validTo) {
@@ -325,7 +334,7 @@ public abstract class BaseRel<FROM extends NodeIdentifyable, TO extends NodeIden
 
 	/**
 	 * Get the info.
-	 * 
+	 *
 	 * @return the info
 	 */
 	public String getInfo() {
@@ -334,12 +343,11 @@ public abstract class BaseRel<FROM extends NodeIdentifyable, TO extends NodeIden
 
 	/**
 	 * Set the info.
-	 * 
+	 *
 	 * @param info the info to set
 	 */
 	public void setInfo(String info) {
 		this.info = info;
 	}
 
-	
 }

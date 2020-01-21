@@ -211,6 +211,7 @@ at.freebim.db.graph = {
 			db.post("/graph/childs_of", 
 					{
 						parentId: d.bbnId, 
+						clazz: "BigBangNode",
 						recursive: false, 
 						withParams : false,
 						equals : false
@@ -221,7 +222,7 @@ at.freebim.db.graph = {
 						}, 
 						function (e) {
 							db.logger.error("Error setting parameter links for graph: " + e.message);
-						});
+						}, null, "GET");
 
 			
 			
@@ -403,7 +404,7 @@ at.freebim.db.graph = {
 		load : function (cn, id) {
 			var db = at.freebim.db, d = db.domain;
 			d.getOrLoad(id, cn, function (node) {
-				db.post("/graph/childs_of_node", 
+				db.post("/graph/childs_of_node",
 					{
 						parentId: id, 
 						recursive: jq("input[name='RECURSIVE']").is(':checked'), 
@@ -416,7 +417,7 @@ at.freebim.db.graph = {
 						}, 
 						function (e) {
 							db.logger.error("Error setting parameter links for graph: " + e.message);
-						});
+						}, null, "GET");
 			});
 		},
 		

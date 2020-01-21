@@ -20,15 +20,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.neo4j.graphdb.Direction;
+import javax.xml.bind.annotation.XmlElement;
+
+import org.neo4j.ogm.annotation.Relationship;
 
 import at.freebim.db.domain.rel.UnitConversion;
 import at.freebim.db.webservice.DtoHelper;
 import at.freebim.db.webservice.dto.rel.QualifiedRel;
 
 /**
- * DTO of an {@link at.freebim.db.domain.Unit}.
- * The class extends {@link Base}.
+ * DTO of an {@link at.freebim.db.domain.Unit}. The class extends {@link Base}.
  * 
  * @see at.freebim.db.domain.Unit
  * @see at.freebim.db.webservice.dto.Base
@@ -41,22 +42,23 @@ public class Unit extends Base<at.freebim.db.domain.Unit> {
 	/**
 	 * Creates a new instance.
 	 * 
-	 * @param node The original node.
+	 * @param node      The original node.
 	 * @param dtoHelper The helper.
 	 */
 	public Unit(at.freebim.db.domain.Unit node, DtoHelper dtoHelper) {
 		super(node, dtoHelper);
 	}
-	
+
 	/**
 	 * Get the code.
 	 * 
 	 * @return The code.
 	 */
+	@XmlElement
 	public String getCode() {
 		return this.dtoHelper.getString(this.node.getUnitCode());
 	}
-	
+
 	/**
 	 * Set the code.
 	 * 
@@ -71,11 +73,12 @@ public class Unit extends Base<at.freebim.db.domain.Unit> {
 	 * 
 	 * @return The name.
 	 */
+	@XmlElement
 	public String getName() {
 		return this.dtoHelper.getString(this.node.getName());
 	}
 
-	/** 
+	/**
 	 * Set the local name.
 	 * 
 	 * @param name The local name to set.
@@ -89,6 +92,7 @@ public class Unit extends Base<at.freebim.db.domain.Unit> {
 	 * 
 	 * @return the name in international English.
 	 */
+	@XmlElement
 	public String getNameEn() {
 		return this.dtoHelper.getString(this.node.getNameEn());
 	}
@@ -107,6 +111,7 @@ public class Unit extends Base<at.freebim.db.domain.Unit> {
 	 * 
 	 * @return The local description.
 	 */
+	@XmlElement
 	public String getDesc() {
 		return this.dtoHelper.getString(this.node.getDesc());
 	}
@@ -125,6 +130,7 @@ public class Unit extends Base<at.freebim.db.domain.Unit> {
 	 * 
 	 * @return The description in international English.
 	 */
+	@XmlElement
 	public String getDescEn() {
 		return this.dtoHelper.getString(this.node.getDescEn());
 	}
@@ -143,6 +149,7 @@ public class Unit extends Base<at.freebim.db.domain.Unit> {
 	 * 
 	 * @return The bsDD-Guid.
 	 */
+	@XmlElement
 	public String getBsddGuid() {
 		return this.dtoHelper.getString(this.node.getBsddGuid());
 	}
@@ -155,12 +162,13 @@ public class Unit extends Base<at.freebim.db.domain.Unit> {
 	public void setBsddGuid(String guid) {
 		this.node.setBsddGuid(guid);
 	}
-	
+
 	/**
 	 * Get the Unit conversion relations.
 	 * 
 	 * @return The Unit conversions.
 	 */
+	@XmlElement
 	public List<QualifiedRel> getConversions() {
 		Iterable<UnitConversion> i = this.node.getConversions();
 		if (i != null) {
@@ -172,10 +180,12 @@ public class Unit extends Base<at.freebim.db.domain.Unit> {
 					at.freebim.db.domain.Unit other = null;
 					double q = 1.;
 					if (this.node.getNodeId().equals(conv.getN1().getNodeId())) {
-						other = (at.freebim.db.domain.Unit) this.dtoHelper.getRelatedNode(this.node, conv, Direction.OUTGOING);
+						other = (at.freebim.db.domain.Unit) this.dtoHelper.getRelatedNode(this.node, conv,
+								Relationship.OUTGOING);
 						q = conv.getQ();
 					} else {
-						other = (at.freebim.db.domain.Unit) this.dtoHelper.getRelatedNode(this.node, conv, Direction.INCOMING);
+						other = (at.freebim.db.domain.Unit) this.dtoHelper.getRelatedNode(this.node, conv,
+								Relationship.INCOMING);
 						q = 1. / conv.getQ();
 					}
 					QualifiedRel r = new QualifiedRel(other.getUuid(), q, conv.getInfo(), this.dtoHelper);

@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.neo4j.graphdb.Direction;
+import javax.xml.bind.annotation.XmlElement;
+
+import org.neo4j.ogm.annotation.Relationship;
 
 import at.freebim.db.domain.base.ParameterSetType;
 import at.freebim.db.domain.rel.ContainsParameter;
@@ -29,10 +31,9 @@ import at.freebim.db.webservice.DtoHelper;
 import at.freebim.db.webservice.dto.rel.OrderedRel;
 import at.freebim.db.webservice.dto.rel.Rel;
 
-
 /**
- * DTO of a {@link at.freebim.db.domain.ParameterSet}.
- * The class extends {@link StatusBase}.
+ * DTO of a {@link at.freebim.db.domain.ParameterSet}. The class extends
+ * {@link StatusBase}.
  * 
  * @see at.freebim.db.domain.ParameterSet
  * @see at.freebim.db.webservice.dto.StatusBase
@@ -47,7 +48,7 @@ public class ParameterSet extends StatusBase<at.freebim.db.domain.ParameterSet> 
 	/**
 	 * Creates a new instance.
 	 * 
-	 * @param pset The original ParameterSet.
+	 * @param pset      The original ParameterSet.
 	 * @param dtoHelper The helper.
 	 */
 	public ParameterSet(at.freebim.db.domain.ParameterSet pset, DtoHelper dtoHelper) {
@@ -59,11 +60,12 @@ public class ParameterSet extends StatusBase<at.freebim.db.domain.ParameterSet> 
 	 * 
 	 * @return The name.
 	 */
+	@XmlElement
 	public String getName() {
 		return this.dtoHelper.getString(node.getName());
 	}
 
-	/** 
+	/**
 	 * Set the local name.
 	 * 
 	 * @param name The local name to set.
@@ -71,12 +73,13 @@ public class ParameterSet extends StatusBase<at.freebim.db.domain.ParameterSet> 
 	public void setName(String name) {
 		node.setName(name);
 	}
-	
+
 	/**
 	 * Get the name in international English.
 	 * 
 	 * @return the name in international English.
 	 */
+	@XmlElement
 	public String getNameEn() {
 		return this.dtoHelper.getString(node.getNameEn());
 	}
@@ -95,6 +98,7 @@ public class ParameterSet extends StatusBase<at.freebim.db.domain.ParameterSet> 
 	 * 
 	 * @return the {@link Parameter} relations.
 	 */
+	@XmlElement
 	public List<OrderedRel> getParameters() {
 		if (node.getParameters() != null) {
 			List<OrderedRel> parameters = new ArrayList<OrderedRel>();
@@ -102,7 +106,8 @@ public class ParameterSet extends StatusBase<at.freebim.db.domain.ParameterSet> 
 			Iterator<ContainsParameter> iter = i.iterator();
 			while (iter.hasNext()) {
 				ContainsParameter r = iter.next();
-				at.freebim.db.domain.Parameter param = (at.freebim.db.domain.Parameter) this.dtoHelper.getRelatedNode(node, r, Direction.OUTGOING);
+				at.freebim.db.domain.Parameter param = (at.freebim.db.domain.Parameter) this.dtoHelper
+						.getRelatedNode(node, r, Relationship.OUTGOING);
 				if (param != null) {
 					parameters.add(new OrderedRel(param.getUuid(), r.getOrdering(), r.getInfo(), this.dtoHelper));
 				}
@@ -117,6 +122,7 @@ public class ParameterSet extends StatusBase<at.freebim.db.domain.ParameterSet> 
 	 * 
 	 * @return The {@link Component} relations.
 	 */
+	@XmlElement
 	public List<Rel> getOwners() {
 		if (node.getOwners() != null) {
 			List<Rel> owners = new ArrayList<Rel>();
@@ -124,7 +130,8 @@ public class ParameterSet extends StatusBase<at.freebim.db.domain.ParameterSet> 
 			Iterator<HasParameterSet> iter = i.iterator();
 			while (iter.hasNext()) {
 				HasParameterSet r = iter.next();
-				at.freebim.db.domain.base.HierarchicalBaseNode owner = (at.freebim.db.domain.base.HierarchicalBaseNode) this.dtoHelper.getRelatedNode(node, r, Direction.INCOMING);
+				at.freebim.db.domain.base.HierarchicalBaseNode owner = (at.freebim.db.domain.base.HierarchicalBaseNode) this.dtoHelper
+						.getRelatedNode(node, r, Relationship.INCOMING);
 				if (owner != null) {
 					owners.add(new Rel(owner.getUuid(), r.getInfo(), this.dtoHelper));
 				}
@@ -133,16 +140,17 @@ public class ParameterSet extends StatusBase<at.freebim.db.domain.ParameterSet> 
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Get the ParamaterSetType.
 	 * 
 	 * @return The ParamaterSetType.
 	 */
+	@XmlElement
 	public ParameterSetType getType() {
 		return this.node.getType();
 	}
-	
+
 	/**
 	 * Set the ParamaterSetType.
 	 * 
@@ -155,8 +163,10 @@ public class ParameterSet extends StatusBase<at.freebim.db.domain.ParameterSet> 
 	/**
 	 * Test if this ParameterSet is an original IFC PropertySet.
 	 * 
-	 * @return <code>true</code> if this ParamaterSet is an original IFC PropertySet.
+	 * @return <code>true</code> if this ParamaterSet is an original IFC
+	 *         PropertySet.
 	 */
+	@XmlElement
 	public boolean isIfcPropertySet() {
 		return isIfcPropertySet;
 	}
@@ -166,6 +176,7 @@ public class ParameterSet extends StatusBase<at.freebim.db.domain.ParameterSet> 
 	 * 
 	 * @return The bsDD-Guid.
 	 */
+	@XmlElement
 	public String getBsddGuid() {
 		return this.dtoHelper.getString(this.node.getBsddGuid());
 	}

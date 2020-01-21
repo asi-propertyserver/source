@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package at.freebim.db.dto;
 
@@ -15,9 +15,9 @@ public class IfdComment implements Serializable {
 
 	private String languageGuid;
 	private String comment;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public IfdComment() {
 	}

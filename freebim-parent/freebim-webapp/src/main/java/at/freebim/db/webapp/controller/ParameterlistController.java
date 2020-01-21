@@ -17,20 +17,19 @@
 package at.freebim.db.webapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.Component;
 import at.freebim.db.service.BaseNodeService;
 import at.freebim.db.service.ComponentService;
 
-
 /**
- * A controller for the node/entity {@link Component}.
- * It extends {@link BaseUuidController}.
+ * A controller for the node/entity {@link Component}. It extends
+ * {@link BaseUuidController}.
  * 
  * @see at.freebim.db.domain.Component
  * @see at.freebim.db.webapp.controller.BaseUuidController
@@ -38,7 +37,7 @@ import at.freebim.db.service.ComponentService;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/parameterlist")
 public class ParameterlistController extends BaseUuidController<Component> {
 
@@ -47,15 +46,17 @@ public class ParameterlistController extends BaseUuidController<Component> {
 	 */
 	@Autowired
 	private ComponentService componentService;
-	
+
 	/**
 	 * Creates a new instance.
 	 */
 	public ParameterlistController() {
 		super(Component.class);
 	}
-    
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override
@@ -64,21 +65,21 @@ public class ParameterlistController extends BaseUuidController<Component> {
 	}
 
 	/**
-     * Show component as parameterlist-page.
-     * 
-     * @param freebimId
-     * @param model the model
-     * 
-     * @return the name of the JSP page
-     * 
-     */
-    @RequestMapping(value = "/{freebimId}", method = RequestMethod.GET)
-    public String parameterlist(@PathVariable String freebimId, Model model) {
+	 * Show component as parameterlist-page.
+	 * 
+	 * @param freebimId
+	 * @param model     the model
+	 * 
+	 * @return the name of the JSP page
+	 * 
+	 */
+	@GetMapping(value = "/{freebimId}")
+	public String parameterlist(@PathVariable String freebimId, Model model) {
 		logger.debug("Show parameterlist-page");
 		super.setUserInfo(model);
 
 		model.addAttribute("freebimId", freebimId);
-		
+
 		return "parameterlist-page";
 	}
 

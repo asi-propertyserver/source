@@ -50,16 +50,77 @@ GIT-Clone the project:
 $ git clone https://github.com/asi-propertyserver/source.git
 ```
 
+### Create properties folder
+
+```
+cd /etc
+
+# creating directory
+sudo mkdir -p asi-propertyserver/production
+sudo mkdir -p asi-propertyserver/backup
+cd asi-propertyserver
+
+# change group and rights for group
+sudo chown root:<your_group> production/
+sudo chown root:<your_group> backup/
+sudo chmod g+w production
+sudo chmod g+w backup
+
+```
+
+### Create folder for logger
+
+```
+sudo mkdir -p /var/log/asi-propertyserver
+sudo chown root:<your_group> /var/log/asi-propertyserver/
+sudo chmod g+w /var/log/asi-propertyserver/
+```
+
 ### Adjust the properties
 
 ```
 $ cd source/freebim-parent/freebim-webapp/src/main/resources
 $ ls
-application.properties	freebim.properties	log4j.properties
+application.properties  banner.txt              log4j2-spring.xml       version.properties
+
+$ cd /etc/asi-propertyserver/production/
+$ ls
+app.properties
 ```
 
-In the `freebim.properties` -file you will find the **admin**, **neo4j** and **backup** configuration.  
-You should **set a new password for the `admin` user** at least. 
+This is a template of the `app.properties` -file.
+
+```
+server.port = 8090
+props.file_upload_dir = /etc/asi-propertyserver/upload/
+backup.scheduler.minute=45
+backup.scheduler.hour=3
+backup.scheduler.dayOfWeek=SUNDAY
+backup.scheduler.dayOfMonth=1
+backup.scheduler.directory=/etc/asi-propertyserver/backup
+backup.scheduler.package=at.freebim.db.domain
+backup.scheduler.monthly=false
+backup.scheduler.weekly=false
+backup.scheduler.daily=false
+backup.scheduler.hourly=false
+freebim.backup.dir=/etc/asi-propertyserver/backup
+db.location=/etc/asi-propertyserver/database
+admin.username=admin
+admin.password=password
+guest.username=ON_GUEST
+guest.password=bs_DACH
+bsdd.url = http://bsdd.buildingsmart.org/api/4.0/
+db.uri=bolt://localhost:7687
+db.username=neo4j
+db.password=password
+security.secret=testtoken
+security.refresh.secret=testrefresh
+security.validity=900000
+security.refresh.validity=604800000
+```
+
+In the `app.properties` -file you will find the **admin**, **neo4j** and **backup** configuration.  
+You should **set a new password for the `admin` user** at least and change the secrets for the jwt-token. 
 
 ### Javascript minifier
 
@@ -70,7 +131,8 @@ When you encounter this problem just use **gcc** to compile
 
 ### Logging
 
-Create a file `asi-propertyserver.log` in the `/var/log/` directory or adjust the logging configuration in the `log4j.properties` - file. 
+Create a folder `asi-propertyserver` in the `/var/log/` directory or adjust the logging configuration in the `log4j.properties` - file. 
+Make sure the program has access to that folder.
 
 ### Build the application
 

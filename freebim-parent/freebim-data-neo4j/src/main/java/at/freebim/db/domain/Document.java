@@ -1,28 +1,27 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
 package at.freebim.db.domain;
 
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.neo4j.graphdb.Direction;
-import org.springframework.data.neo4j.annotation.Fetch;
-import org.springframework.data.neo4j.annotation.Indexed;
-import org.springframework.data.neo4j.annotation.NodeEntity;
-import org.springframework.data.neo4j.annotation.RelatedToVia;
+import org.neo4j.ogm.annotation.Index;
+import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import at.freebim.db.domain.base.BsddObject;
 import at.freebim.db.domain.base.ContributedBaseNode;
@@ -32,24 +31,24 @@ import at.freebim.db.domain.base.Timestampable;
 import at.freebim.db.domain.base.UUidIdentifyableVisitor;
 import at.freebim.db.domain.base.UuidIdentifyable;
 import at.freebim.db.domain.base.rel.RelationType;
-import at.freebim.db.domain.json.DocumentDeserializer;
-import at.freebim.db.domain.json.DocumentSerializer;
 import at.freebim.db.domain.rel.DocumentedIn;
+import at.freebim.db.json.DocumentDeserializer;
+import at.freebim.db.json.DocumentSerializer;
 import net.spectroom.neo4j.backup.annotation.NodeBackup;
 
 /**
- * This node represents a document.
- * It extends {@link UuidIdentifyable} and
- * implements {@link Named}, {@link Described}, {@link Timestampable} and {@link BsddObject}.
- * 
+ * This node represents a document. It extends {@link UuidIdentifyable} and
+ * implements {@link Named}, {@link Described}, {@link Timestampable} and
+ * {@link BsddObject}.
+ *
+ * @author rainer.breuss@uibk.ac.at
+ * @see org.neo4j.ogm.annotation.NodeEntity
  * @see at.freebim.db.domain.base.UuidIdentifyable
  * @see at.freebim.db.domain.base.Named
  * @see at.freebim.db.domain.base.Described
  * @see at.freebim.db.domain.base.Timestampable
  * @see at.freebim.db.domain.base.BsddObject
- * 
- * @author rainer.breuss@uibk.ac.at
- * */
+ */
 @NodeBackup
 @NodeEntity
 @JsonSerialize(using = DocumentSerializer.class)
@@ -60,47 +59,63 @@ public class Document extends UuidIdentifyable implements Named, Described, Time
 
 	/**
 	 * The name.
-	 * 
+	 *
 	 * @see at.freebim.db.domain.base.Named
+	 * @see org.neo4j.ogm.annotation.Index
 	 */
+	@Index
 	private String name;
-	
+
 	/**
 	 * The description.
-	 * 
+	 *
 	 * @see at.freebim.db.domain.base.Described
 	 */
 	private String desc;
-	
-	
+
 	/**
 	 * The description in english.
 	 */
 	private String descEn;
-	
+
 	/**
 	 * The bsdd guid.
-	 * 
+	 *
 	 * @see at.freebim.db.domain.base.BsddObject
+	 * @see org.neo4j.ogm.annotation.Index
 	 */
+	@Index
 	private String bsddGuid;
-	
-	
+
 	/**
 	 * The relation to the {@link ContributedBaseNode} in which it is documented in.
+	 *
+	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
+	@Relationship(type = RelationType.DOCUMENTED_IN, direction = Relationship.INCOMING)
 	private Iterable<DocumentedIn> documentedNodes;
 
-	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.domain.base.Named#getName()
 	 */
-	@Indexed
 	public String getName() {
 		return name;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Set the name.
+	 *
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.domain.base.Described#getDesc()
 	 */
 	public String getDesc() {
@@ -108,60 +123,53 @@ public class Document extends UuidIdentifyable implements Named, Described, Time
 	}
 
 	/**
-	 * Get the english description.
-	 * 
-	 * @return the descEn
-	 */
-	public String getDescEn() {
-		return descEn;
-	}
-	
-	/**
-	 * The bsdd-guid.
-	 * 
-	 * @return the bsddGuid
-	 */
-	@Indexed
-	public String getBsddGuid() {
-		return bsddGuid;
-	}
-
-	/**
-	 * Set the name.
-	 * 
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
 	 * Set the description.
-	 * 
+	 *
 	 * @param desc the description to set
 	 */
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
 
+	/**
+	 * Get the english description.
+	 *
+	 * @return the descEn
+	 */
+	public String getDescEn() {
+		return descEn;
+	}
 
 	/**
 	 * Set the english description.
-	 * 
+	 *
 	 * @param descEn the descEn to set
 	 */
 	public void setDescEn(String descEn) {
 		this.descEn = descEn;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * The bsdd-guid.
+	 *
+	 * @return the bsddGuid
+	 */
+	public String getBsddGuid() {
+		return bsddGuid;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.domain.base.BsddObject#setBsddGuid(java.lang.String)
 	 */
 	public void setBsddGuid(String bsddGuid) {
 		this.bsddGuid = bsddGuid;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -175,7 +183,9 @@ public class Document extends UuidIdentifyable implements Named, Described, Time
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -210,7 +220,9 @@ public class Document extends UuidIdentifyable implements Named, Described, Time
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.domain.base.BaseNode#equalsData(java.lang.Object)
 	 */
 	@Override
@@ -238,18 +250,21 @@ public class Document extends UuidIdentifyable implements Named, Described, Time
 	}
 
 	/**
-	 * Gets the relations to the {@link ContributedBaseNode}s in which it is documented.
-	 * 
+	 * Gets the relations to the {@link ContributedBaseNode}s in which it is
+	 * documented.
+	 *
 	 * @return the relation to the {@link ContributedBaseNode}s
 	 */
-	@RelatedToVia(type = RelationType.DOCUMENTED_IN, direction=Direction.INCOMING)
-	@Fetch
 	public Iterable<DocumentedIn> getDocumentedNodes() {
 		return documentedNodes;
 	}
-	
-	/* (non-Javadoc)
-	 * @see at.freebim.db.domain.base.UUidIdentifyableVistitable#accept(at.freebim.db.domain.base.UUidIdentifyableVisitor)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.freebim.db.domain.base.UUidIdentifyableVistitable#accept(at.freebim.db.
+	 * domain.base.UUidIdentifyableVisitor)
 	 */
 	@Override
 	public void accept(UUidIdentifyableVisitor visitor) {

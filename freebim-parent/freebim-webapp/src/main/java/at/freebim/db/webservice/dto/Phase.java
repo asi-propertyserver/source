@@ -16,11 +16,12 @@
  *****************************************************************************/
 package at.freebim.db.webservice.dto;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import at.freebim.db.webservice.DtoHelper;
 
 /**
- * DTO of a {@link at.freebim.db.domain.Phase}.
- * The class extends {@link Base}.
+ * DTO of a {@link at.freebim.db.domain.Phase}. The class extends {@link Base}.
  * 
  * @see at.freebim.db.domain.Phase
  * @see at.freebim.db.webservice.dto.Base
@@ -33,7 +34,7 @@ public class Phase extends Base<at.freebim.db.domain.Phase> {
 	/**
 	 * Creates a new instance.
 	 * 
-	 * @param node The original node.
+	 * @param node      The original node.
 	 * @param dtoHelper The helper.
 	 */
 	public Phase(at.freebim.db.domain.Phase node, DtoHelper dtoHelper) {
@@ -45,10 +46,11 @@ public class Phase extends Base<at.freebim.db.domain.Phase> {
 	 * 
 	 * @return The code.
 	 */
+	@XmlElement
 	public String getCode() {
 		return this.dtoHelper.getString(this.node.getCode());
 	}
-	
+
 	/**
 	 * Set the code.
 	 * 
@@ -57,17 +59,18 @@ public class Phase extends Base<at.freebim.db.domain.Phase> {
 	public void setCode(String code) {
 		this.node.setCode(code);
 	}
-	
+
 	/**
 	 * Get the local name.
 	 * 
 	 * @return The name.
 	 */
+	@XmlElement
 	public String getName() {
 		return this.dtoHelper.getString(this.node.getName());
 	}
 
-	/** 
+	/**
 	 * Set the local name.
 	 * 
 	 * @param name The local name to set.
@@ -81,6 +84,7 @@ public class Phase extends Base<at.freebim.db.domain.Phase> {
 	 * 
 	 * @return the name in international English.
 	 */
+	@XmlElement
 	public String getNameEn() {
 		return this.dtoHelper.getString(this.node.getNameEn());
 	}
@@ -99,6 +103,7 @@ public class Phase extends Base<at.freebim.db.domain.Phase> {
 	 * 
 	 * @return The local description.
 	 */
+	@XmlElement
 	public String getDesc() {
 		return this.dtoHelper.getString(this.node.getDesc());
 	}
@@ -111,12 +116,13 @@ public class Phase extends Base<at.freebim.db.domain.Phase> {
 	public void setDesc(String desc) {
 		this.node.setDesc(desc);
 	}
-	
+
 	/**
 	 * Get the color of this Phase.
 	 * 
 	 * @return Hex-color of Phase as a 6 digit value, i.e. '67FEA0'
 	 */
+	@XmlElement
 	public String getHexColor() {
 		return this.dtoHelper.getString(this.node.getHexColor());
 	}
@@ -129,12 +135,13 @@ public class Phase extends Base<at.freebim.db.domain.Phase> {
 	public void setHexColor(String hexColor) {
 		this.node.setHexColor(hexColor);
 	}
-	
+
 	/**
 	 * Get the description in international English.
 	 * 
 	 * @return The description in international English.
 	 */
+	@XmlElement
 	public String getDescEn() {
 		return this.dtoHelper.getString(this.node.getDescEn());
 	}
@@ -153,6 +160,7 @@ public class Phase extends Base<at.freebim.db.domain.Phase> {
 	 * 
 	 * @return The bsDD-Guid.
 	 */
+	@XmlElement
 	public String getBsddGuid() {
 		return this.dtoHelper.getString(this.node.getBsddGuid());
 	}

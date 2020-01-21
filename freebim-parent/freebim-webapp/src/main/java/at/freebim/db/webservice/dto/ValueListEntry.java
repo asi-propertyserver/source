@@ -16,11 +16,13 @@
  *****************************************************************************/
 package at.freebim.db.webservice.dto;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import at.freebim.db.webservice.DtoHelper;
 
 /**
- * DTO of a {@link at.freebim.db.domain.ValueListEntry}.
- * The class extends {@link StatusBase}.
+ * DTO of a {@link at.freebim.db.domain.ValueListEntry}. The class extends
+ * {@link StatusBase}.
  * 
  * @see at.freebim.db.domain.ValueListEntry
  * @see at.freebim.db.webservice.dto.StatusBase
@@ -33,7 +35,7 @@ public class ValueListEntry extends StatusBase<at.freebim.db.domain.ValueListEnt
 	/**
 	 * Creates a new instance.
 	 * 
-	 * @param node The original node.
+	 * @param node      The original node.
 	 * @param dtoHelper The helper.
 	 */
 	public ValueListEntry(at.freebim.db.domain.ValueListEntry node, DtoHelper dtoHelper) {
@@ -45,6 +47,7 @@ public class ValueListEntry extends StatusBase<at.freebim.db.domain.ValueListEnt
 	 * 
 	 * @return The local description.
 	 */
+	@XmlElement
 	public String getDesc() {
 		return this.dtoHelper.getString(node.getDesc());
 	}
@@ -63,6 +66,7 @@ public class ValueListEntry extends StatusBase<at.freebim.db.domain.ValueListEnt
 	 * 
 	 * @return The description in international English.
 	 */
+	@XmlElement
 	public String getDescEn() {
 		return this.dtoHelper.getString(node.getDescEn());
 	}
@@ -75,17 +79,18 @@ public class ValueListEntry extends StatusBase<at.freebim.db.domain.ValueListEnt
 	public void setDescEn(String descEn) {
 		node.setDescEn(descEn);
 	}
-	
+
 	/**
 	 * Get the local name.
 	 * 
 	 * @return The name.
 	 */
+	@XmlElement
 	public String getName() {
 		return this.dtoHelper.getString(node.getName());
 	}
 
-	/** 
+	/**
 	 * Set the local name.
 	 * 
 	 * @param name The local name to set.
@@ -94,16 +99,17 @@ public class ValueListEntry extends StatusBase<at.freebim.db.domain.ValueListEnt
 		node.setName(name);
 	}
 
-	/** 
+	/**
 	 * Get the comment.
 	 * 
 	 * @return The comment.
 	 */
+	@XmlElement
 	public String getComment() {
 		return this.dtoHelper.getString(node.getComment());
 	}
 
-	/** 
+	/**
 	 * Set the comment.
 	 * 
 	 * @param c The comment to set.
@@ -117,6 +123,7 @@ public class ValueListEntry extends StatusBase<at.freebim.db.domain.ValueListEnt
 	 * 
 	 * @return the name in international English.
 	 */
+	@XmlElement
 	public String getNameEn() {
 		return this.dtoHelper.getString(node.getNameEn());
 	}

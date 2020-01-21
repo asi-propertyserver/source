@@ -1,16 +1,16 @@
 /******************************************************************************
  * Copyright (C) 2009-2019  ASI-Propertyserver
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see {@literal<http://www.gnu.org/licenses/>}.
  *****************************************************************************/
@@ -22,8 +22,7 @@ import java.util.Iterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.neo4j.conversion.Result;
-import org.springframework.data.neo4j.repository.GraphRepository;
+import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.freebim.db.domain.base.BaseNode;
@@ -35,14 +34,12 @@ import at.freebim.db.service.NgramService;
 
 /**
  * This is the basis service for a class <b>T</b> that extends {@link BaseNode}.
- * 
- * @see at.freebim.db.domain.base.BaseNode
- * 
- * @author rainer.breuss@uibk.ac.at
  *
+ * @author rainer.breuss@uibk.ac.at
+ * @see at.freebim.db.domain.base.BaseNode
  */
 public abstract class AbstractService<T extends BaseNode> {
-	
+
 	/**
 	 * The logger.
 	 */
@@ -53,70 +50,64 @@ public abstract class AbstractService<T extends BaseNode> {
 	 */
 	@Autowired
 	protected NgramService ngramService;
-	
+
 	/**
-	 * This is the basic repository to communicate with the neo4j database.
-	 * The class <b>T</b> is the node on which you to operations.
+	 * This is the basic repository to communicate with the neo4j database. The
+	 * class <b>T</b> is the node on which you do operations.
 	 */
-	protected GraphRepository<T> repository;
-	
-	
+	protected Neo4jRepository<T, Long> repository;
+
 	/**
 	 * Set the repository.
-	 * 
+	 *
 	 * @param r the repository
 	 */
-	public abstract void setRepository(GraphRepository<T> r);
-	
+	public abstract void setRepository(Neo4jRepository<T, Long> r);
+
 	/**
 	 * Get all nodes of the type <b>T</b> that are in the database.
-	 * 
-	 * 
+	 *
 	 * @return all nodes of the type <b>T</b>
 	 */
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public ArrayList<T> getAll() {
-		final Result<T> users = this.repository.findAll();
+		final Iterable<T> users = this.repository.findAll();
 		final Iterator<T> iter = users.iterator();
 		final ArrayList<T> list = new ArrayList<T>();
-		while(iter.hasNext()) {
-			final T next = iter.next();
-			list.add(next);
-		}
+
+		iter.forEachRemaining(list::add);
+
 		return list;
 	}
-	
+
 	/**
 	 * Get the node of the type <b>T</b> that has the provided id.
-	 * 
+	 *
 	 * @param nodeId the id of the node
 	 * @return the node of the type <b>T</b>
 	 */
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public T getByNodeId(Long nodeId) {
 		logger.debug("getByNodeId: {}", nodeId);
-		return this.repository.findOne(nodeId);
+		return this.repository.findById(nodeId).orElse(null);
 	}
 
 	/**
 	 * Save a node of the type <b>T</b>.
-	 * 
+	 *
 	 * @param node the node to save
 	 * @return the saved node
 	 */
 	@Transactional
 	public T save(T node) {
-		
 		node = this.repository.save(node);
 		logger.debug("{} saved, nodeId={}.", node.getClass().getSimpleName(), node.getNodeId());
-		
-		
 		return node;
 	}
-	
+
 	/**
 	 * Delete a node.
-	 * 
+	 *
 	 * @param node the node that will be deleted
 	 * @return the deleted node
 	 */
@@ -126,10 +117,10 @@ public abstract class AbstractService<T extends BaseNode> {
 		this.repository.delete(node);
 		return node;
 	}
-	
+
 	/**
 	 * Delete the created n-gram nodes for the provided node.
-	 * 
+	 *
 	 * @param node the node from which the n-grams will be deleted
 	 */
 	@Transactional

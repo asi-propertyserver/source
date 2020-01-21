@@ -17,16 +17,16 @@
 package at.freebim.db.webapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import at.freebim.db.domain.Unit;
 import at.freebim.db.service.BaseNodeService;
 import at.freebim.db.service.UnitService;
 
 /**
- * The controller for the node/entity {@link Unit}.
- * It extends {@link BaseController}.
+ * The controller for the node/entity {@link Unit}. It extends
+ * {@link BaseController}.
  * 
  * @see at.freebim.db.domain.Unit
  * @see at.freebim.db.webapp.controller.BaseController
@@ -34,7 +34,7 @@ import at.freebim.db.service.UnitService;
  * @author rainer.breuss@uibk.ac.at
  *
  */
-@Controller
+@RestController
 @RequestMapping("/unit")
 public class UnitController extends BaseController<Unit> {
 
@@ -43,15 +43,17 @@ public class UnitController extends BaseController<Unit> {
 	 */
 	@Autowired
 	private UnitService service;
-	
-    /**
-     * Creates a new instance.
-     */
-    public UnitController() {
+
+	/**
+	 * Creates a new instance.
+	 */
+	public UnitController() {
 		super(Unit.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.freebim.db.webapp.controller.BaseController#getService()
 	 */
 	@Override

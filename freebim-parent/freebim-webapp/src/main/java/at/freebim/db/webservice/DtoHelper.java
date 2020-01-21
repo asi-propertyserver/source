@@ -16,11 +16,9 @@
  *****************************************************************************/
 package at.freebim.db.webservice;
 
-import java.util.Iterator;
-
-import org.neo4j.graphdb.Direction;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import static org.neo4j.ogm.annotation.Relationship.INCOMING;
+import static org.neo4j.ogm.annotation.Relationship.OUTGOING;
+import static org.neo4j.ogm.annotation.Relationship.UNDIRECTED;
 
 import at.freebim.db.domain.base.BaseNode;
 import at.freebim.db.domain.base.HierarchicalBaseNode;
@@ -32,6 +30,12 @@ import at.freebim.db.domain.rel.ParentOf;
 import at.freebim.db.domain.rel.References;
 import at.freebim.db.service.DateService;
 import at.freebim.db.service.RelationService;
+import java.util.Iterator;
+import org.neo4j.ogm.annotation.Relationship;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * This is a helper class for all DTO.
@@ -41,6 +45,11 @@ import at.freebim.db.service.RelationService;
  */
 @Service
 public class DtoHelper {
+
+	/**
+	 * The logger.
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(DtoHelper.class);
 
 	/**
 	 * This service handles dates.
@@ -55,35 +64,38 @@ public class DtoHelper {
 	private RelationService relationService;
 
 	/**
-	 * Fully load a node in a {@link BaseRel}. Which site is loaded is defined by the
-	 * last parameter.
+	 * Fully load a node in a {@link BaseRel}. Which site is loaded is defined by
+	 * the last parameter.
 	 * 
-	 * @param src the node that is used as starting point if the relation direction is bidirectional
+	 * @param src the node that is used as starting point if the relation direction
+	 *            is bidirectional
 	 * @param rel the {@link BaseRel}
 	 * @param dir the direction of the relation
 	 * @return the fully loaded node
 	 */
-	public <R extends BaseRel<? extends NodeIdentifyable, ? extends NodeIdentifyable>>
-		BaseNode getRelatedNode(BaseNode src, R rel, Direction dir) {
+	public <R extends BaseRel<? extends NodeIdentifyable, ? extends NodeIdentifyable>> BaseNode getRelatedNode(
+			BaseNode src, R rel, String dir) {
 		if (src != null && rel != null) {
 			BaseNode child = null;
 			if (rel != null) {
 				switch (dir) {
-				case INCOMING : 
+				case INCOMING:
 					child = (BaseNode) rel.getN1();
 					break;
-				case OUTGOING : 
+				case OUTGOING:
 					child = (BaseNode) rel.getN2();
 					break;
-				case BOTH :
+				case UNDIRECTED:
 					if (src.getNodeId().equals(rel.getN1().getNodeId())) {
 						child = (BaseNode) rel.getN2();
 					} else if (src.getNodeId().equals(rel.getN2().getNodeId())) {
 						child = (BaseNode) rel.getN1();
 					}
 					break;
+				default:
+					logger.debug("Direction of relationship not found");
 				}
-				return this.relationService.fetch(child);
+				return this.relationService.fetch(child, child.getClass());
 			}
 		}
 		return null;
@@ -93,7 +105,8 @@ public class DtoHelper {
 	 * Replace newline or carriage return with newline.
 	 * 
 	 * @param s the string
-	 * @return the string with the replaced strings or <code>null</code> if the string length was 0
+	 * @return the string with the replaced strings or <code>null</code> if the
+	 *         string length was 0
 	 */
 	public String getString(String s) {
 		if (s != null) {
@@ -105,9 +118,10 @@ public class DtoHelper {
 	}
 
 	/**
-	 * Check if a node owner belongs to the provided {@link at.freebim.db.domain.Library}.
+	 * Check if a node owner belongs to the provided
+	 * {@link at.freebim.db.domain.Library}.
 	 * 
-	 * @param owner the {@link HierarchicalBaseNode}
+	 * @param owner      the {@link HierarchicalBaseNode}
 	 * @param ifcLibrary the {@link at.freebim.db.domain.Library}
 	 * @return true if the owner belongs to the library false otherwise
 	 */
@@ -122,7 +136,8 @@ public class DtoHelper {
 					Iterator<ParentOf> iter = iterable.iterator();
 					while (iter.hasNext()) {
 						ParentOf rel = iter.next();
-						HierarchicalBaseNode parent = (HierarchicalBaseNode) this.getRelatedNode(owner, rel, Direction.INCOMING); 
+						HierarchicalBaseNode parent = (HierarchicalBaseNode) this.getRelatedNode(owner, rel,
+								Relationship.INCOMING);
 						if (this.belongsToLibrary(parent, ifcLibrary)) {
 							return true;
 						}
@@ -147,7 +162,8 @@ public class DtoHelper {
 				if (iter != null) {
 					while (iter.hasNext()) {
 						References ref = iter.next();
-						at.freebim.db.domain.Library lib = (at.freebim.db.domain.Library) this.getRelatedNode(node, ref, Direction.OUTGOING);
+						at.freebim.db.domain.Library lib = (at.freebim.db.domain.Library) this.getRelatedNode(node, ref,
+								Relationship.OUTGOING);
 						if (lib != null) {
 							return lib.getUuid();
 						}
@@ -180,5 +196,5 @@ public class DtoHelper {
 		}
 		return false;
 	}
-	
+
 }

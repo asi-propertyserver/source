@@ -16,11 +16,13 @@
  *****************************************************************************/
 package at.freebim.db.webservice.dto;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import at.freebim.db.webservice.DtoHelper;
 
 /**
- * DTO of a {@link at.freebim.db.domain.DataType}.
- * The class extends {@link Base}.
+ * DTO of a {@link at.freebim.db.domain.DataType}. The class extends
+ * {@link Base}.
  * 
  * @see at.freebim.db.domain.DataType
  * @see at.freebim.db.webservice.dto.Base
@@ -32,7 +34,8 @@ public class DataType extends Base<at.freebim.db.domain.DataType> {
 
 	/**
 	 * Creates a new instance.
-	 * @param node The original node.
+	 * 
+	 * @param node      The original node.
 	 * @param dtoHelper The helper.
 	 */
 	public DataType(at.freebim.db.domain.DataType node, DtoHelper dtoHelper) {
@@ -41,13 +44,17 @@ public class DataType extends Base<at.freebim.db.domain.DataType> {
 
 	/**
 	 * Get the local name.
+	 * 
 	 * @return The name.
 	 */
+	@XmlElement
 	public String getName() {
 		return this.dtoHelper.getString(this.node.getName());
 	}
-	
-	/** Set the local name.
+
+	/**
+	 * Set the local name.
+	 * 
 	 * @param name The local name to set.
 	 */
 	public void setName(String name) {
@@ -56,14 +63,17 @@ public class DataType extends Base<at.freebim.db.domain.DataType> {
 
 	/**
 	 * Get the name in international English.
+	 * 
 	 * @return the name in international English.
 	 */
+	@XmlElement
 	public String getNameEn() {
 		return this.dtoHelper.getString(this.node.getNameEn());
 	}
 
 	/**
 	 * Set the name in international English.
+	 * 
 	 * @param nameEn The name to set (in international English).
 	 */
 	public void setNameEn(String nameEn) {
@@ -72,14 +82,17 @@ public class DataType extends Base<at.freebim.db.domain.DataType> {
 
 	/**
 	 * Get the local description.
+	 * 
 	 * @return The local desrciption.
 	 */
+	@XmlElement
 	public String getDesc() {
 		return this.dtoHelper.getString(this.node.getDesc());
 	}
 
 	/**
 	 * Set the local description.
+	 * 
 	 * @param desc The local description to set.
 	 */
 	public void setDesc(String desc) {
@@ -88,14 +101,17 @@ public class DataType extends Base<at.freebim.db.domain.DataType> {
 
 	/**
 	 * Get the description in international English.
+	 * 
 	 * @return The description in international English.
 	 */
+	@XmlElement
 	public String getDescEn() {
 		return this.dtoHelper.getString(this.node.getDescEn());
 	}
 
 	/**
 	 * Set the description in international English.
+	 * 
 	 * @param descEn The description to set (in international English).
 	 */
 	public void setDescEn(String descEn) {
@@ -104,14 +120,17 @@ public class DataType extends Base<at.freebim.db.domain.DataType> {
 
 	/**
 	 * Get the regular expression.
+	 * 
 	 * @return The regular expression.
 	 */
+	@XmlElement
 	public String getRegExp() {
 		return this.dtoHelper.getString(this.node.getRegExp());
 	}
 
 	/**
 	 * Set the regular expression.
+	 * 
 	 * @param regExp The regular expression to set.
 	 */
 	public void setRegExp(String regExp) {
@@ -120,18 +139,21 @@ public class DataType extends Base<at.freebim.db.domain.DataType> {
 
 	/**
 	 * Get the bsDD-Guid.
+	 * 
 	 * @return The bsDD-Guid.
 	 */
+	@XmlElement
 	public String getBsddGuid() {
 		return this.dtoHelper.getString(this.node.getBsddGuid());
 	}
 
 	/**
 	 * Set the bsDD-Guid.
+	 * 
 	 * @param guid The bsDD-Guid to set.
 	 */
 	public void setBsddGuid(String guid) {
 		this.node.setBsddGuid(guid);
 	}
-	
+
 }
