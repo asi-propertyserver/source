@@ -1,0 +1,98 @@
+# Neo4j Database
+
+```
+# create user because neo4j should not run as root
+$ sudo useradd -r -m -U -d /usr/share/neo4j -s /bin/false neo4j
+# Download and unpack the neo4j database server.
+$ sudo mkdir -p /usr/share/neo4j
+$ cp neo4j-community-<version> /usr/share/neo4j/
+$ sudo ln -s /usr/share/neo4j/neo4j-<version>/ /usr/share/neo4j/enabled
+# adapt the rights so that the user neo4j can read/write.
+# change the password
+$ cd /usr/share/enabled/bin
+$ ./neo4j-admin set-initial-password <password>
+$ sudo vim /etc/systemd/system/neo4j.service
+```
+
+```
+[Unit]
+Description=neo4j Server
+After=network.target
+
+[Service]
+Type=forking
+TimeoutSec=120
+LimitNOFILE=60000
+
+User=neo4j
+Group=neo4j
+
+Environment="JAVA_HOME=/usr/lib/jvm/java-1.8.0"
+Environment="JAVA_OPTS=-Djava.security.egd=file:///dev/urandom -Djava.awt.headless=true"
+
+
+ExecStart=/usr/share/neo4j/enabled/bin/neo4j start
+ExecStop=/usr/share/neo4j/enabled/bin/neo4j stop
+
+[Install]
+WantedBy=multi-user.target
+```
+
+# Tomcat
+
+```
+# create user because tomcat should not run as root
+$ sudo useradd -r -m -U -d /usr/share/tomcat -s /bin/false tomcat
+# download and unpack tomcat
+$ sudo mkdir -p /usr/share/tomcat
+$ cp apache-tomcat-<version> /usr/share/tomcat/
+$ sudo ln -s /usr/share/tomcat/apache-tomcat-<version>/ /usr/share/tomcat/enabled
+# adapt the rights so that the user tomcat can read/write.
+$ sudo vim /etc/systemd/system/tomcat.service
+```
+
+```
+[Unit]
+Description=Tomcat 9 servlet container
+After=network.target
+
+[Service]
+Type=forking
+
+User=tomcat
+Group=tomcat
+
+Environment="JAVA_HOME=/usr/lib/jvm/java-1.8.0"
+Environment="JAVA_OPTS=-Djava.security.egd=file:///dev/urandom -Djava.awt.headless=true"
+
+Environment="CATALINA_BASE=/usr/share/tomcat/enabled"
+Environment="CATALINA_HOME=/usr/share/tomcat/enabled"
+Environment="CATALINA_PID=/usr/share/tomcat/enabled/temp/tomcat.pid"
+Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
+
+ExecStart=/usr/share/tomcat/enabled/bin/startup.sh
+ExecStop=/usr/share/tomcat/enabled/bin/shutdown.sh
+
+[Install]
+WantedBy=multi-user.target
+```
+
+# Project
+
+```
+$ sudo mkdir -p /usr/share/asi-propertyserver
+# change rights so that tomcat can read it
+# copy ROOT.war into that folder
+```
+
+# Apache
+
+Setup like written in the readme.
+
+# crontab
+
+Create crontab entry for renewel of the letsencrypt certificate.
+
+```
+22 3 * * * letsencrypt renew >> /var/log/letsencrypt/renew.log
+```

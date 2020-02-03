@@ -68,13 +68,6 @@ sudo chmod g+w backup
 
 ```
 
-### Create folder for logger
-
-```
-sudo mkdir -p /var/log/asi-propertyserver
-sudo chown root:<your_group> /var/log/asi-propertyserver/
-sudo chmod g+w /var/log/asi-propertyserver/
-```
 
 ### Adjust the properties
 
@@ -133,6 +126,12 @@ When you encounter this problem just use **gcc** to compile
 
 Create a folder `asi-propertyserver` in the `/var/log/` directory or adjust the logging configuration in the `log4j.properties` - file. 
 Make sure the program has access to that folder.
+
+```
+sudo mkdir -p /var/log/asi-propertyserver
+sudo chown root:<your_group> /var/log/asi-propertyserver/
+sudo chmod g+w /var/log/asi-propertyserver/
+```
 
 ### Build the application
 
