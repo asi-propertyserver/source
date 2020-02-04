@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -167,7 +168,7 @@ public class RelationsController extends BaseAuthController {
 	 * @param onlyValid if <code>true</code> all paths have to be valid
 	 * @return the {@link AjaxResponse} that includes the paths or the erro message
 	 */
-	@GetMapping(value = "/getAllPaths")
+	@PostMapping(value = "/getAllPaths")
 	public @ResponseBody AjaxResponse get(@RequestParam(value = "nodeId", required = true) Long nodeId,
 			@RequestParam(value = "max", required = true) Long max,
 			@RequestParam(value = "onlyValid", required = true) boolean onlyValid) {
