@@ -267,8 +267,8 @@ public abstract class BaseController<T extends BaseNode>
 	//check if password is within 5 to 32 charachters
     if (entity instanceof FreebimUser) {
       FreebimUser user = (FreebimUser)entity;
-      FreebimUser savedUser =
-          this.freebimUserService.getByNodeId(user.getNodeId());
+      FreebimUser savedUser = ((user.getNodeId() == null) ? null : this.freebimUserService.getByNodeId(user.getNodeId()));
+      
       if (!user.getPassword().equals(savedUser.getPassword()) &&
           (user.getPassword().length() > 31 ||
            user.getPassword().length() < 5)) {
