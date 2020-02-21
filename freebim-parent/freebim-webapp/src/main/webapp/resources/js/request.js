@@ -79,7 +79,7 @@ at.freebim.db.request = {
                     }
                 },
                 error: function (response, textStatus) {
-                    if (response.status == 401 || JSON.parse(error.responseText).message == "Expired or invalid JWT token") {
+                    if (response.status == 401 || JSON.parse(response.responseText).message == "Expired or invalid JWT token") {
                         let re = resolve;
                         let rej = reject;
                         jq(document).trigger("hide_progress", [{ key: key }]);
