@@ -50,7 +50,29 @@ import at.freebim.db.domain.base.rel.RelationType;
 import at.freebim.db.domain.base.rel.RelationTypeEnum;
 import at.freebim.db.domain.rel.HasParameter;
 import at.freebim.db.dto.Relations;
+import at.freebim.db.repository.BaseNodeRepository;
+import at.freebim.db.repository.BigBangNodeRepository;
+import at.freebim.db.repository.BsddNodeRepository;
+import at.freebim.db.repository.CompanyRepository;
+import at.freebim.db.repository.ComponentRepository;
+import at.freebim.db.repository.ContributorRepository;
+import at.freebim.db.repository.DataTypeRepository;
+import at.freebim.db.repository.DisciplineRepository;
+import at.freebim.db.repository.DocumentRepository;
+import at.freebim.db.repository.FreebimUserRepository;
+import at.freebim.db.repository.LibraryRepository;
+import at.freebim.db.repository.LifetimeBaseNodeRepository;
+import at.freebim.db.repository.MeasureRepository;
+import at.freebim.db.repository.MessageNodeRepository;
+import at.freebim.db.repository.ParameterRepository;
+import at.freebim.db.repository.ParameterSetRepository;
+import at.freebim.db.repository.PhaseRepository;
+import at.freebim.db.repository.SimpleNamedNodeRepository;
+import at.freebim.db.repository.UnitRepository;
+import at.freebim.db.repository.ValueListEntryRepository;
+import at.freebim.db.repository.ValueListRepository;
 import at.freebim.db.service.BigBangNodeService;
+import at.freebim.db.service.BsddNodeService;
 import at.freebim.db.service.DateService;
 import at.freebim.db.service.FreebimUserService;
 import at.freebim.db.service.LifetimeBaseNodeService;
@@ -258,6 +280,96 @@ public class RelationServiceImpl implements RelationService {
 		}
 		return res;
 	}
+	
+	@Autowired
+	private BaseNodeRepository baseNodeRepository;
+	@Autowired 
+	private BigBangNodeRepository bigBangNodeRepository;
+	@Autowired
+	private BsddNodeRepository bsddNodeRepository;
+	@Autowired
+	private CompanyRepository companyRepository;
+	@Autowired
+	private ComponentRepository componentRepository;
+	@Autowired
+	private ContributorRepository contributorRepository;
+	@Autowired
+	private DataTypeRepository dataTypeRepository;
+	@Autowired
+	private DisciplineRepository disciplineRepository;
+	@Autowired
+	private DocumentRepository documentRepository;
+	@Autowired
+	private FreebimUserRepository freebimUserRepository;
+	@Autowired
+	private LibraryRepository libraryRepository;
+	@Autowired
+	private LifetimeBaseNodeRepository lifetimeBaseNodeRepository;
+	@Autowired 
+	private MeasureRepository measureRepository;
+	@Autowired
+	private MessageNodeRepository messageNodeRepository;
+	@Autowired
+	private ParameterRepository parameterRepository;
+	@Autowired
+	private ParameterSetRepository parameterSetRepository;
+	@Autowired
+	private PhaseRepository phaseRepository;
+	@Autowired
+	private SimpleNamedNodeRepository simpleNamedNodeRepository;
+	@Autowired
+	private UnitRepository unitRepository;
+	@Autowired
+	private ValueListEntryRepository valueListEntryRepository;
+	@Autowired
+	private ValueListRepository valueListRepository;
+	
+	private BaseNode loadNode(Long nodeId, Class<? extends BaseNode> clazz) {
+		switch (clazz.getSimpleName()) {
+			case  "BaseNode":
+				return baseNodeRepository.findById(nodeId).get();
+			case "BigBangNode":
+				return bigBangNodeRepository.findById(nodeId).get();
+			case "BsddNode":
+				return bsddNodeRepository.findById(nodeId).get();
+			case "Company":
+				return companyRepository.findById(nodeId).get();
+			case "Component":
+				return componentRepository.findById(nodeId).get();
+			case "Contributor":
+				return contributorRepository.findById(nodeId).get();
+			case "DataType":
+				return dataTypeRepository.findById(nodeId).get();
+			case "Discipline":
+				return disciplineRepository.findById(nodeId).get();
+			case "Document":
+				return documentRepository.findById(nodeId).get();
+			case "FreebimUser":
+				return freebimUserRepository.findById(nodeId).get();
+			case "Library":
+				return libraryRepository.findById(nodeId).get();
+			case "Measure":
+				return measureRepository.findById(nodeId).get();
+			case "MessageNode":
+				return messageNodeRepository.findById(nodeId).get();
+			case "Parameter":
+				return parameterRepository.findById(nodeId).get();
+			case "ParameterSet":
+				return parameterSetRepository.findById(nodeId).get();
+			case "Phase":
+				return phaseRepository.findById(nodeId).get();
+			case "SimpleNamedNode":
+				return simpleNamedNodeRepository.findById(nodeId).get();
+			case "Unit":
+				return unitRepository.findById(nodeId).get();
+			case "ValueList":
+				return valueListRepository.findById(nodeId).get();
+			case "ValueListEntry":
+				return valueListEntryRepository.findById(nodeId).get();
+			default:
+				return getTemplate().load(BaseNode.class, nodeId);
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -393,7 +505,7 @@ public class RelationServiceImpl implements RelationService {
 					if (r != null && !this.isInResult(res, r)) {
 						RelationResult rr = new RelationResult();
 						rr.className = r.getClass().getSimpleName();
-						rr.node = r;
+						rr.node = loadNode(r.getNodeId(), r.getClass());
 						rr.relation = relTypeIn;
 						rr.dir = "IN";
 						rr.ts = ts;
@@ -412,7 +524,7 @@ public class RelationServiceImpl implements RelationService {
 					if (r != null && !this.isInResult(res, r)) {
 						RelationResult rr = new RelationResult();
 						rr.className = r.getClass().getSimpleName();
-						rr.node = r;
+						rr.node = loadNode(r.getNodeId(), r.getClass());
 						rr.relation = relTypeOut;
 						rr.dir = "OUT";
 						rr.ts = ts;
