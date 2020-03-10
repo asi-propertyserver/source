@@ -652,11 +652,11 @@ public class AppVersionServiceImpl implements AppVersionService {
 	 */
 	@Override
 	public void correctComponentLibraryReferences() {
-		correctLibraryReferences(LibraryService.LIBRARY_NAME_FREEBIM);
+		/*correctLibraryReferences(LibraryService.LIBRARY_NAME_FREEBIM);
 		correctLibraryReferences(LibraryService.LIBRARY_NAME_IFC2x3);
 		correctLibraryReferences(LibraryService.LIBRARY_NAME_IFC4);
 		correctLibraryReferences(LibraryService.LIBRARY_NAME_FREECLASS);
-		correctPsetReferences();
+		correctPsetReferences();*/
 	}
 
 	/**

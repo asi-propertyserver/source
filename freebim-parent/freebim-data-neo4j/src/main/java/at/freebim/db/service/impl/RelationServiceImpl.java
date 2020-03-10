@@ -367,7 +367,10 @@ public class RelationServiceImpl implements RelationService {
 			case "ValueListEntry":
 				return valueListEntryRepository.findById(nodeId).get();
 			default:
-				return getTemplate().load(BaseNode.class, nodeId);
+				{
+					BaseNode temp = getTemplate().load(BaseNode.class, nodeId);
+					return getTemplate().load(temp.getClass(), nodeId, 3); //TODO: maybe 3 is to much
+				}
 		}
 	}
 
@@ -593,6 +596,10 @@ public class RelationServiceImpl implements RelationService {
 		UpdateRelationsResult<FROM, TO> updateRelationsResult = new UpdateRelationsResult<FROM, TO>();
 
 		BaseNode node = this.template.load(clazz, nodeId);
+		
+		if (!clazz.getSimpleName().equals(node.getClass().getSimpleName())) {
+			node = this.template.load(node.getClass(), nodeId);
+		}
 
 		if (node == null) {
 			logger.error("No Node for nodeId=[{}].", nodeId);
@@ -676,6 +683,7 @@ public class RelationServiceImpl implements RelationService {
 				}
 				if (relatedNodeId != null) {
 					NodeIdentifyable rn = this.template.load(NodeIdentifyable.class, relatedNodeId);
+					rn = this.template.load(rn.getClass(), relatedNodeId);
 					if (rn != null) {
 
 						try {
@@ -741,6 +749,10 @@ public class RelationServiceImpl implements RelationService {
 		} // end: for (Relations relations : relationsArray)
 
 		node = this.template.load(clazz, nodeId);
+		
+		if (!node.getClass().getSimpleName().equals(clazz.getSimpleName()) ) {
+			node = this.template.load(node.getClass(), nodeId);
+		}
 
 		updateRelationsResult.baseNode = node;
 
@@ -851,7 +863,14 @@ public class RelationServiceImpl implements RelationService {
 	public BaseNode fetch(BaseNode node, Class<? extends BaseNode> clazz) {
 		if (node != null) {
 			try {
-				return this.template.load(clazz, node.getNodeId());
+				BaseNode temp = this.template.load(clazz, node.getNodeId());
+				
+				if (clazz.getSimpleName().equals(temp.getClass().getSimpleName())) {
+					return temp;
+				} else {
+					return this.template.load(temp.getClass(), node.getNodeId());
+				}
+				
 			} catch (Exception e) {
 				logger.error("Error fetching node with nodeId=" + node.getNodeId() + ".", e);
 			}
@@ -881,6 +900,7 @@ public class RelationServiceImpl implements RelationService {
 			Map<String, Object> map = iter.next();
 			try {
 				res = (UuidIdentifyable) map.get("n");
+				res = this.template.load(res.getClass(), res.getNodeId());
 			} catch (Exception e) {
 				logger.error("Error in 'IN': ", e);
 			}
@@ -899,6 +919,11 @@ public class RelationServiceImpl implements RelationService {
 		if (nodeId != null) {
 			try {
 				BaseNode node = this.template.load(clazz, nodeId.longValue());
+				
+				if (!node.getClass().getSimpleName().equals(clazz.getSimpleName())) {
+					node = this.template.load(node.getClass(), nodeId);
+				}
+				
 				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 				// permission required
