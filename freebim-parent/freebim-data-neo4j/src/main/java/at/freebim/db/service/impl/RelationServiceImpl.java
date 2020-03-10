@@ -682,7 +682,7 @@ public class RelationServiceImpl implements RelationService {
 					break;
 				}
 				if (relatedNodeId != null) {
-					NodeIdentifyable rn = this.template.load(NodeIdentifyable.class, relatedNodeId);
+					NodeIdentifyable rn = this.template.load(BaseNode.class, relatedNodeId);
 					rn = this.template.load(rn.getClass(), relatedNodeId);
 					if (rn != null) {
 
