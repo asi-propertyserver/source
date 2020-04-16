@@ -155,7 +155,8 @@ public class RelationServiceImpl implements RelationService {
 	@Override
 	@Transactional(readOnly = true)
 	public BaseRel<?, ?> getByNodeId(Long nodeId) {
-		return this.template.load(BaseRel.class, nodeId);
+		BaseRel<?, ?> temp = this.template.load(BaseRel.class, nodeId);
+		return this.template.load(temp.getClass(), nodeId);
 	}
 
 	/*
@@ -303,8 +304,6 @@ public class RelationServiceImpl implements RelationService {
 	private FreebimUserRepository freebimUserRepository;
 	@Autowired
 	private LibraryRepository libraryRepository;
-	@Autowired
-	private LifetimeBaseNodeRepository lifetimeBaseNodeRepository;
 	@Autowired 
 	private MeasureRepository measureRepository;
 	@Autowired
@@ -596,8 +595,7 @@ public class RelationServiceImpl implements RelationService {
 		UpdateRelationsResult<FROM, TO> updateRelationsResult = new UpdateRelationsResult<FROM, TO>();
 
 		BaseNode node = this.template.load(clazz, nodeId);
-		
-		if (!clazz.getSimpleName().equals(node.getClass().getSimpleName())) {
+		if (node.getClass() != clazz) {
 			node = this.template.load(node.getClass(), nodeId);
 		}
 
@@ -749,6 +747,9 @@ public class RelationServiceImpl implements RelationService {
 		} // end: for (Relations relations : relationsArray)
 
 		node = this.template.load(clazz, nodeId);
+		if (node.getClass() != clazz) {
+			node = this.template.load(node.getClass(), nodeId);
+		}
 		
 		if (!node.getClass().getSimpleName().equals(clazz.getSimpleName()) ) {
 			node = this.template.load(node.getClass(), nodeId);
