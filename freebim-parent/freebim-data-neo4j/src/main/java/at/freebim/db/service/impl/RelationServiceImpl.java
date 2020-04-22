@@ -65,8 +65,35 @@ import at.freebim.db.domain.base.UuidIdentifyable;
 import at.freebim.db.domain.base.rel.BaseRel;
 import at.freebim.db.domain.base.rel.RelationType;
 import at.freebim.db.domain.base.rel.RelationTypeEnum;
+import at.freebim.db.domain.rel.BelongsTo;
+import at.freebim.db.domain.rel.Bsdd;
+import at.freebim.db.domain.rel.ChildOf;
+import at.freebim.db.domain.rel.CompanyCompany;
+import at.freebim.db.domain.rel.ComponentComponent;
+import at.freebim.db.domain.rel.ContainsParameter;
 import at.freebim.db.domain.rel.ContributedBy;
+import at.freebim.db.domain.rel.DocumentedIn;
+import at.freebim.db.domain.rel.Equals;
+import at.freebim.db.domain.rel.HasEntry;
+import at.freebim.db.domain.rel.HasMeasure;
 import at.freebim.db.domain.rel.HasParameter;
+import at.freebim.db.domain.rel.HasParameterSet;
+import at.freebim.db.domain.rel.HasValue;
+import at.freebim.db.domain.rel.MessageClosed;
+import at.freebim.db.domain.rel.MessageSeen;
+import at.freebim.db.domain.rel.NgramCodeOf;
+import at.freebim.db.domain.rel.NgramDescOf;
+import at.freebim.db.domain.rel.NgramNameOf;
+import at.freebim.db.domain.rel.OfDataType;
+import at.freebim.db.domain.rel.OfDiscipline;
+import at.freebim.db.domain.rel.OfMaterial;
+import at.freebim.db.domain.rel.OfUnit;
+import at.freebim.db.domain.rel.ParentOf;
+import at.freebim.db.domain.rel.References;
+import at.freebim.db.domain.rel.Responsible;
+import at.freebim.db.domain.rel.UnitConversion;
+import at.freebim.db.domain.rel.ValueOverride;
+import at.freebim.db.domain.rel.WorksFor;
 import at.freebim.db.dto.Relations;
 import at.freebim.db.repository.BaseNodeRepository;
 import at.freebim.db.repository.BigBangNodeRepository;
@@ -785,7 +812,100 @@ public class RelationServiceImpl implements RelationService {
 						updateRelationsResult.addAffectedNode(rel.getN2().getNodeId());
 
 						try {
-							this.template.save(rel);
+							//Has to be done otherwise the labels are missing
+							switch (RelationTypeEnum.fromCode(relations.t)) {
+								case BELONGS_TO:
+									this.template.save((BelongsTo)rel);
+									break;
+								case BSDD:
+									this.template.save((Bsdd)rel);
+									break;
+								case CHILD_OF:
+									this.template.save((ChildOf)rel);
+									break;
+								case COMPANY_COMPANY:
+									this.template.save((CompanyCompany)rel);
+									break;
+								case COMP_COMP:
+									this.template.save((ComponentComponent)rel);
+									break;
+								case CONTAINS_PARAMETER:
+									this.template.save((ContainsParameter)rel);
+									break;
+								case CONTRIBUTED_BY:
+									this.template.save((ContributedBy)rel);
+									break;
+								case DOCUMENTED_IN:
+									this.template.save((DocumentedIn)rel);
+									break;
+								case EQUALS:
+									this.template.save((Equals)rel);
+									break;
+								case HAS_ENTRY:
+									this.template.save((HasEntry)rel);
+									break;
+								case HAS_MEASURE:
+									this.template.save((HasMeasure)rel);
+									break;
+								case HAS_PARAMETER:
+									this.template.save((HasParameter)rel);
+									break;
+								case HAS_PARAMETER_SET:
+									this.template.save((HasParameterSet)rel);
+									break;
+								case HAS_VALUE:
+									this.template.save((HasValue)rel);
+									break;
+								case MESSAGE_CLOSED:
+									this.template.save((MessageClosed)rel);
+									break;
+								case MESSAGE_SEEN:
+									this.template.save((MessageSeen)rel);
+									break;
+								case NGRAM_CODE_OF:
+									this.template.save((NgramCodeOf)rel);
+									break;
+								case NGRAM_DESC_OF:
+									this.template.save((NgramDescOf)rel);
+									break;
+								case NGRAM_NAME_OF:
+									this.template.save((NgramNameOf)rel);
+									break;
+								case OF_DATATYPE:
+									this.template.save((OfDataType)rel);
+									break;
+								case OF_DISCIPLINE:
+									this.template.save((OfDiscipline)rel);
+									break;
+								case OF_MATERIAL:
+									this.template.save((OfMaterial)rel);
+									break;
+								case OF_UNIT:
+									this.template.save((OfUnit)rel);
+									break;
+								case PARENT_OF:
+									this.template.save((ParentOf)rel);
+									break;
+								case REFERENCES:
+									this.template.save((References)rel);
+									break;
+								case RESPONSIBLE:
+									this.template.save((Responsible)rel);
+									break;
+								case UNIT_CONVERSION:
+									this.template.save((UnitConversion)rel);
+									break;
+								case VALUE_OVERRIDE:
+									this.template.save((ValueOverride)rel);
+									break;
+								case WORKS_FOR:
+									this.template.save((WorksFor)rel);
+									break;
+								default:
+									this.template.save(rel);
+									break;
+							}
+
 						} catch (Exception e) {
 							logger.error("Can't save [" + rel.getType() + "] relation for node [" + node.getNodeId()
 									+ "]: [" + e.getMessage() + "] caught.");
