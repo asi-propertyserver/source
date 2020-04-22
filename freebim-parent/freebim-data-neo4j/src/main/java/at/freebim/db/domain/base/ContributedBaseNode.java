@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.domain.base;
 
+import java.util.List;
+
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 

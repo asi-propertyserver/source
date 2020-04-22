@@ -89,7 +89,8 @@ public abstract class AbstractService<T extends BaseNode> {
 	@Transactional(readOnly = true)
 	public T getByNodeId(Long nodeId) {
 		logger.debug("getByNodeId: {}", nodeId);
-		return this.repository.findById(nodeId).orElse(null);
+		T temp = this.repository.findById(nodeId).orElse(null);
+		return temp;
 	}
 
 	/**
