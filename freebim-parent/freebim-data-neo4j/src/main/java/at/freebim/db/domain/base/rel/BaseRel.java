@@ -219,10 +219,12 @@ public abstract class BaseRel<FROM extends NodeIdentifyable, TO extends NodeIden
 		if (id == null) {
 			if (other.id != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!id.equals(other.id)) {
 			return false;
-		if (type != other.type)
+		}
+		if (!type.equals(other.type)) {
 			return false;
+		}
 		if (n1 == null) {
 			if (other.n1 != null)
 				return false;

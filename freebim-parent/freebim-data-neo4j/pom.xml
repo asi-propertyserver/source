@@ -23,7 +23,7 @@
 	<parent>
 		<groupId>at.freebim</groupId>
 		<artifactId>db</artifactId>
-		<version>1.5.5</version>
+		<version>1.5.7</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 

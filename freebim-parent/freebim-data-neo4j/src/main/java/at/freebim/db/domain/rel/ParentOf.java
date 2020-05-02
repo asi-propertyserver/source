@@ -124,7 +124,7 @@ public class ParentOf extends OrderedBaseRel<HierarchicalBaseNode, HierarchicalB
 		if (bsddGuid == null) {
 			if (other.bsddGuid != null)
 				return false;
-		} else if (!bsddGuid.equals(other.bsddGuid))
+		} else if (!bsddGuid.equals(other.bsddGuid) && !(other.bsddGuid == null && bsddGuid.equals("")))
 			return false;
 		return true;
 	}

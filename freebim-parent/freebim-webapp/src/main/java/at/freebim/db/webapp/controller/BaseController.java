@@ -28,6 +28,9 @@ import at.freebim.db.webapp.models.request.DeleteModel;
 import at.freebim.db.webapp.models.request.SaveRelationsModel;
 import at.freebim.db.webapp.session.SessionTracker.SessionAction;
 import io.swagger.annotations.ApiOperation;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import javax.validation.Valid;
 import javax.validation.ValidationException;
@@ -246,6 +249,29 @@ public abstract class BaseController<T extends BaseNode> extends BaseAuthControl
 		}
 
 		AjaxResponse response = null;
+		//compare objects----------------------------------------------------------
+		T temp = null;
+		if (entity.getNodeId() != null) {
+			temp = this.getService().getByNodeId(entity.getNodeId());
+			for(Field f: entity.getClass().getDeclaredFields()) {
+				f.setAccessible(true);
+				for (Field y: temp.getClass().getDeclaredFields()) {
+					y.setAccessible(true);
+					if (!Modifier.isFinal(f.getModifiers()) && y.getName().equals(f.getName())) {
+						try {
+							if (!Modifier.isFinal(f.getModifiers()) && f.get(entity) != null) {
+								y.set(temp, f.get(entity));
+							}
+						} catch (IllegalArgumentException | IllegalAccessException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+		entity = temp;
+		//-------------------------------------------------------------------------
 
 		if (entity instanceof FreebimUser) {
 			FreebimUser user = (FreebimUser) entity;

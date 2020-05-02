@@ -8,6 +8,7 @@ at.freebim.db.relations = {
 	init: function () {
 		var db = at.freebim.db, d = db.domain, rf = d.RelationFields, nf = d.NodeFields, rte = d.RelationTypeEnum, i18n = net.spectroom.js.i18n;
 		self = db.relations;
+		self.nodes = [];
 
 		if (self.initialized) {
 			return;
@@ -81,7 +82,7 @@ at.freebim.db.relations = {
 			jq(div).append(i18n.get("HISTORY") + ":"); // document.createTextNode("Verlauf: "));
 			self.history.appendChild(div);
 			for (i = 0; i < n; i++) {
-				var node = d.get(self.historyArr[i]),
+				var node = self.get(self.historyArr[i]),
 					name = "";
 				b = document.createElement("div");
 				jq(b).attr("rel-history", "" + i);
@@ -191,7 +192,8 @@ at.freebim.db.relations = {
 										relDiv.appendChild(sub);
 									}
 								};
-							d.listen(bn);
+							//db.logger.debug("JUMPED OVER LISTEN");
+							self.listen(bn);
 							if (res.relation) {
 								t = res.relation[rf.TYPE];
 							}
@@ -389,7 +391,12 @@ at.freebim.db.relations = {
 			db.logger.debug("relations: btnClicked: " + nodeId);
 
 			var b = document.createElement("div"),
+				node = self.get(nodeId);
+
+			if (node == null) {
 				node = d.get(nodeId);
+			}
+
 			// set the center (the node that has been clicked)
 			if (self.historyArr) {
 				if (self.historyArr.length == 0 || self.historyArr[self.historyArr.length - 1] != nodeId) {
@@ -437,6 +444,29 @@ at.freebim.db.relations = {
 				//				self.center.scrollIntoView(true);
 			}, 100);
 		};
+
+		self.listen = function (e) {
+			var db = at.freebim.db, d = db.domain, nf = d.NodeFields;
+			if (e && e[nf.NODEID] != undefined) {
+				e.updated = db.time.now();
+				if (!db.time.validNode(e)) {
+					e.deleted = 1;
+				}
+				if (e[nf.CLASS_NAME] != d.BigBangNode.className
+					&& e[nf.CLASS_NAME] != d.FreebimUser.className
+					&& e[nf.CLASS_NAME] != d.Contributor.className
+					&& !d.relevantId(e[nf.CLASS_NAME], e[nf.NODEID])) {
+					e.unused = 1;
+				}
+				self.nodes["" + e[nf.NODEID]] = e;
+				jq("#status").trigger("_update");
+				d.cleanupNode(e);
+			}
+		};
+
+		self.get = function (nodeId) {
+			return self.nodes["" + nodeId];
+		},
 
 		self.setup = function () {
 			var tab = jq("#freebim_rel"),

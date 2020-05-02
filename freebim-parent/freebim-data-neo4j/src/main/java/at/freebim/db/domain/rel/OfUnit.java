@@ -126,7 +126,7 @@ public class OfUnit extends BaseRel<Measure, Unit> implements BsddRelation {
 		if (bsddGuid == null) {
 			if (other.bsddGuid != null)
 				return false;
-		} else if (!bsddGuid.equals(other.bsddGuid))
+		} else if (!bsddGuid.equals(other.bsddGuid) && !(other.bsddGuid == null && bsddGuid.equals("")))
 			return false;
 		return true;
 	}
