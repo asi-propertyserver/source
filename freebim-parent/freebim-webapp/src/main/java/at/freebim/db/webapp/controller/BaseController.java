@@ -405,9 +405,7 @@ public abstract class BaseController<T extends BaseNode> extends BaseAuthControl
 					this.notifySessionSaved(id, SessionAction.RELATION_MODIFIED);
 				}
 				
-				BaseNode temp = this.getService().getByNodeId(json.getNodeId());
-				
-				response = new AjaxResponse(temp);
+				response = new AjaxResponse(res.baseNode);
 				break;
 
 			} catch (ConcurrencyFailureException e) {

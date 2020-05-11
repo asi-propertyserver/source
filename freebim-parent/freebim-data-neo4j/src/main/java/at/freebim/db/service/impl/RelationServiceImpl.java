@@ -848,7 +848,7 @@ public class RelationServiceImpl implements RelationService {
 				}
 			}
 		}
-		saveNode(node);
+		node = saveNode(node);
 		
 		updateRelationsResult.baseNode = node;
 
