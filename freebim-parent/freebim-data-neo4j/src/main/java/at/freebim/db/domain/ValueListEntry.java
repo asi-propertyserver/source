@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.domain;
 
+import java.util.ArrayList;
+
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -101,7 +103,7 @@ public class ValueListEntry extends StatedBaseNode implements Orderable, Named, 
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.HAS_ENTRY, direction = Relationship.INCOMING)
-	private Iterable<HasEntry> lists;
+	private ArrayList<HasEntry> lists;
 
 	/*
 	 * (non-Javadoc)

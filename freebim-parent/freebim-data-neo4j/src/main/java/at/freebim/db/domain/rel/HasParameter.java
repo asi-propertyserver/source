@@ -157,12 +157,12 @@ public class HasParameter extends OrderedBaseRel<StatedBaseNode, Parameter> impl
 		if (defaultValue == null) {
 			if (other.defaultValue != null)
 				return false;
-		} else if (!defaultValue.equals(other.defaultValue))
+		} else if (!defaultValue.equals(other.defaultValue) && !(other.defaultValue == null && defaultValue.equals("")))
 			return false;
 		if (phaseUuid == null) {
 			if (other.phaseUuid != null)
 				return false;
-		} else if (!phaseUuid.equals(other.phaseUuid))
+		} else if (!phaseUuid.equals(other.phaseUuid) && !(other.phaseUuid == null && phaseUuid.equals("")))
 			return false;
 		if (bsddGuid == null) {
 			if (other.bsddGuid != null)

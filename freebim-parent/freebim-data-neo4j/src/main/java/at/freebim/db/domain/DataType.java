@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.domain;
 
+import java.util.ArrayList;
+
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -99,7 +101,7 @@ public class DataType extends ContributedBaseNode implements Named, Described, B
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.OF_DATATYPE, direction = Relationship.INCOMING)
-	private Iterable<OfDataType> measures;
+	private ArrayList<OfDataType> measures;
 
 	/*
 	 * (non-Javadoc)

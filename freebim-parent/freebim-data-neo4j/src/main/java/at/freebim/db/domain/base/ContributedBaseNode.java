@@ -16,6 +16,7 @@
  *****************************************************************************/
 package at.freebim.db.domain.base;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -49,7 +50,7 @@ public abstract class ContributedBaseNode extends UuidIdentifyable {
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.CONTRIBUTED_BY, direction = Relationship.OUTGOING)
-	private Iterable<ContributedBy> contributor;
+	private ArrayList<ContributedBy> contributor;
 
 	/**
 	 * The relations to the {@link Document}s.
@@ -57,7 +58,7 @@ public abstract class ContributedBaseNode extends UuidIdentifyable {
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.DOCUMENTED_IN, direction = Relationship.OUTGOING)
-	private Iterable<DocumentedIn> docs;
+	private ArrayList<DocumentedIn> docs;
 
 	/**
 	 * Create new instance.

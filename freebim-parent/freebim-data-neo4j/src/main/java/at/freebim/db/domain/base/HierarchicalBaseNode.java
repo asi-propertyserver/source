@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.domain.base;
 
+import java.util.ArrayList;
+
 import org.neo4j.ogm.annotation.Relationship;
 
 import at.freebim.db.domain.ParameterSet;
@@ -48,7 +50,7 @@ public abstract class HierarchicalBaseNode extends Parameterized implements Orde
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.PARENT_OF, direction = Relationship.INCOMING)
-	private Iterable<ParentOf> parents;
+	private ArrayList<ParentOf> parents;
 
 	/**
 	 * The relations to other nodes of the same type that are considered childs in
@@ -57,7 +59,7 @@ public abstract class HierarchicalBaseNode extends Parameterized implements Orde
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.PARENT_OF, direction = Relationship.OUTGOING)
-	private Iterable<ParentOf> childs;
+	private ArrayList<ParentOf> childs;
 
 	/**
 	 * The relations to {@link ParameterSet}s.
@@ -65,7 +67,7 @@ public abstract class HierarchicalBaseNode extends Parameterized implements Orde
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.HAS_PARAMETER_SET, direction = Relationship.OUTGOING)
-	private Iterable<HasParameterSet> parameterSets;
+	private ArrayList<HasParameterSet> parameterSets;
 
 	/**
 	 * Creates a new instance.

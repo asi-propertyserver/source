@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.domain;
 
+import java.util.ArrayList;
+
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -99,7 +101,7 @@ public class Measure extends ContributedBaseNode implements Named, Orderable, Bs
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.OF_DATATYPE, direction = Relationship.OUTGOING)
-	private Iterable<OfDataType> dataType;
+	private ArrayList<OfDataType> dataType;
 
 	/**
 	 * The relations to the {@link Unit}.
@@ -107,7 +109,7 @@ public class Measure extends ContributedBaseNode implements Named, Orderable, Bs
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.OF_UNIT, direction = Relationship.OUTGOING)
-	private Iterable<OfUnit> unit;
+	private ArrayList<OfUnit> unit;
 
 	/**
 	 * The relations to the {@link ValueList}.
@@ -115,7 +117,7 @@ public class Measure extends ContributedBaseNode implements Named, Orderable, Bs
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.HAS_VALUE, direction = Relationship.OUTGOING)
-	private Iterable<HasValue> value;
+	private ArrayList<HasValue> value;
 
 	/**
 	 * The relations to the {@link Parameter}s.
@@ -123,7 +125,7 @@ public class Measure extends ContributedBaseNode implements Named, Orderable, Bs
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.HAS_MEASURE, direction = Relationship.INCOMING)
-	private Iterable<HasMeasure> params;
+	private ArrayList<HasMeasure> params;
 
 	/*
 	 * (non-Javadoc)

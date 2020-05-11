@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.domain;
 
+import java.util.ArrayList;
+
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -81,7 +83,7 @@ public class ValueList extends StatedBaseNode implements Named, BsddObject {
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = "HAS_ENTRY", direction = Relationship.OUTGOING)
-	private Iterable<HasEntry> entries;
+	private ArrayList<HasEntry> entries;
 
 	/**
 	 * The relations to the nodes of the type {@link Measure} that owns this list.
@@ -89,7 +91,7 @@ public class ValueList extends StatedBaseNode implements Named, BsddObject {
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.HAS_VALUE, direction = Relationship.INCOMING)
-	private Iterable<HasValue> measures;
+	private ArrayList<HasValue> measures;
 
 	/*
 	 * (non-Javadoc)

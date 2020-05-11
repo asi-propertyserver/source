@@ -144,12 +144,12 @@ public class References extends TimestampedBaseRel<UuidIdentifyable, Library> {
 		if (refId == null) {
 			if (other.refId != null)
 				return false;
-		} else if (!refId.equals(other.refId))
+		} else if (!refId.equals(other.refId) && !(other.refId == null && refId.equals("")))
 			return false;
 		if (refIdName == null) {
 			if (other.refIdName != null)
 				return false;
-		} else if (!refIdName.equals(other.refIdName))
+		} else if (!refIdName.equals(other.refIdName) && !(other.refIdName == null && refIdName.equals("")))
 			return false;
 		return true;
 	}

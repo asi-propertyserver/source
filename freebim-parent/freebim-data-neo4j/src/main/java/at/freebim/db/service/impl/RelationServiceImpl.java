@@ -16,12 +16,16 @@
  *****************************************************************************/
 package at.freebim.db.service.impl;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.neo4j.kernel.DeadlockDetectedException;
 import org.neo4j.ogm.annotation.Relationship;
@@ -56,6 +60,7 @@ import at.freebim.db.domain.ValueList;
 import at.freebim.db.domain.ValueListEntry;
 import at.freebim.db.domain.base.BaseNode;
 import at.freebim.db.domain.base.ContributedBaseNode;
+import at.freebim.db.domain.base.HierarchicalBaseNode;
 import at.freebim.db.domain.base.LifetimeBaseNode;
 import at.freebim.db.domain.base.NodeIdentifyable;
 import at.freebim.db.domain.base.Role;
@@ -674,6 +679,28 @@ public class RelationServiceImpl implements RelationService {
 	public BaseRel<?, ?> deleteByNodeId(Long nodeId) {
 		return null;
 	}
+	
+	//https://stackoverflow.com/questions/22031207/find-all-classes-and-interfaces-a-class-extends-or-implements-recursively
+	private Set<Class<?>> getAllExtendedOrImplementedTypesRecursively(Class<?> clazz) {
+	    List<Class<?>> res = new ArrayList<>();
+
+	    do {
+	        res.add(clazz);
+
+	        // Add the super class
+	        Class<?> superClass = clazz.getSuperclass();
+
+	        // Interfaces does not have java,lang.Object as superclass, they have null, so break the cycle and return
+	        if (superClass == null) {
+	            break;
+	        }
+
+	        // Now inspect the superclass 
+	        clazz = superClass;
+	    } while (!"java.lang.Object".equals(clazz.getCanonicalName()));
+
+	    return new HashSet<Class<?>>(res);
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -696,245 +723,133 @@ public class RelationServiceImpl implements RelationService {
 			logger.error("No Node for nodeId=[{}].", nodeId);
 			return updateRelationsResult;
 		}
-
-		Map<String, Object> params = new HashMap<>();
-		params.put("nodeId", nodeId);
-
-		for (Relations relations : relationsArray) {
-
-			StringBuilder b = new StringBuilder();
-			String type = RelationTypeEnum.fromCode(relations.t).name();
-			b.append("MATCH (n) WHERE ID(n)={nodeId} MATCH (n)");
-			switch (relations.dir) {
-			case "IN":
-				b.append("<-[rel:");
-				b.append(type);
-				b.append("]-");
-				break;
-			case "BOTH":
-				b.append("-[rel:");
-				b.append(type);
-				b.append("]-");
-				break;
-			case "OUT":
-				b.append("-[rel:");
-				b.append(type);
-				b.append("]->");
-				break;
-			default:
-				logger.error("unknown relation direction {} for nodeId={}", relations.dir, nodeId);
-				return updateRelationsResult;
+		
+		//get all fields
+		Set<Class<?>> classes = getAllExtendedOrImplementedTypesRecursively(clazz);
+		List<Field> nodeFields = new ArrayList<Field>();
+		for(Class<?> c:classes) {
+			for(Field f:c.getDeclaredFields()) {
+				nodeFields.add(f);
 			}
-			b.append("(x) RETURN rel");
-
-			String query = b.toString();
-			logger.debug("query: {}", query);
-
-			HashMap<Long, BaseRel<FROM, TO>> existingRelations = new HashMap<>();
-			Iterable<Map<String, Object>> result = this.template.query(query, params, true);
-			Iterator<Map<String, Object>> iter = result.iterator();
-			while (iter.hasNext()) {
-				try {
-					Map<String, Object> map = iter.next();
-					BaseRel<FROM, TO> relTypeIn = (BaseRel<FROM, TO>) map.get("rel");
-					if (relTypeIn != null) {
-						BaseRel<FROM, TO> rel = relTypeIn;
-						if (rel != null) {
-							logger.debug("    got id={} existing {} relations.", rel.getId(), type);
-							existingRelations.put(rel.getId(), rel);
-						}
-					}
-				} catch (Exception e) {
-					logger.error("Can't get relation of type [" + type + "]: [" + e.getMessage() + "] caught.");
-					continue;
+		}
+		
+		//update all relationship fields
+		for(Field f: nodeFields) {
+			f.setAccessible(true);
+			Relationship t = f.getAnnotation(Relationship.class);
+			if (t != null) {
+				String type = t.type();
+				String direction = t.direction();
+				if (direction.equals("OUTGOING")) { //TODO: switch
+					direction = "OUT";
 				}
-			}
-			logger.debug("got {} existing {} relations.", existingRelations.keySet().size(), type);
-
-			BaseRel<FROM, TO>[] rels = (BaseRel<FROM, TO>[]) relations.relations;
-			for (BaseRel<FROM, TO> rel : rels) {
-				Long relatedNodeId = null;
-				boolean in = false;
-				switch (relations.dir) {
-				case "IN":
-					relatedNodeId = rel.getN1Id();
-					in = true;
-					break;
-				case "BOTH":
-					if (nodeId.equals(rel.getN1Id())) {
-						relatedNodeId = rel.getN2Id();
-					} else {
-						relatedNodeId = rel.getN1Id();
-						in = true;
-					}
-					break;
-				case "OUT":
-					relatedNodeId = rel.getN2Id();
-					break;
+				if (direction.equals("INCOMING")) {
+					direction = "IN";
 				}
-				if (relatedNodeId != null) {
-					BaseNode rn = this.template.load(BaseNode.class, relatedNodeId);
-					rn = loadNode(relatedNodeId, rn.getClass());
-
-					if (rn != null) {
-
+				if (direction.equals("UNDIRECTED")) {
+					direction = "BOTH";
+				}
+				
+				for (Relations r: relationsArray) {
+					if (RelationTypeEnum.fromCode(r.t).name().equals(type) && r.dir.equals(direction)) {			
 						try {
-							if (in) {
-								FROM relatedNode = (FROM) rn;
-								rel.setN1(relatedNode);
-								rel.setN2((TO) node);
-							} else {
-								TO relatedNode = (TO) rn;// this.createTreeNode(rn);
-								rel.setN1((FROM) node);
-								rel.setN2(relatedNode);
+							Object tempRel = f.get(node);
+							if (tempRel == null) {
+								tempRel = f.getType().newInstance();//new ArrayList<BaseRel<FROM, TO>>();
 							}
-						} catch (ConcurrencyFailureException e) {
-							throw e;
-						} catch (DeadlockDetectedException e) {
-							throw e;
-						} catch (Exception e) {
-							logger.error("Can't create [" + rel.getType() + "] relation for node [" + node.getNodeId()
-									+ "]: ", e);
-							continue;
-						}
-						if (rel.getId() != null) {
-							BaseRel<?, ?> existingRel = existingRelations.get(rel.getId());
-							if (rel.equals(existingRel)) {
-								existingRelations.remove(rel.getId());
-								logger.debug("old {} relation unchanged for nodeId={}", type, nodeId);
-								continue;
+							
+							
+							if (tempRel instanceof ArrayList) {
+								HashMap<Long, BaseRel<FROM, TO>> existingRelations = new HashMap<>();
+								for (BaseRel<FROM, TO> nr: (ArrayList<BaseRel<FROM, TO>>)tempRel) {
+									existingRelations.put(nr.getId(), nr);
+								}
+								f.set(node, f.getType().newInstance());
+								tempRel = f.getType().newInstance();
+								
+								//check if relationship already exists
+								for (BaseRel<FROM, TO> rel:(BaseRel<FROM, TO>[])r.relations) {
+									Long relatedNodeId = null;
+									boolean in = false;
+									switch (r.dir) {
+									case "IN":
+										relatedNodeId = rel.getN1Id();
+										in = true;
+										break;
+									case "BOTH":
+										if (nodeId.equals(rel.getN1Id())) {
+											relatedNodeId = rel.getN2Id();
+										} else {
+											relatedNodeId = rel.getN1Id();
+											in = true;
+										}
+										break;
+									case "OUT":
+										relatedNodeId = rel.getN2Id();
+										break;
+									}
+									
+									if (relatedNodeId != null) {
+										BaseNode rn = this.template.load(BaseNode.class, relatedNodeId);
+										rn = loadNode(relatedNodeId, rn.getClass());
+										
+										if (rn != null) {
+											try {
+												if (in) {
+													FROM relatedNode = (FROM) rn;
+													rel.setN1(relatedNode);
+													rel.setN2((TO) node);
+												} else {
+													TO relatedNode = (TO) rn;// this.createTreeNode(rn);
+													rel.setN1((FROM) node);
+													rel.setN2(relatedNode);
+												}
+											} catch (ConcurrencyFailureException e) {
+												throw e;
+											} catch (DeadlockDetectedException e) {
+												throw e;
+											} catch (Exception e) {
+												logger.error("Can't create [" + rel.getType() + "] relation for node [" + node.getNodeId()
+														+ "]: ", e);
+												continue;
+											}
+											
+											BaseRel<?, ?> existingRel = existingRelations.get(rel.getId());
+											if (rel.equals(existingRel)) {
+												existingRelations.remove(rel.getId());
+												logger.debug("old {} relation unchanged for nodeId={}", type, nodeId);
+											} else {
+												if (rel.getId() != null) {
+													BaseRel<FROM, TO> toRemove = null;
+													for(BaseRel<FROM, TO> updateRel: (ArrayList<BaseRel<FROM, TO>>)tempRel) {
+														if (updateRel.getId().equals(rel.getId())) {
+															toRemove = updateRel;
+														}
+													}
+													
+													if (toRemove != null) {
+														((ArrayList<BaseRel<FROM, TO>>)tempRel).remove(toRemove);
+													}
+												}
+												
+											}
+											((ArrayList<BaseRel<FROM, TO>>)tempRel).add(rel);
+										}
+									}
+
+								}
+								f.set(node, tempRel);
 							}
+						} catch (IllegalArgumentException | IllegalAccessException | SecurityException | InstantiationException e) {
+							logger.debug("old {} Exception when updating relations for nodeId={}", type, nodeId);
+							e.printStackTrace();
 						}
-						rel.setId(null); // force creation of a new relationship (seems to be a bug in SDN, when
-											// updating existing relations pointing to another node)
-
-						updateRelationsResult.addAffectedNode(rel.getN1().getNodeId());
-						updateRelationsResult.addAffectedNode(rel.getN2().getNodeId());
-
-						try {
-							//Has to be done otherwise the labels are missing
-							switch (RelationTypeEnum.fromCode(relations.t)) {
-								case BELONGS_TO:
-									this.template.save((BelongsTo)rel);
-									break;
-								case BSDD:
-									this.template.save((Bsdd)rel);
-									break;
-								case CHILD_OF:
-									this.template.save((ChildOf)rel);
-									break;
-								case COMPANY_COMPANY:
-									this.template.save((CompanyCompany)rel);
-									break;
-								case COMP_COMP:
-									this.template.save((ComponentComponent)rel);
-									break;
-								case CONTAINS_PARAMETER:
-									this.template.save((ContainsParameter)rel);
-									break;
-								case CONTRIBUTED_BY:
-									this.template.save((ContributedBy)rel);
-									break;
-								case DOCUMENTED_IN:
-									this.template.save((DocumentedIn)rel);
-									break;
-								case EQUALS:
-									this.template.save((Equals)rel);
-									break;
-								case HAS_ENTRY:
-									this.template.save((HasEntry)rel);
-									break;
-								case HAS_MEASURE:
-									this.template.save((HasMeasure)rel);
-									break;
-								case HAS_PARAMETER:
-									this.template.save((HasParameter)rel);
-									break;
-								case HAS_PARAMETER_SET:
-									this.template.save((HasParameterSet)rel);
-									break;
-								case HAS_VALUE:
-									this.template.save((HasValue)rel);
-									break;
-								case MESSAGE_CLOSED:
-									this.template.save((MessageClosed)rel);
-									break;
-								case MESSAGE_SEEN:
-									this.template.save((MessageSeen)rel);
-									break;
-								case NGRAM_CODE_OF:
-									this.template.save((NgramCodeOf)rel);
-									break;
-								case NGRAM_DESC_OF:
-									this.template.save((NgramDescOf)rel);
-									break;
-								case NGRAM_NAME_OF:
-									this.template.save((NgramNameOf)rel);
-									break;
-								case OF_DATATYPE:
-									this.template.save((OfDataType)rel);
-									break;
-								case OF_DISCIPLINE:
-									this.template.save((OfDiscipline)rel);
-									break;
-								case OF_MATERIAL:
-									this.template.save((OfMaterial)rel);
-									break;
-								case OF_UNIT:
-									this.template.save((OfUnit)rel);
-									break;
-								case PARENT_OF:
-									this.template.save((ParentOf)rel);
-									break;
-								case REFERENCES:
-									this.template.save((References)rel);
-									break;
-								case RESPONSIBLE:
-									this.template.save((Responsible)rel);
-									break;
-								case UNIT_CONVERSION:
-									this.template.save((UnitConversion)rel);
-									break;
-								case VALUE_OVERRIDE:
-									this.template.save((ValueOverride)rel);
-									break;
-								case WORKS_FOR:
-									this.template.save((WorksFor)rel);
-									break;
-								default:
-									this.template.save(rel);
-									break;
-							}
-
-						} catch (Exception e) {
-							logger.error("Can't save [" + rel.getType() + "] relation for node [" + node.getNodeId()
-									+ "]: [" + e.getMessage() + "] caught.");
-							continue;
-						}
-						logger.debug("    new {} relation saved for nodeId={}", type, nodeId);
 					}
 				}
 			}
-			logger.debug("deleting {} existing {} relations.", existingRelations.keySet().size(), type);
-			for (BaseRel<?, ?> rel : existingRelations.values()) {
-
-				try {
-					updateRelationsResult.addAffectedNode(rel.getN1().getNodeId());
-					updateRelationsResult.addAffectedNode(rel.getN2().getNodeId());
-
-					this.template.delete(rel);
-				} catch (Exception e) {
-					logger.error("Can't delete old relation id=[" + ((rel == null) ? null : rel.getId())
-							+ "] for nodeId=[" + nodeId + "]: [" + e.getMessage() + "] caught.");
-					continue;
-				}
-
-				logger.debug("    old relation id={} deleted for nodeId={}", rel.getId(), nodeId);
-			}
-		} // end: for (Relations relations : relationsArray)
-
-		node = loadNode(nodeId, clazz);
-
+		}
+		saveNode(node);
+		
 		updateRelationsResult.baseNode = node;
 
 		return updateRelationsResult;

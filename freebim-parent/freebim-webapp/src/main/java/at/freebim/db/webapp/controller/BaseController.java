@@ -32,6 +32,10 @@ import io.swagger.annotations.ApiOperation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.validation.Valid;
 import javax.validation.ValidationException;
 import org.neo4j.kernel.DeadlockDetectedException;
@@ -227,6 +231,28 @@ public abstract class BaseController<T extends BaseNode> extends BaseAuthControl
 
 		return response;
 	}
+	
+	//https://stackoverflow.com/questions/22031207/find-all-classes-and-interfaces-a-class-extends-or-implements-recursively
+	private Set<Class<?>> getAllExtendedOrImplementedTypesRecursively(Class<?> clazz) {
+	    List<Class<?>> res = new ArrayList<>();
+
+	    do {
+	        res.add(clazz);
+
+	        // Add the super class
+	        Class<?> superClass = clazz.getSuperclass();
+
+	        // Interfaces does not have java,lang.Object as superclass, they have null, so break the cycle and return
+	        if (superClass == null) {
+	            break;
+	        }
+
+	        // Now inspect the superclass 
+	        clazz = superClass;
+	    } while (!"java.lang.Object".equals(clazz.getCanonicalName()));
+
+	    return new HashSet<Class<?>>(res);
+	}
 
 	/**
 	 * Save the entity <b>T</b> that is encoded within the json-object. The function
@@ -253,9 +279,23 @@ public abstract class BaseController<T extends BaseNode> extends BaseAuthControl
 		T temp = null;
 		if (entity.getNodeId() != null) {
 			temp = this.getService().getByNodeId(entity.getNodeId());
-			for(Field f: entity.getClass().getDeclaredFields()) {
+			List<Field> tempFields = new ArrayList<Field>();
+			for (Class<?> c:getAllExtendedOrImplementedTypesRecursively(temp.getClass())) {
+				for(Field t:c.getDeclaredFields()) {
+					tempFields.add(t);
+				}
+			}
+			
+			List<Field> entityFields = new ArrayList<Field>();
+			for (Class<?> c:getAllExtendedOrImplementedTypesRecursively(entity.getClass())) {
+				for(Field t:c.getDeclaredFields()) {
+					entityFields.add(t);
+				}
+			}
+			
+			for(Field f: entityFields) {
 				f.setAccessible(true);
-				for (Field y: temp.getClass().getDeclaredFields()) {
+				for (Field y: tempFields) {
 					y.setAccessible(true);
 					if (!Modifier.isFinal(f.getModifiers()) && y.getName().equals(f.getName())) {
 						try {
@@ -364,8 +404,10 @@ public abstract class BaseController<T extends BaseNode> extends BaseAuthControl
 				for (Long id : res.affectedNodes) {
 					this.notifySessionSaved(id, SessionAction.RELATION_MODIFIED);
 				}
-
-				response = new AjaxResponse(res.baseNode);
+				
+				BaseNode temp = this.getService().getByNodeId(json.getNodeId());
+				
+				response = new AjaxResponse(temp);
 				break;
 
 			} catch (ConcurrencyFailureException e) {

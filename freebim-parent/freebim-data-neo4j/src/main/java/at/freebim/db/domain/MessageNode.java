@@ -82,12 +82,12 @@ public class MessageNode extends LifetimeBaseNode {
 	 * The relation to the {@link FreebimUser}s that have seen the message.
 	 */
 	@Relationship(type = RelationType.MESSAGE_SEEN, direction = Relationship.OUTGOING)
-	private Iterable<MessageSeen> messageSeen;
+	private ArrayList<MessageSeen> messageSeen;
 	/**
 	 * The relation to the {@link FreebimUser}s that have closed the message.
 	 */
 	@Relationship(type = RelationType.MESSAGE_CLOSED, direction = Relationship.OUTGOING)
-	private Iterable<MessageClosed> messageClosed;
+	private ArrayList<MessageClosed> messageClosed;
 
 	public MessageNode() {
 		super();

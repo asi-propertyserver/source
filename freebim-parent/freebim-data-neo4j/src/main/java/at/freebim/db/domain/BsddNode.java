@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.domain;
 
+import java.util.ArrayList;
+
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -62,7 +64,7 @@ public class BsddNode extends BaseNode {
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.BSDD, direction = Relationship.OUTGOING)
-	private Iterable<Bsdd> nodes;
+	private ArrayList<Bsdd> nodes;
 
 	/**
 	 * Create a new instance.

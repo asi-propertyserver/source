@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.domain;
 
+import java.util.ArrayList;
+
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -99,7 +101,7 @@ public class Unit extends ContributedBaseNode implements Described, Named, BsddO
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = "UNIT_CONVERSION", direction = Relationship.UNDIRECTED)
-	private Iterable<UnitConversion> conversions;
+	private ArrayList<UnitConversion> conversions;
 
 	/**
 	 * The incoming relations from the node {@link Measure}.
@@ -107,7 +109,7 @@ public class Unit extends ContributedBaseNode implements Described, Named, BsddO
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = "OF_UNIT", direction = Relationship.INCOMING)
-	private Iterable<OfUnit> measures;
+	private ArrayList<OfUnit> measures;
 
 	/*
 	 * (non-Javadoc)

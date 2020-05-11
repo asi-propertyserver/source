@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.domain;
 
+import java.util.ArrayList;
+
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -92,7 +94,7 @@ public class Library extends HierarchicalBaseNode implements Named, Orderable, T
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.RESPONSIBLE, direction = Relationship.INCOMING)
-	private Iterable<Responsible> responsible;
+	private ArrayList<Responsible> responsible;
 
 	/**
 	 * Create new instance.

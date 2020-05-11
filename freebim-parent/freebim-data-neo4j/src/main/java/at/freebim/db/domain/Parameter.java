@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.domain;
 
+import java.util.ArrayList;
+
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -111,28 +113,28 @@ public class Parameter extends StatedBaseNode implements Orderable, Coded, Named
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.OF_DISCIPLINE, direction = Relationship.OUTGOING)
-	private Iterable<OfDiscipline> discipline;
+	private ArrayList<OfDiscipline> discipline;
 	/**
 	 * The relation to the node {@link Measure}.
 	 *
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.HAS_MEASURE)
-	private Iterable<HasMeasure> measures;
+	private ArrayList<HasMeasure> measures;
 	/**
 	 * The incoming relation from nodes of the type {@link StatedBaseNode}.
 	 *
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.HAS_PARAMETER, direction = Relationship.INCOMING)
-	private Iterable<HasParameter> components;
+	private ArrayList<HasParameter> components;
 	/**
 	 * The incoming relation from the nodes of the type {@link StatedBaseNode}.
 	 *
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.CONTAINS_PARAMETER, direction = Relationship.INCOMING)
-	private Iterable<ContainsParameter> psets;
+	private ArrayList<ContainsParameter> psets;
 
 	/**
 	 * Create new instance.

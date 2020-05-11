@@ -137,7 +137,7 @@ public class HasValue extends BaseRel<Measure, ValueList> implements BsddRelatio
 		if (componentUuid == null) {
 			if (other.componentUuid != null)
 				return false;
-		} else if (!componentUuid.equals(other.componentUuid))
+		} else if (!componentUuid.equals(other.componentUuid) && !(other.componentUuid == null && componentUuid.equals("")))
 			return false;
 		return true;
 	}

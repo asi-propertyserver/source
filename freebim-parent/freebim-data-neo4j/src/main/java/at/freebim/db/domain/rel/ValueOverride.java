@@ -124,12 +124,12 @@ public class ValueOverride extends BaseRel<Component, Parameter> {
 		if (value == null) {
 			if (other.value != null)
 				return false;
-		} else if (!value.equals(other.value))
+		} else if (!value.equals(other.value) && !(other.value == null && value.equals("")))
 			return false;
 		if (measure == null) {
 			if (other.measure != null)
 				return false;
-		} else if (!measure.equals(other.measure))
+		} else if (!measure.equals(other.measure) && !(other.measure == null && measure.equals("")))
 			return false;
 		return true;
 	}

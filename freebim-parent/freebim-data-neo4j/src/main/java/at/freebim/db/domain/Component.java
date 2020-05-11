@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.domain;
 
+import java.util.ArrayList;
+
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -107,14 +109,14 @@ public class Component extends HierarchicalBaseNode implements Orderable, Named,
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.HAS_PARAMETER, direction = Relationship.OUTGOING)
-	private Iterable<HasParameter> parameter;
+	private ArrayList<HasParameter> parameter;
 	/**
 	 * The relation to other {@link Component}s.
 	 *
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.COMP_COMP, direction = Relationship.OUTGOING)
-	private Iterable<ComponentComponent> parts;
+	private ArrayList<ComponentComponent> parts;
 	/**
 	 * The relation to the materials ({@link Component}s) the {@link Component} is
 	 * build of.
@@ -123,14 +125,14 @@ public class Component extends HierarchicalBaseNode implements Orderable, Named,
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.OF_MATERIAL, direction = Relationship.OUTGOING)
-	private Iterable<OfMaterial> material;
+	private ArrayList<OfMaterial> material;
 	/**
 	 * The relation to the {@link Parameter}s that will be overridden.
 	 *
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.VALUE_OVERRIDE, direction = Relationship.OUTGOING)
-	private Iterable<ValueOverride> valueOverride;
+	private ArrayList<ValueOverride> valueOverride;
 	/**
 	 * Determines if this {@link Component} is a material.
 	 *

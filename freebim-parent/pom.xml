@@ -4,13 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.freebim</groupId>
 	<artifactId>db</artifactId>
-	<version>1.5.7</version>
+	<version>1.5.8</version>
 	<packaging>pom</packaging>
 	<name>freebim-parent</name>
 	<description>freebim-parent</description>
 
 	<properties>
-		<freebim.version>1.5.7</freebim.version>
+		<freebim.version>1.5.8</freebim.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring-boot-version>2.1.4.RELEASE</spring-boot-version>
 		<!--<spring.version>4.0.6.RELEASE</spring.version> <spring-sec.version>3.2.4.RELEASE</spring-sec.version> 

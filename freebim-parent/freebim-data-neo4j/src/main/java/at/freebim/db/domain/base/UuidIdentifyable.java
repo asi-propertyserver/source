@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.domain.base;
 
+import java.util.ArrayList;
+
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -57,7 +59,7 @@ public abstract class UuidIdentifyable extends LifetimeBaseNode implements UUidI
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.REFERENCES, direction = Relationship.OUTGOING)
-	private Iterable<References> ref;
+	private ArrayList<References> ref;
 
 	/**
 	 * possible bsDD-Guids (candidates)
@@ -65,7 +67,7 @@ public abstract class UuidIdentifyable extends LifetimeBaseNode implements UUidI
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.BSDD, direction = Relationship.INCOMING)
-	private Iterable<Bsdd> bsdd;
+	private ArrayList<Bsdd> bsdd;
 
 	/**
 	 * Creates a new instance.

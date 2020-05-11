@@ -105,7 +105,7 @@ public class Contributor extends LifetimeBaseNode implements Coded, Named, Times
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.WORKS_FOR, direction = Relationship.OUTGOING)
-	private Iterable<WorksFor> companies;
+	private ArrayList<WorksFor> companies;
 
 	/**
 	 * The roles.
@@ -119,7 +119,7 @@ public class Contributor extends LifetimeBaseNode implements Coded, Named, Times
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.RESPONSIBLE, direction = Relationship.OUTGOING)
-	private Iterable<Responsible> responsible;
+	private ArrayList<Responsible> responsible;
 
 	/*
 	 * (non-Javadoc)

@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.domain;
 
+import java.util.ArrayList;
+
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -93,7 +95,7 @@ public class Document extends UuidIdentifyable implements Named, Described, Time
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.DOCUMENTED_IN, direction = Relationship.INCOMING)
-	private Iterable<DocumentedIn> documentedNodes;
+	private ArrayList<DocumentedIn> documentedNodes;
 
 	/*
 	 * (non-Javadoc)

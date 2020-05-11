@@ -59,7 +59,7 @@ public abstract class BaseNode implements NodeIdentifyable {
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.EQUALS, direction = Relationship.UNDIRECTED)
-	private Iterable<Equals> eq;
+	private ArrayList<Equals> eq;
 
 	/**
 	 * Create new instance.

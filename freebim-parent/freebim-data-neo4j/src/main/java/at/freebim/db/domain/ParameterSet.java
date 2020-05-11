@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.domain;
 
+import java.util.ArrayList;
+
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -73,7 +75,7 @@ public class ParameterSet extends Parameterized implements Named, BsddObject {
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.CONTAINS_PARAMETER, direction = Relationship.OUTGOING)
-	private Iterable<ContainsParameter> parameters;
+	private ArrayList<ContainsParameter> parameters;
 
 	/**
 	 * The relation to the hierarchical owner of the set.
@@ -81,7 +83,7 @@ public class ParameterSet extends Parameterized implements Named, BsddObject {
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.HAS_PARAMETER_SET, direction = Relationship.INCOMING)
-	private Iterable<HasParameterSet> owners;
+	private ArrayList<HasParameterSet> owners;
 
 	/**
 	 * The bsdd-guid.

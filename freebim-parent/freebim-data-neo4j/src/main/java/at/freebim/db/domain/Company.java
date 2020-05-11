@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.domain;
 
+import java.util.ArrayList;
+
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -91,7 +93,7 @@ public class Company extends LifetimeBaseNode implements Coded, Named, Orderable
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.WORKS_FOR, direction = Relationship.INCOMING)
-	private Iterable<WorksFor> contributor;
+	private ArrayList<WorksFor> contributor;
 
 	/**
 	 * The relation between companies.
@@ -100,7 +102,7 @@ public class Company extends LifetimeBaseNode implements Coded, Named, Orderable
 	 * @see org.neo4j.ogm.annotation.Relationship
 	 */
 	@Relationship(type = RelationType.COMPANY_COMPANY, direction = Relationship.UNDIRECTED)
-	private Iterable<CompanyCompany> company;
+	private ArrayList<CompanyCompany> company;
 
 	/*
 	 * (non-Javadoc)
