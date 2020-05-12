@@ -158,12 +158,21 @@ public abstract class StatedBaseNodeServiceImpl<T extends StatedBaseNode> extend
 			user = this.freebimUserService.get(auth.getName());
 
 			if (user != null) {
-				if (user.getRoles().contains(Role.ROLE_GUEST) && node instanceof StatedBaseNode
-						&& node.getState() != State.CHECKED && !(node instanceof BigBangNode)
+				if (user.getRoles().contains(Role.ROLE_GUEST) 
+						&& node instanceof StatedBaseNode
+						&& !(node instanceof BigBangNode)
 						&& !(node instanceof Library)) {
-					return super.filterResponse(null, now);
-				} else {
-					return super.filterResponse(node, now);
+					switch (node.getState()) {
+					case CHECKED:
+					case IMPORTED:
+					case RELEASED:
+					case UNDEFINED:
+						break;
+					case REJECTED:
+					case TODELETE:
+					default:
+						return super.filterResponse(null, now);
+					}
 				}
 			}
 
@@ -184,22 +193,20 @@ public abstract class StatedBaseNodeServiceImpl<T extends StatedBaseNode> extend
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+		boolean permissionRequired = false;
 		// permission required
 		FreebimUser user = null;
 		if (auth != null) {
 			logger.debug("auth.name=[{}]", auth.getName());
 			user = this.freebimUserService.get(auth.getName());
-
 			if (user != null) {
 				if (user.getRoles().contains(Role.ROLE_GUEST)) {
-					getRelevantQuery(b,
-							"AND (y.state = \"CHECKED\" or (\"BigBangNode\" in labels(y) or \"Library\" in labels(y))) RETURN DISTINCT ID(y) AS id");
-				} else {
-					getRelevantQuery(b, " RETURN DISTINCT ID(y) AS id");
+					permissionRequired = true;
 				}
-			} else {
-				getRelevantQuery(b, " RETURN DISTINCT ID(y) AS id");
 			}
+		}
+		if (permissionRequired) {
+			getRelevantQuery(b, "AND (y.state IN ['CHECKED', 'IMPORTED', 'RELEASED', 'UNDEFINED'] or ('BigBangNode' in labels(y) or 'Library' in labels(y))) RETURN DISTINCT ID(y) AS id");
 		} else {
 			getRelevantQuery(b, " RETURN DISTINCT ID(y) AS id");
 		}
