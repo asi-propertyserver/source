@@ -16,6 +16,8 @@
  *****************************************************************************/
 package at.freebim.db.service;
 
+import org.springframework.security.access.annotation.Secured;
+
 import at.freebim.db.domain.SearchStringNode;
 
 /**
@@ -33,6 +35,7 @@ public interface SearchStringNodeService extends BaseNodeService<SearchStringNod
 	 * 
 	 * @see at.freebim.db.service.BaseService#save(java.lang.Object)
 	 */
+	@Secured({ "ROLE_EDIT", "ROLE_ADMIN", "ROLE_GUEST" })
 	SearchStringNode save(SearchStringNode node);
 
 	/*
@@ -40,6 +43,7 @@ public interface SearchStringNodeService extends BaseNodeService<SearchStringNod
 	 * 
 	 * @see at.freebim.db.service.BaseService#delete(java.lang.Object)
 	 */
+	@Secured({ "ROLE_EDIT", "ROLE_ADMIN", "ROLE_GUEST" })
 	SearchStringNode delete(SearchStringNode node);
 
 }
