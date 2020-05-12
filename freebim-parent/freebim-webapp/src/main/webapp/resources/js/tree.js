@@ -417,12 +417,12 @@ at.freebim.db.tree = {
 								field : rf.ORDERING,
 								type : "text",
 								sort : true
-							}, {
+							}/*, {
 								label : "CODE",
 								field : nf.CODE,
 								type : "text",
 								sort : true
-							},
+							}*/,
 							{
 								label : "NAME",
 								field : "name",
