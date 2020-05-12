@@ -814,24 +814,25 @@ public class RelationServiceImpl implements RelationService {
 												continue;
 											}
 											
-											BaseRel<?, ?> existingRel = existingRelations.get(rel.getId());
-											if (rel.equals(existingRel)) {
-												existingRelations.remove(rel.getId());
-												logger.debug("old {} relation unchanged for nodeId={}", type, nodeId);
-											} else {
-												if (rel.getId() != null) {
-													BaseRel<FROM, TO> toRemove = null;
-													for(BaseRel<FROM, TO> updateRel: (ArrayList<BaseRel<FROM, TO>>)tempRel) {
-														if (updateRel.getId().equals(rel.getId())) {
-															toRemove = updateRel;
-														}
-													}
+											if (rel.getId() != null) {
+												BaseRel<?, ?> existingRel = existingRelations.get(rel.getId());
+												if (rel.equals(existingRel)) {
+													existingRelations.remove(rel.getId());
+													logger.debug("old {} relation unchanged for nodeId={}", type, nodeId);
+												} else {
 													
-													if (toRemove != null) {
-														((ArrayList<BaseRel<FROM, TO>>)tempRel).remove(toRemove);
-													}
+														BaseRel<FROM, TO> toRemove = null;
+														for(BaseRel<FROM, TO> updateRel: (ArrayList<BaseRel<FROM, TO>>)tempRel) {
+															if (updateRel.getId().equals(rel.getId())) {
+																toRemove = updateRel;
+															}
+														}
+														
+														if (toRemove != null) {
+															((ArrayList<BaseRel<FROM, TO>>)tempRel).remove(toRemove);
+														}
+													
 												}
-												
 											}
 											((ArrayList<BaseRel<FROM, TO>>)tempRel).add(rel);
 										}
