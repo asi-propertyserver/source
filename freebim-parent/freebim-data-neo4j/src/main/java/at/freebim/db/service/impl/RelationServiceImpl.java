@@ -502,7 +502,7 @@ public class RelationServiceImpl implements RelationService {
 
 				if (user.getRoles().contains(Role.ROLE_GUEST)) {
 					b.append("MATCH (n) WHERE ID(n)={id}");
-					b.append(" AND (\"StatedBaseNode\" in labels(n) and (n.status = \"CHECKED\" or ");
+					b.append(" AND (\"StatedBaseNode\" in labels(n) and (n.state IN ['CHECKED', 'IMPORTED', 'RELEASED', 'UNDEFINED'] or ");
 					b.append("(\"BigBangNode\" in labels(n) or \"Library\" in labels(n))))");
 
 					b.append(" OPTIONAL MATCH (n)<-[relIn]-(a) WHERE");
@@ -526,7 +526,7 @@ public class RelationServiceImpl implements RelationService {
 					b.append(RelationType.BELONGS_TO);
 					b.append("\"");
 
-					b.append(" AND (\"StatedBaseNode\" in labels(a) and (a.status = \"CHECKED\" or ");
+					b.append(" AND (\"StatedBaseNode\" in labels(a) and (a.state IN ['CHECKED', 'IMPORTED', 'RELEASED', 'UNDEFINED'] or ");
 					b.append("(\"BigBangNode\" in labels(a) or \"Library\" in labels(a))))");
 
 					b.append(" OPTIONAL MATCH (n)-[relOut]->(b) WHERE");
@@ -545,7 +545,7 @@ public class RelationServiceImpl implements RelationService {
 					b.append(" type(relOut) <> \"");
 					b.append(RelationType.BELONGS_TO);
 					b.append("\"");
-					b.append(" AND (\"StatedBaseNode\" in labels(b) and (b.status = \"CHECKED\" or ");
+					b.append(" AND (\"StatedBaseNode\" in labels(b) and (b.state IN ['CHECKED', 'IMPORTED', 'RELEASED', 'UNDEFINED'] or ");
 					b.append("(\"BigBangNode\" in labels(b) or \"Library\" in labels(b))))");
 					b.append(" RETURN distinct n, a, b, relIn, relOut, relIn.ts AS t1, relOut.ts AS t2");
 				} else {

@@ -5723,7 +5723,7 @@ at.freebim.db.domain.Parameter = {
 			+ "type" + self.table.csvDelim
 			+ "status" + self.table.csvDelim;
 		self.table.cols = [
-			d.columns.code,
+//			d.columns.code,
 			{
 				label: "NAME",
 				field: nf.NAME,

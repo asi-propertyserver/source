@@ -1,4 +1,6 @@
 {
+	"INFO_BIB" : "Der Merkmalserver verwaltet Inhalte aus unterschiedlichen Quellen, die in sog. 'Bibliotheken' gegliedert sind. Für die ÖNORM sind nur Inhalte der Bibliotheken 'ÖNORM A6241-1' und 'ÖNORM A6241-2' relevant.",
+	"INFO_STATE" : "Inhalte, deren Status nicht 'geprüft' (grün) ist, sind nicht Teil der ÖNORM.",
 	"ALL_COMPONENTS": "all Components",
 	"APP_FREEBIM_LINK": "http://www.freebim.at/?info",
 	"APP_VERSION": "Version:",
