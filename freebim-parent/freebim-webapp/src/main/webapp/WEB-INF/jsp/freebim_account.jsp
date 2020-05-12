@@ -164,4 +164,8 @@
 			${appBuildTime}</span><br /> <a href="http://www.freebim.at/?info"
 			i18n_href="APP_FREEBIM_LINK" target="_blank" title="freeBIM-Tirol">www.freebim.at</a>
 	</p>
+<c:if test="${username != null && username.length() > 0 && !username.equals('anonymousUser')}">
+	<p class="info"><span i18n="INFO_BIB"></span></p>
+	<p class="info"><span i18n="INFO_STATE"></span></p>
+</c:if>
 </div>
