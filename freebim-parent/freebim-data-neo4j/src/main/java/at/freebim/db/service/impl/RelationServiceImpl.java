@@ -729,7 +729,10 @@ public class RelationServiceImpl implements RelationService {
 		List<Field> nodeFields = new ArrayList<Field>();
 		for(Class<?> c:classes) {
 			for(Field f:c.getDeclaredFields()) {
-				nodeFields.add(f);
+				Relationship t = f.getAnnotation(Relationship.class);
+				if (t != null) {
+					nodeFields.add(f);
+				}
 			}
 		}
 		
@@ -793,6 +796,38 @@ public class RelationServiceImpl implements RelationService {
 										BaseNode rn = this.template.load(BaseNode.class, relatedNodeId);
 										rn = loadNode(relatedNodeId, rn.getClass());
 										
+										//get all fields
+										Set<Class<?>> classesRn = getAllExtendedOrImplementedTypesRecursively(rn.getClass());
+										List<Field> nodeFieldsRn = new ArrayList<Field>();
+										for(Class<?> c:classesRn) {
+											for(Field fRn:c.getDeclaredFields()) {
+												Relationship tRn = fRn.getAnnotation(Relationship.class);
+												if (tRn != null) {
+													nodeFieldsRn.add(fRn);
+												}
+											}
+										}
+										
+										Field currentRn = null;
+										for(Field fRn: nodeFields) {
+											fRn.setAccessible(true);
+											Relationship tRn = fRn.getAnnotation(Relationship.class);
+											if (tRn != null) {
+												String typeRn = tRn.type();
+												String directionRn = tRn.direction();
+												if (typeRn.equals(t.type()) && (((direction.equals("OUT") && directionRn.equals("INCOMING")) || 
+														(direction.equals("IN") && directionRn.equals("OUTGOING")) || direction.equals("BOTH")))) {
+													currentRn = fRn;
+													
+													if (currentRn.get(rn) == null) {
+														currentRn.set(rn, currentRn.getType().newInstance());
+													}
+													
+													break;
+												}
+											}
+										}
+										
 										if (rn != null) {
 											try {
 												if (in) {
@@ -817,29 +852,50 @@ public class RelationServiceImpl implements RelationService {
 											if (rel.getId() != null) {
 												BaseRel<?, ?> existingRel = existingRelations.get(rel.getId());
 												if (rel.equals(existingRel)) {
-													existingRelations.remove(rel.getId());
+													rel.setId(existingRel.getId());
+													((ArrayList<BaseRel<FROM, TO>>)tempRel).add((BaseRel<FROM, TO>)existingRel);
 													logger.debug("old {} relation unchanged for nodeId={}", type, nodeId);
 												} else {
 													
+													((ArrayList<BaseRel<FROM, TO>>)tempRel).add(rel);
+													if (currentRn != null) {
 														BaseRel<FROM, TO> toRemove = null;
-														for(BaseRel<FROM, TO> updateRel: (ArrayList<BaseRel<FROM, TO>>)tempRel) {
-															if (updateRel.getId().equals(rel.getId())) {
-																toRemove = updateRel;
+														for(BaseRel<FROM, TO> rnRel:((ArrayList<BaseRel<FROM, TO>>)currentRn.get(rn))) {
+															if (rnRel.getId().equals(rel.getId())) {
+																toRemove = rnRel;
 															}
 														}
-														
 														if (toRemove != null) {
-															((ArrayList<BaseRel<FROM, TO>>)tempRel).remove(toRemove);
+															((ArrayList<BaseRel<FROM, TO>>)currentRn.get(rn)).remove(toRemove);
 														}
-													
+														((ArrayList<BaseRel<FROM, TO>>)currentRn.get(rn)).add(rel);
+													}
+													updateRelationsResult.affectedNodes.add(nodeId);
+													updateRelationsResult.affectedNodes.add(rn.getNodeId());
+												}		
+												existingRelations.remove(rel.getId());
+											} else  {
+												rel.setId(null);
+												((ArrayList<BaseRel<FROM, TO>>)tempRel).add(rel);
+												if (currentRn != null) {
+													((ArrayList<BaseRel<FROM, TO>>)currentRn.get(rn)).add(rel);
 												}
+												updateRelationsResult.affectedNodes.add(nodeId);
+												updateRelationsResult.affectedNodes.add(rn.getNodeId());
 											}
-											((ArrayList<BaseRel<FROM, TO>>)tempRel).add(rel);
+											
 										}
 									}
 
 								}
 								f.set(node, tempRel);
+								
+								//delete remaining relationships
+								for(BaseRel<FROM, TO> rel: existingRelations.values()) {
+									Map<String, Object> params = new HashMap<>();
+									params.put("nodeId", rel.getId());
+									this.getTemplate().query("Match (n)-[x]-(y) where id(x)={nodeId} delete x;", params);
+								}
 							}
 						} catch (IllegalArgumentException | IllegalAccessException | SecurityException | InstantiationException e) {
 							logger.debug("old {} Exception when updating relations for nodeId={}", type, nodeId);
@@ -849,7 +905,7 @@ public class RelationServiceImpl implements RelationService {
 				}
 			}
 		}
-		node = saveNode(node);
+		this.getTemplate().save(node);
 		
 		updateRelationsResult.baseNode = node;
 
