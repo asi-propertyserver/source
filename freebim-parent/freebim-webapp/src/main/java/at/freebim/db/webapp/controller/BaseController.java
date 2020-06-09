@@ -310,7 +310,9 @@ public abstract class BaseController<T extends BaseNode> extends BaseAuthControl
 				}
 			}
 		}
-		entity = temp;
+		if (temp != null) {
+			entity = temp;
+		}
 		//-------------------------------------------------------------------------
 
 		if (entity instanceof FreebimUser) {
