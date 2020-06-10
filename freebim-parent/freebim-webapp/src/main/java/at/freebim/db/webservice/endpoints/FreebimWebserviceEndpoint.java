@@ -52,7 +52,7 @@ import at.freebim.db.webservice.dto.rel.Rel;
 import at.freebim.db.webservice.dto.rel.ValueListRel;
 
 /**
- * WebService end point for {@linkplain http://ws.freebim.at}.<br>
+ * WebService end point for {@linkplain http://db.freebim.at}.<br>
  * <br>
  * Typically you call {@link #getAllLibraries(String, String)} first to get all
  * {@link Library} instances. Afterwards you can call
@@ -72,9 +72,9 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	private static Logger logger = LoggerFactory.getLogger(FreebimWebserviceEndpoint.class);
 
 	/**
-	 * The target name space. <code>http://ws.freebim.at/</code>
+	 * The target name space. <code>http://db.freebim.at/</code>
 	 */
-	public static final String TNS = "http://ws.freebim.at/";
+	public static final String TNS = "http://db.freebim.at/";
 
 	@Autowired
 	private FreebimWebservice freebimWebservice;
@@ -87,7 +87,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getAllUnits xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getAllUnits xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 * </gs:getAllUnits>
@@ -103,7 +103,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getAllUnitsResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getAllUnitsResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<Unit>
 	 * 		<freebimId>553b86e7-4868-48fd-8c73-710d39580f4e</freebimId>
 	 * 		<code>m³</code>
@@ -146,7 +146,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getAllPhases xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getAllPhases xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 * </gs:getAllPhases>
@@ -162,7 +162,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getAllPhasesResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getAllPhasesResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<Phase>
 	 * 		<freebimId>53dbc64f-11b4-41bd-b16c-8bd68788825e</freebimId>
 	 * 		<code>ND</code>
@@ -199,7 +199,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getAllComponents xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getAllComponents xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 * </gs:getAllComponents>
@@ -215,7 +215,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getAllComponentsResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getAllComponentsResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<Component>
 	 * 		<freebimId>08ce9a8a-e5e5-44b6-8506-f3cbbb86ecbd</freebimId>
 	 * 		<bsddGuid>25bK1y_Mr1ZfqKe732iIHc</bsddGuid>
@@ -255,7 +255,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getAllParameters xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getAllParameters xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 * </gs:getAllParameters>
@@ -271,7 +271,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getAllParametersResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getAllParametersResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<Parameter>
 	 * 		<freebimId>d552c545-33bd-4ca5-a49e-84a6ae3393bb</freebimId>
 	 * 		<bsddGuid>1atDtr6bTB4h6afCIM6v_F</bsddGuid>
@@ -322,7 +322,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getAllDisciplines xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getAllDisciplines xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 * </gs:getAllDisciplines>
@@ -338,7 +338,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getAllDisciplinesResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getAllDisciplinesResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<Discipline>
 	 * 		<freebimId>e13e95c2-dd3b-4dae-9080-14ece47c86d7</freebimId>
 	 * 		<code>010</code>
@@ -375,7 +375,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getAllDataTypes xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getAllDataTypes xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 * </gs:getAllDataTypes>
@@ -391,7 +391,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getAllDataTypesResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getAllDataTypesResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<DataType>
 	 * 		<freebimId>295709cc-eeb3-4457-91ab-469572095260</freebimId>
 	 * 		<name>Freier Text</name>
@@ -425,7 +425,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getAllParameterSets xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getAllParameterSets xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 * </gs:getAllParameterSets>
@@ -441,7 +441,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getAllParameterSetsResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getAllParameterSetsResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<ParameterSet>
 	 * 		<freebimId>257d8eab-6d7d-4382-ae13-a86e76412c4f</freebimId>
 	 * 		<bsddGuid>2VWFE0qXKHuO00025QrE$V</bsddGuid>
@@ -480,7 +480,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getComponent xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getComponent xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 *     <gs:freebimId>69d359c3-bd1a-4484-9012-9f96f75e5a22</gs:freebimId>
@@ -498,7 +498,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getComponentResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getComponentResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<Component>
 	 * 		<freebimId>69d359c3-bd1a-4484-9012-9f96f75e5a22</freebimId>
 	 * 		<bsddGuid>2AFYKXkEn7RxYuvbduGfUV</bsddGuid>
@@ -529,7 +529,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getParameter xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getParameter xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>383f5bdd-8224-4bcc-b59f-0bd85767c781</gs:freebimId>
@@ -551,7 +551,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getParameterResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getParameterResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<Parameter>
 	 * 		<freebimId>383f5bdd-8224-4bcc-b59f-0bd85767c781</freebimId>
 	 * 		<bsddGuid>3vHkSGoT0Hsm00051Mm008</bsddGuid>
@@ -585,7 +585,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getParameterResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getParameterResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<Parameter>
 	 * 		<freebimId>383f5bdd-8224-4bcc-b59f-0bd85767c781</freebimId>
 	 * 		<bsddGuid>3vHkSGoT0Hsm00051Mm008</bsddGuid>
@@ -649,7 +649,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getValueList xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getValueList xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>8b7aec5b-3098-4b23-91d5-aa7746bce4f9</gs:freebimId>
@@ -671,7 +671,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getValueListResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getValueListResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<ValueList>
 	 * 		<freebimId>8b7aec5b-3098-4b23-91d5-aa7746bce4f9</freebimId>
 	 * 		<name>Allgemein:Himmelsrichtung</name>
@@ -699,7 +699,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getValueListResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getValueListResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<ValueList>
 	 * 		<freebimId>8b7aec5b-3098-4b23-91d5-aa7746bce4f9</freebimId>
 	 * 		<entries>
@@ -744,7 +744,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getAllLibraries xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getAllLibraries xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 * </gs:getAllLibraries>
@@ -760,7 +760,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getAllLibrariesResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getAllLibrariesResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<Library>
 	 * 		<freebimId>aaf83605-ee98-47ce-ac39-4819906d6c42</freebimId>
 	 * 		<desc>Ifc4 library</desc>
@@ -804,7 +804,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getChildsOf xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getChildsOf xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 *     <gs:freebimId>87cccb4c-53ae-4df9-8461-78fb01f22f0c</gs:freebimId>
@@ -823,7 +823,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getChildsOfResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getChildsOfResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<ChildRelation>
 	 * 		<freebimId>47535869-2c2a-4907-ad7b-5ef13f51d7b7</freebimId>
 	 * 		<order>0</order>
@@ -854,7 +854,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getParameterOf xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getParameterOf xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>69d359c3-bd1a-4484-9012-9f96f75e5a22</gs:freebimId>
@@ -873,7 +873,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getParameterOfResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getParameterOfResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<ParameterRelation>
 	 * 		<freebimId>60f5a6ab-eba4-4e8b-a51a-226a72a251a8</freebimId>
 	 * 		<order>0</order>
@@ -912,7 +912,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getParameterOfPSet xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getParameterOfPSet xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>257d8eab-6d7d-4382-ae13-a86e76412c4f</gs:freebimId>
@@ -931,7 +931,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getParameterOfPSetResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getParameterOfPSetResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<ParameterRelation>
 	 * 		<freebimId>68b32196-e9ad-4c79-9005-221decaa3916</freebimId>
 	 * 		<order>0</order>
@@ -963,7 +963,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getParameterSetOf xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getParameterSetOf xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>d3de6f45-2c74-4e24-9bef-7ba828428714</gs:freebimId>
@@ -982,7 +982,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getParameterSetOfResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getParameterSetOfResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<ParameterSetRelation>
 	 * 		<freebimId>257d8eab-6d7d-4382-ae13-a86e76412c4f</freebimId>
 	 * 	</ParameterSetRelation>
@@ -1008,7 +1008,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getEqualsOf xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getEqualsOf xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 *     <gs:freebimId>69d359c3-bd1a-4484-9012-9f96f75e5a22</gs:freebimId>
@@ -1026,7 +1026,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getEqualsOfResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getEqualsOfResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<EqualRelation>
 	 * 		<freebimId>81f1a129-53ed-44ff-9bc6-604021cd0209</freebimId>
 	 * 		<q>1.0</q>
@@ -1053,7 +1053,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getPartsOf xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getPartsOf xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>b567ab5b-3ecc-4633-b6ba-8f968dac73a8</gs:freebimId>
@@ -1071,7 +1071,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getPartsOfResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getPartsOfResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<PartsRelation>
 	 * 		<freebimId>d2d8c44c-df94-4d25-ab51-817f5d53db21</freebimId>
 	 * 	</PartsRelation>
@@ -1096,7 +1096,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getMaterialOf xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getMaterialOf xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 *     <gs:freebimId>f29f7831-d89c-4e14-bff7-b2f0b9c3fa70</gs:freebimId>
@@ -1114,7 +1114,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getMaterialOfResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getMaterialOfResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<MaterialRelation>
 	 * 		<freebimId>148678c9-25ba-44c4-ac45-d122ccf2312b</freebimId>
 	 * 	</MaterialRelation>
@@ -1139,7 +1139,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getMeasuresOf xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getMeasuresOf xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>383f5bdd-8224-4bcc-b59f-0bd85767c781</gs:freebimId>
@@ -1157,7 +1157,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getMeasuresOfResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getMeasuresOfResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<MeasureRelation>
 	 * 		<freebimId>a1dee01a-75db-481f-a0ac-0f766b90005b</freebimId>
 	 * 		<order>0</order>
@@ -1184,7 +1184,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getMeasure xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getMeasure xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 *     <gs:freebimId>a1dee01a-75db-481f-a0ac-0f766b90005b</gs:freebimId>
@@ -1205,7 +1205,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getMeasureResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getMeasureResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<Measure>
 	 * 		<freebimId>a1dee01a-75db-481f-a0ac-0f766b90005b</freebimId>
 	 * 		<dataTypeRelation>
@@ -1227,7 +1227,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getMeasureResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getMeasureResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<Measure>
 	 * 		<freebimId>a1dee01a-75db-481f-a0ac-0f766b90005b</freebimId>
 	 * 		<dataType>
@@ -1274,7 +1274,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getUnitOf xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getUnitOf xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>a1dee01a-75db-481f-a0ac-0f766b90005b</gs:freebimId>
@@ -1292,7 +1292,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getUnitOfResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getUnitOfResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<UnitRelation>
 	 * 		<freebimId>99fa0315-496f-4c33-812c-5b6816c70f28</freebimId>
 	 * 	</UnitRelation>
@@ -1317,7 +1317,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getDataTypeOf xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getDataTypeOf xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 *     <gs:freebimId>a1dee01a-75db-481f-a0ac-0f766b90005b</gs:freebimId>
@@ -1336,7 +1336,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getDataTypeOfResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getDataTypeOfResponse xmlns:ns2="http://db.freebim.at/">
 	 * <DataTypeRelation>
 	 *     <freebimId>d50b8c9d-ee0b-4dc9-9d4b-729dfeb1fdce</freebimId>
 	 * </DataTypeRelation>
@@ -1361,7 +1361,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getValueListsOf xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getValueListsOf xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>90fb2e54-71b0-48b6-a5d2-d22f09575588</gs:freebimId>
@@ -1379,7 +1379,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getValueListsOfResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getValueListsOfResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<ValueListRelation>
 	 * 		<freebimId>40d7d1d5-fe1a-49cd-a756-57cb35735ae6</freebimId>
 	 * 		<component>10591a70-8b3e-40a7-ab62-b797ca6ee05b</component>
@@ -1416,7 +1416,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getValueListOf xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getValueListOf xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>840e5e8e-9bd9-446e-b385-1a6d44d84f35</gs:freebimId>
@@ -1440,7 +1440,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getValueListOfResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getValueListOfResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<ValueList>
 	 * 		<freebimId>8b7aec5b-3098-4b23-91d5-aa7746bce4f9</freebimId>
 	 * 		<name>Allgemein:Himmelsrichtung</name>
@@ -1481,7 +1481,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getValuesOf xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getValuesOf xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>c9a81368-98b8-47c7-a6a4-169d8c87d343</gs:freebimId>
@@ -1499,7 +1499,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getValuesOfResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getValuesOfResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<ValueRelation>
 	 * 		<freebimId>1b37d75d-6d0b-49a8-a913-c491ffe75eee</freebimId>
 	 * 		<order>0</order>
@@ -1531,7 +1531,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getRefIdNames xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getRefIdNames xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 *     <gs:libraryName>freeBIM</gs:libraryName>
@@ -1551,7 +1551,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getRefIdNamesResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getRefIdNamesResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	   <refIdName>parameters.ID</refIdName>
 	 * 	   <refIdName>components.ID</refIdName>
 	 * 	   <refIdName>value_lists.ID</refIdName>
@@ -1590,7 +1590,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getLibraryReferences xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getLibraryReferences xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 *     <gs:libraryName>freeBIM</gs:libraryName>
@@ -1613,7 +1613,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getLibraryReferencesResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getLibraryReferencesResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<LibraryReference>
 	 * 		<freebimId>851c5f77-5f0e-4bf8-8d4a-4cd7eeca084a</freebimId>
 	 * 		<refId>322</refId>
@@ -1650,7 +1650,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getLibraryReference xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getLibraryReference xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:password>myPassword</gs:password>
 	 *     <gs:libraryName>freeBIM</gs:libraryName>
@@ -1674,7 +1674,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getLibraryReferenceResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getLibraryReferenceResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<Referenced xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type=
 	"ns2:parameter">
 	 * 		<freebimId>98e63dc6-c9ad-4dd3-a2c7-db58e8a51dac</freebimId>
@@ -1715,7 +1715,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 * <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <gs:getByFreebimId xmlns:gs="http://ws.freebim.at/">
+	 * <gs:getByFreebimId xmlns:gs="http://db.freebim.at/">
 	 *     <gs:username>myUsername</gs:username>
 	 *     <gs:username>myPassword</gs:username>
 	 *     <gs:freebimId>7eab2a34-85fe-4f82-891f-b0e9a9c13019</gs:freebimId>
@@ -1732,7 +1732,7 @@ public class FreebimWebserviceEndpoint extends SpringBeanAutowiringSupport {
 	 *         <pre>
 	 * {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * <ns2:getByFreebimIdResponse xmlns:ns2="http://ws.freebim.at/">
+	 * <ns2:getByFreebimIdResponse xmlns:ns2="http://db.freebim.at/">
 	 * 	<Node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type=
 	"ns2:unit">
 	 * 		<freebimId>7eab2a34-85fe-4f82-891f-b0e9a9c13019</freebimId>
