@@ -66,8 +66,8 @@
 					</sourcepath>
 					<doctitle>freeBIM WebService</doctitle>
 					<windowtitle>freeBIM - WebService Documentation</windowtitle>
-					<top><![CDATA[<img src="/resources/freebim_logo.gif" alt="freeBIM-Tirol" style="float:left;"> <a style="position: relative; top: 49px; left: 10px;" href="http://ws.freebim.at" target="_blank">WebService</a> ]]></top>
-					<bottom><![CDATA[<div style="position: relative; top: 10px; left: 10px;">Version: ${project.version}, Copyright 2015, <a href="http://db.freebim.at" target="_blank">freeBIM-Tirol<a></div>]]></bottom>
+					<top><![CDATA[<img src="/resources/freebim_logo.gif" alt="freeBIM-Tirol" style="float:left;"> <a style="position: relative; top: 49px; left: 10px;" href="https://db.freebim.at" target="_blank">WebService</a> ]]></top>
+					<bottom><![CDATA[<div style="position: relative; top: 10px; left: 10px;">Version: ${project.version}, Copyright 2015, <a href="https://db.freebim.at" target="_blank">freeBIM-Tirol<a></div>]]></bottom>
 					<outputDirectory>/</outputDirectory>
 				</configuration>
 			</plugin>
